@@ -3,12 +3,29 @@
 #+OPTIONS: toc:nil
 
 
-* Testing rendering
-** Second level
-*** Third
-Some text.
+* New features of ES13
+** Class Field Declarations
 
-| table | value       |
-|-------+-------------|
-| hello | is this ok? |
-|       |             |
+Before ES13 we could not declare class fields outside the constructor:
+#+BEGIN_SRC
+class Car {
+  constructor() {
+    this.color = 'blue';
+    this.age = 2;
+  }
+}
+const car = new Car();
+console.log(car.color); // blue
+console.log(car.age); // 2
+#+END_SRC
+
+ES13 removes this limitation:
+#+BEGIN_SRC
+class Car {
+  color = 'blue';
+  age = 2;
+}
+const car = new Car();
+console.log(car.color); // blue
+console.log(car.age); // 2
+#+END_SRC
