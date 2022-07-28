@@ -2,7 +2,6 @@
 #+AUTHOR: Rahul M. Juliato
 #+OPTIONS: toc:nil
 
-
 * New features of ES13
 ** Class Field Declarations
 
