@@ -5,6 +5,10 @@
 * Pure Functions
 ...
 Writing...
+** Source
+This topic is based on:
+[[https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976]]
+
 
 * New features of ES13
 ** Class Field Declarations
