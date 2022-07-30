@@ -2,6 +2,10 @@
 #+AUTHOR: Rahul M. Juliato
 #+OPTIONS: toc:nil
 
+* Pure Functions
+...
+Writing...
+
 * New features of ES13
 ** Class Field Declarations
 
@@ -521,7 +525,7 @@ console.log(lastEven); // 10
 console.log(lastEvenIndex); // 4  
 #+END_SRC
 
-
 ** Source
 This topic came from:
 [[https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497]]
+
