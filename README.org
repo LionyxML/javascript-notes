@@ -1,14 +1,439 @@
-#+TITLE: Javascript Notes
+#+TITLE: JavaScript Notes
 #+AUTHOR: Rahul M. Juliato
 #+OPTIONS: toc:nil
 
-* Pure Functions
-...
-Writing...
+* What is: Closure
+Clojures are important because they control what is and isn't in scope
+in a particular funcion, along with which variables are shared between
+sibling functions in the same containing scope. Understanding how
+variables and functions relate to each other is criticalto
+understanding what's going on in your code, in both functional and
+object oriented programming styles.
+
+#+BEGIN_SRC
+Coding without understanding of Closures is like trying to
+speak English without understanding the grammar rules.
+You might be able to get your ideas across, but probably a
+bit awkaardly.
+#+END_SRC
+
+In JS closures are frequently used for data privacy, in event handlers
+and callback functions, and in partial applications, currying and
+other functional programming patterns.
+
+** What is it?
+Is the combination of a function bundled togheter (enclosed) with
+references to its surrounding sate (the **lexical environment**). In
+other words, a closure gives you access to an outer function's scope
+from a inner function. In JavaScript, closures are created every time
+a function is created, at function creation time.
+
+To use a Closure, defina function inside another function and expose
+it. To expose a function, return it or pass it to another function.
+
+The inner function will have access to the variables in the outer
+function scope, even after the outer function has returned.
+
+** Using Closures (Examples)
+Among other things, closures are commonly used to give objects data
+privacy. Data privary is an essential property that helps us **program
+to an interface, not an implementation**. This is an important concept
+that helps us build more robust software because implementation
+details are more likely to change in breaking ways than interface
+contracts.
+
+In JavaScript, closures are the primary mechanism used to enable data
+privacy. When you use closures for data privacy, the enclosed
+variables are only in scope within the containing (outer)
+function. You can’t get at the data from an outside scope except
+through the object’s privileged methods. In JavaScript, any exposed
+method defined within the closure scope is privileged. For example:
+
+#+BEGIN_SRC
+const getSecret = (secret) => {
+  return {
+    get: () => secret
+  };
+};
+
+test('Closure for object privacy.', assert => {
+  const msg = '.get() should have access to the closure.';
+  const expected = 1;
+  const obj = getSecret(1);
+
+  const actual = obj.get();
+
+  try {
+    assert.ok(secret, 'This throws an error.');
+  } catch (e) {
+    assert.ok(true, `The secret var is only available
+      to privileged methods.`);
+  }
+
+  assert.equal(actual, expected, msg);
+  assert.end();
+});
+#+END_SRC
+
+In the example above, the `.get()` method is defined inside the scope
+of `getSecret()`, which gives it access to any variables from
+`getSecret()`, and makes it a privileged method. In this case, the
+parameter, `secret`.
+
+Objects are not the only way to produce data privacy. Closures can
+also be used to create stateful functions whose return values may be
+influenced by their internal state, e.g.:
+
+const secret = msg => () => msg;
+
+#+BEGIN_SRC
+// Secret - creates closures with secret messages.
+// https://gist.github.com/ericelliott/f6a87bc41de31562d0f9
+// https://jsbin.com/hitusu/edit?html,js,output
+
+// secret(msg: String) => getSecret() => msg: String
+const secret = (msg) => () => msg;
+
+test('secret', assert => {
+  const msg = 'secret() should return a function that returns the passed secret.';
+
+  const theSecret = 'Closures are easy.';
+  const mySecret = secret(theSecret);
+
+  const actual = mySecret();
+  const expected = theSecret;
+
+  assert.equal(actual, expected, msg);
+  assert.end();
+});
+#+END_SRC
+
+In functional programming, closures are frequently used for partial
+application & currying. This requires some definitions:
+
+*** Application:
+The process of applying a function to its arguments in order to
+produce a return value.
+
+*** Partial Application:
+The process of applying a function to some of its arguments. The
+partially applied function gets returned for later use. Partial
+application fixes (partially applies the function to) one or more
+arguments inside the returned function, and the returned function
+takes the remaining parameters as arguments in order to complete the
+function application.
+
+Partial application takes advantage of closure scope in order to fix
+parameters. You can write a generic function that will partially apply
+arguments to the target function. It will have the following
+signature:
+
+#+BEGIN_SRC
+  partialApply(targetFunction: Function, ...fixedArgs: Any[]) =>
+  functionWithFewerParams(...remainingArgs: Any[])
+#+END_SRC
+
+It will take a function that takes any number of arguments, followed
+by arguments we want to partially apply to the function, and returns a
+function that will take the remaining arguments
+
+An example will help. Say you have a function that adds two numbers:
+#+BEGIN_SRC
+const add = (a, b) => a + b;
+#+END_SRC
+
+Now you want a function that adds 10 to any number. We'll call it
+`add10()`. The result of `add10(5)` should be `15`. Our
+`partialApply()` function can make that happen:
+
+#+BEGIN_SRC
+const add10 = partialApply(add, 10);
+add10(5);
+#+END_SRC
+
+In this example, the argument, `10` becomes a fixed parameter
+remembered inside the `add10()` closure scope.
+
+Let's look at a possible `partialApply()` implementation:
+
+#+BEGIN_SRC
+// Generic Partial Application Function
+// https://jsbin.com/biyupu/edit?html,js,output
+// https://gist.github.com/ericelliott/f0a8fd662111ea2f569e
+
+// partialApply(targetFunction: Function, ...fixedArgs: Any[]) =>
+//   functionWithFewerParams(...remainingArgs: Any[])
+const partialApply = (fn, ...fixedArgs) => {
+  return function (...remainingArgs) {
+    return fn.apply(this, fixedArgs.concat(remainingArgs));
+  };
+};
+
+
+test('add10', assert => {
+  const msg = 'partialApply() should partially apply functions'
+
+  const add = (a, b) => a + b;
+
+  const add10 = partialApply(add, 10);
+
+
+  const actual = add10(5);
+  const expected = 15;
+
+  assert.equal(actual, expected, msg);
+});
+#+END_SRC
+
+As you can see, it simply returns a function which retains access to
+the `fixedArgs` arguments that were passed into the `partialApply()`
+function.
+
+
+** Source:
+Heavly based on:
+[[https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36]]
+
+* What is: Pure Functions
+** General Definition
+Is a function where:
+- Given the same input, always returns the same output
+- Produces no side effects
+** Functions as a whole
+Is a process of taking some input, called arguments, and producing some output calle return value.
+
+Main purposes:
+- Mapping: Proce output based on given inputs. Maps input values to output values
+- Procedures: A function to perform a sequence of steps. This is style is procedural programming.
+- I/O: In order to communicate with the system: screen, storage, logs, network.
+
+** Back to definition
+If a function where:
+- Given the same input, always returns the same output
+- Produces no side effects
+
+If I have a function like:
+#+BEGIN_SRC
+function double(number) {
+    return 2 * number;
+}
+#+END_SRC
+
+I can say that these are both "the same"
+#+BEGIN_SRC
+console.log(double(5));
+console.log(10);        // They produces the same result
+#+END_SRC
+
+If you want **Referential Transparency** you need to use pure functions.
+
+A dead giveaway that a function is impure is if it makes sense to call
+it without using its return value. For pure functions, that's a nope.
+
+** Recomendation
+Favor pure functions: If it is pratical to implement a program
+requirement using pure functions, you should use them over other
+options. They are the simples reusable build blocks of code in a program.
+
+** The most important design principle (KISS)
+Keep it Simple Stupid or,
+Keep it Stupid Simple
+
+Pure functions are completely independent of outside state, and as
+such, they are immune to entire classes of bugs that happen with a
+shared mutable state.
+
+This independent nature makes them great candidates for parallel
+processing across many CPUs and distribute clusters.
+
+They are also easier to move around, refactor, and reorganize in the
+code, making programs more flexible and adaptable to future changes.
+
+** Problem with Shared State
+
+In an example: if you make requests from a query textfield as the user types.
+You may have times where th last request "Java" for example comes and ocupies
+the UI response element, before the request for "JavaScript" was even sent.
+
+To fix this, you should build a manager that cancels the previous AJAX request.
+
+Martin Odersky (Creator of Scala) puts it:
+`non-determinism = parallel processing + mutable state`
+
+You should avoid it.
+
+Program determinism is a LOT desirable in computing. If you think JS
+is imune because it only use single thread. Remember thata AJAX, API
+I/O event listeners, web workers, iframes and timeouts can introduce
+indeterminism into your program. Combine that with shared state, you
+have a recipe for bugs.
+
+** Given the same Input, Always Retun the Same Output
+Our `double` function will always return 10 for 5 as paramater, it
+does'nt matter how many times we call it
+
+But we can't say the same for `Math.random()` for example.
+
+#+BEGIN_SRC
+Math.random();
+// 0.8335683328172347
+
+Math.random();
+// 0.8910118593581697
+
+Math.random();
+//0.3099123827043109
+#+END_SRC
+
+Even tough we didn't pass any arguments into any of the function
+calls, they produced different output. This function is not pure.
+
+#+BEGIN_SRC
+const time = () => new Date().toLocaleTimeString();
+
+time(); // '8:45:51 AM'
+#+END_SRC
+
+This is also not pure, even tought it repeats its output one time each day.
+
+Now an example of pure function:
+#+BEGIN_SRC
+const highpass = (cutoff, value) => value >= cutoff;
+
+highpass(5, 5); // => true  Always the same result given the same inputs
+highpass(5, 5); // => true
+highpass(5, 5); // => true
+
+highpass(5, 123); // true  Many inputs may map to the same ouputs
+highpass(5, 6);   // true
+highpass(5, 18);  // true
+highpass(5, 1);   // false
+highpass(5, 3);   // false
+highpass(5, 4);   // false
+#+END_SRC
+
+A pure function must not rely on any external mutable state, because
+it would no longer be determinisstic or referentially transparent.
+
+** Pure functions Produce No SIDE EFFECTS
+A pure function produces no side effects, which means that it can't
+alter any external state.
+
+*** Immutability
+JavaScript's object arguments are references, which means that if a
+function were to mutate a property on an object or array parameter,
+that would mutate state that is accessible outside the function. Pure
+functions must not mutate external state.
+
+Consider this mutating, impure `addToCart()` function:
+
+#+BEGIN_SRC
+// impure addToCart mutates existing cart
+const addToCart = (cart, item, quantity) => {
+  cart.items.push({
+    item,
+    quantity
+  });
+  return cart;
+};
+
+
+test('addToCart()', assert => {
+  const msg = 'addToCart() should add a new item to the cart.';
+  const originalCart =     {
+    items: []
+  };
+  const cart = addToCart(
+    originalCart,
+    {
+      name: "Digital SLR Camera",
+      price: '1495'
+    },
+    1
+  );
+
+  const expected = 1; // num items in cart
+  const actual = cart.items.length;
+
+  assert.equal(actual, expected, msg);
+
+  assert.deepEqual(originalCart, cart, 'mutates original cart.');
+  assert.end();
+});
+#+END_SRC
+
+It works by passing a cart and item to add to the cart. The function
+then returns the same cart, with the item added to it.
+
+The problem is that we've just mutated some shared state. Other
+functions may be relying on that cart object state to be what it was
+before the function was called and now we have to worry about what
+impact it will have on the program logic if we change the
+order. Refactoring the code could result in bugs popping up and
+unhappy customers.
+
+Consider this version:
+#+BEGIN_SRC
+// Pure addToCart() returns a new cart
+// It does not mutate the original.
+const addToCart = (cart, item, quantity) => {
+  const newCart = lodash.cloneDeep(cart);
+
+  newCart.items.push({
+    item,
+    quantity
+  });
+  return newCart;
+
+};
+
+
+test('addToCart()', assert => {
+  const msg = 'addToCart() should add a new item to the cart.';
+  const originalCart = {
+    items: []
+  };
+
+  // deep-freeze on npm
+  // throws an error if original is mutated
+  deepFreeze(originalCart);
+
+  const cart = addToCart(
+    originalCart,
+    {
+      name: "Digital SLR Camera",
+      price: '1495'
+    },
+    1
+  );
+
+
+  const expected = 1; // num items in cart
+  const actual = cart.items.length;
+
+  assert.equal(actual, expected, msg);
+
+  assert.notDeepEqual(originalCart, cart,
+    'should not mutate original cart.');
+  assert.end();
+});
+#+END_SRC
+
+In this example, we have an array nested in an object, which is why I
+reached for a deep clone. This is more complex state than you’ll
+typically be dealing with. For most things, you can break it down into
+smaller chunks.
+
+For example, Redux lets you compose reducers rather
+than deal with the entire app state inside each reducer. The result is
+that you don't have to create a deep clone of the entire app state
+every time you want to update just a small part of it. Instead, you
+can use non-destructive array methods, or `Object.assign()` to update
+a small part of the app state.
+
 ** Source
 This topic is based on:
 [[https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976]]
-
 
 * New features of ES13
 ** Class Field Declarations
