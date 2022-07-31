@@ -2,6 +2,105 @@
 #+AUTHOR: Rahul M. Juliato
 #+OPTIONS: toc:nil
 
+* Referential Transparency / Opacity in JS
+Referential transparency is used in many domains, for example:
+mathematics, logic, linguistics, philosophy and programming. It has
+quite changed meanings in each of these domains.
+
+Referential transparency in programming relates do programs. By way of programs are
+composed of subprograms that are programs themselves. It relates to those subprograms, also.
+Subprograms can be signified by methods.
+
+Example:
+#+BEGIN_SRC
+var identifty = (i) => { return i }
+#+END_SRC
+
+- We have defined a simple function named identity in the above code snippet.
+- This function return whatsoever we're passing as its input.
+- That is, if we passes 10, it returns back the value 10.
+- As the function is only acts as a mirror and identity.
+- Our function does work only on the incoming argument `i`.
+- There is no global reference inside our function.
+
+At the present conceive this function is used between other function calls like this:
+#+BEGIN_SRC
+  sum(4,5) + identity(1)
+#+END_SRC
+
+By means of our Referential Transparency definition we may change the above statement into this:
+#+BEGIN_SRC
+  sum(4,5) + 1
+#+END_SRC
+
+- At this moment this process is called a Substitution model.
+- By way of we can directly substitute the result of the function as
+  is with its value.
+- Generally due to the function doesn’t rely on other global variables
+  for its logic.
+- This leads to equivalent code and caching.
+- We may easily run the above function with several threads deprived
+  of even the need of synchronizing.
+- The motive for synchronizing comes from the detail that threads
+  shouldn't do global data when running equivalent.
+- Functions that follow Referential Transparency depends only on
+  inputs from its argument.
+- Therefore, threads are allowed to run without any locking mechanism.
+- Meanwhile the function returns the same value for the given input.
+- We may, actually cache it. For instance, see there is a function
+  called factorial.
+- Calculates the factorial of the given number.
+- Factorial takes the input as its argument for which the factorial
+  needs to be calculated.
+- We all recognize the factorial of 5 going to be 120.
+- What would be if the user calls the factorial of 5 a second time?
+- We see that the result is to be 120 if the factorial function
+  follows Referential transparency as before.
+- It only be contingent on the input argument.
+- We may cache the values of our factorial function by keeping in mind
+  these characters.
+- Thus if a factorial is called for the second time with the input as
+  `5`, we can return the cached value instead of calculating once
+  again.
+
+ 
+`An expression is called referentially transparent if it can be
+replaced with its corresponding value (and vice-versa) without
+changing the program's behavior.[1] This requires that the expression
+be pure – its value must be the same for the same inputs and its
+evaluation must have no side effects. An expression that is not
+referentially transparent is called referentially opaque.`
+
+Examples of both:
+#+BEGIN_SRC js
+  var g = 0;
+
+  function rt (x) {
+    return x + 1
+  }
+
+  function ro (x) {
+    g++;
+    return x + g;
+  }
+
+  console.log(rt(1));
+  console.log(rt(1));
+  console.log(rt(1));
+
+  console.log(ro(1));
+  console.log(ro(1));
+  console.log(ro(1));
+#+END_SRC
+
+#+RESULTS:
+: 2
+: 2
+: 2
+: 2
+: 3
+: 4
+
 * What is: Closure
 Closures are important because they control what is and isn't in scope
 in a particular function, along with which variables are shared between
