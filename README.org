@@ -3,10 +3,10 @@
 #+OPTIONS: toc:nil
 
 * What is: Closure
-Clojures are important because they control what is and isn't in scope
-in a particular funcion, along with which variables are shared between
+Closures are important because they control what is and isn't in scope
+in a particular function, along with which variables are shared between
 sibling functions in the same containing scope. Understanding how
-variables and functions relate to each other is criticalto
+variables and functions relate to each other is critical to
 understanding what's going on in your code, in both functional and
 object oriented programming styles.
 
@@ -22,13 +22,13 @@ and callback functions, and in partial applications, currying and
 other functional programming patterns.
 
 ** What is it?
-Is the combination of a function bundled togheter (enclosed) with
+Is the combination of a function bundled together (enclosed) with
 references to its surrounding sate (the **lexical environment**). In
 other words, a closure gives you access to an outer function's scope
 from a inner function. In JavaScript, closures are created every time
 a function is created, at function creation time.
 
-To use a Closure, defina function inside another function and expose
+To use a Closure, define a function inside another function and expose
 it. To expose a function, return it or pass it to another function.
 
 The inner function will have access to the variables in the outer
@@ -36,7 +36,7 @@ function scope, even after the outer function has returned.
 
 ** Using Closures (Examples)
 Among other things, closures are commonly used to give objects data
-privacy. Data privary is an essential property that helps us **program
+privacy. Data privacy is an essential property that helps us **program
 to an interface, not an implementation**. This is an important concept
 that helps us build more robust software because implementation
 details are more likely to change in breaking ways than interface
@@ -84,7 +84,7 @@ Objects are not the only way to produce data privacy. Closures can
 also be used to create stateful functions whose return values may be
 influenced by their internal state, e.g.:
 
-const secret = msg => () => msg;
+`const secret = msg => () => msg;`
 
 #+BEGIN_SRC
 // Secret - creates closures with secret messages.
@@ -189,9 +189,8 @@ As you can see, it simply returns a function which retains access to
 the `fixedArgs` arguments that were passed into the `partialApply()`
 function.
 
-
 ** Source:
-Heavly based on:
+Heavily based on:
 [[https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36]]
 
 * What is: Pure Functions
@@ -200,10 +199,11 @@ Is a function where:
 - Given the same input, always returns the same output
 - Produces no side effects
 ** Functions as a whole
-Is a process of taking some input, called arguments, and producing some output calle return value.
+Is a process of taking some input, called arguments, and producing
+some output to the called return value.
 
 Main purposes:
-- Mapping: Proce output based on given inputs. Maps input values to output values
+- Mapping: Process output based on given inputs. Maps input values to output values
 - Procedures: A function to perform a sequence of steps. This is style is procedural programming.
 - I/O: In order to communicate with the system: screen, storage, logs, network.
 
@@ -230,10 +230,10 @@ If you want **Referential Transparency** you need to use pure functions.
 A dead giveaway that a function is impure is if it makes sense to call
 it without using its return value. For pure functions, that's a nope.
 
-** Recomendation
-Favor pure functions: If it is pratical to implement a program
+** Recommendation
+Favor pure functions: If it is practical to implement a program
 requirement using pure functions, you should use them over other
-options. They are the simples reusable build blocks of code in a program.
+options. They are the simplest reusable build blocks of code in a program.
 
 ** The most important design principle (KISS)
 Keep it Simple Stupid or,
@@ -251,8 +251,8 @@ code, making programs more flexible and adaptable to future changes.
 
 ** Problem with Shared State
 
-In an example: if you make requests from a query textfield as the user types.
-You may have times where th last request "Java" for example comes and ocupies
+In an example: if you make requests from a query text field as the user types.
+You may have times where the last request "Java" for example comes and occupies
 the UI response element, before the request for "JavaScript" was even sent.
 
 To fix this, you should build a manager that cancels the previous AJAX request.
@@ -263,14 +263,14 @@ Martin Odersky (Creator of Scala) puts it:
 You should avoid it.
 
 Program determinism is a LOT desirable in computing. If you think JS
-is imune because it only use single thread. Remember thata AJAX, API
+is immune because it only use single thread. Remember that AJAX, API
 I/O event listeners, web workers, iframes and timeouts can introduce
 indeterminism into your program. Combine that with shared state, you
 have a recipe for bugs.
 
-** Given the same Input, Always Retun the Same Output
-Our `double` function will always return 10 for 5 as paramater, it
-does'nt matter how many times we call it
+** Given the same Input, Always Returns the Same Output
+Our `double` function will always return 10 for 5 as parameter, it
+doesn't matter how many times we call it
 
 But we can't say the same for `Math.random()` for example.
 
@@ -294,7 +294,7 @@ const time = () => new Date().toLocaleTimeString();
 time(); // '8:45:51 AM'
 #+END_SRC
 
-This is also not pure, even tought it repeats its output one time each day.
+This is also not pure, even thought it repeats its output one time each day.
 
 Now an example of pure function:
 #+BEGIN_SRC
@@ -313,7 +313,7 @@ highpass(5, 4);   // false
 #+END_SRC
 
 A pure function must not rely on any external mutable state, because
-it would no longer be determinisstic or referentially transparent.
+it would no longer be deterministic or referentially transparent.
 
 ** Pure functions Produce No SIDE EFFECTS
 A pure function produces no side effects, which means that it can't
@@ -524,7 +524,7 @@ We could not use this in the global scope.
 await setTimeoutAsync(3000);
 #+END_SRC
 
-Agora é possível:
+Now it is possible:
 #+BEGIN_SRC
 function setTimeoutAsync(timeout) {
   return new Promise((resolve) => {
