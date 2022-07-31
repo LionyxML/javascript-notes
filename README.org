@@ -2,6 +2,367 @@
 #+AUTHOR: Rahul M. Juliato
 #+OPTIONS: toc:nil
 
+* What is: Difference Between Class & Prototypal Inheritance
+** Class Inheritance
+A Class is like a blueprint - a description of the object to be
+created. Classes inherit from classes and create subclass
+relationships: hierarchical class taxonomies.
+
+Instances are typically instantiated via constructor functions with
+the **new** keyword. Class inheritance may or may not use the
+**class** keyword from ES6. Classes as you may know them from
+languages like Java don't technically exist in Javascript. Constructor
+functions are used, instead. The ES6 **class** keyword desugars to a
+constructor function:
+
+#+BEGIN_SRC js
+  class Foo {};
+  console.log(typeof Foo);
+#+END_SRC
+
+#+RESULTS:
+: function
+
+In JS, class inheritance is implemented on top of prototypal
+inheritance, but that does not mean that it does the same thing:
+
+JS class inheritance uses the prototype chain o wire the child
+`Constructor.prototype` to the parent `Constructor.prototype` for
+delegation.  Usually, the `super()` constructor is also called. Those
+steps form **single-ancestor parent/child hierarchies** and **create
+the tightest coupling available in OO design**.
+
+** Prototypal Inheritance
+A prototype is a working object instance. Objects inherit directly
+from other objects.
+
+Instances may be composed from many different source objects, allowing
+for easy selective inheritance and flat **Prototype** delegation
+hierarchy. In other words, class taxonomies are not an automatic
+side-effect of prototypal OO: a critical distinction.
+
+Instances are typically instantiated via factory functions, object
+literals, or `Object.create()`.
+
+** Why does this Matter?
+Inheritance is fundamentally a code reuse mechanism: A way for
+different kinds of objects to share code. The way that you share code
+matters because if you get it wrong, it can create a lot of problems, specifically:
+
+ **Class inheritance creates parent/child objects taxonomies as side-effect**
+
+Those are virtually impossible to get right for all new use cases, and
+widespread use of a base class leads to the **fragile base class
+problem**, which makes them difficult to fix when you get them wrong.
+In fact, class inheritance causes many well known problems in OO
+design:
+
+- The tight coupling problem (class inheritance is the tightest
+  coupling avaiable in oo design), which leads to...
+- The fragile base class problem
+- Inflexible hierarchy problem (eventually, all evolving hierarchies
+  are wrong for new uses)
+- The duplication by necessity problem (due to inflexible hierarchies,
+  new use cases are often shoe-horned in by duplicating, rather than
+  adapting existing code)
+- The Gorilla/banana problem (What you wanted was a banana, but what
+  you got was a gorilla holding the banana, and the entire jungle)
+
+The solution to all of these problems:
+
+ ** Favor object composition over class inheritance. **
+
+~ The Gang of Four, "Design Patterns: Elements of
+Reusable Object Oriented Software"
+
+** Three Different Kinds of Prototypal Inheritance
+*** Before the three
+Before we dive into the other kinds of inheritance, let's take a
+closer look at what I mean by class inheritance:
+#+BEGIN_SRC js
+  // Class Inheritance Example
+  // NOT RECOMMENDED. Use object composition, instead.
+   class GuitarAmp {
+    constructor ({ cabinet = "spruce", distortion = "1", volume = "0" } = {}) {
+      Object.assign(this, {
+	  cabinet, distortion, volume
+	});
+      }
+    }
+
+  class BassAmp extends GuitarAmp {
+    constructor (options = {}) {
+      super(options);
+      this.lowCut = options.lowCut;
+      }
+    }
+
+  class ChannelStrip extends BassAmp {
+    constructor (options = {}) {
+      super(options);
+      this.inputLevel = options.inputLevel;
+      }
+    }
+
+  const myAmp = new BassAmp();
+  const actualAmp = Object.keys(myAmp);
+  const expectedAmp = ["cabinet", "distortion", "volume", "lowCut"];
+
+  console.log("1.", actualAmp, expectedAmp, " instance should inherit props from GuitarAmp and BassAmp");
+
+  const myStrip = new ChannelStrip();
+  const actualStrip = Object.keys(myStrip);
+  const expectedStrip = ["cabinet", "distortion", "volume", "lowCut", "inputLevel"];
+
+ console.log("2.", actualStrip, expectedStrip, " instance should inherit props from GuitarAmp, BassAmp and ChannelStrip");
+#+END_SRC
+
+#+RESULTS:
+: 1. [ 'cabinet', 'distortion', 'volume', 'lowCut' ] [ 'cabinet', 'distortion', 'volume', 'lowCut' ]  instance should inherit props from GuitarAmp and BassAmp
+: 2. [ 'cabinet', 'distortion', 'volume', 'lowCut', 'inputLevel' ] [ 'cabinet', 'distortion', 'volume', 'lowCut', 'inputLevel' ]  instance should inherit props from GuitarAmp, BassAmp and ChannelStrip
+
+`BassAmp` inherits from `GuitarAmp`, and `ChannelStrip` inherits from
+`BassAmp` & `GuitarAmp`. This is an example of how OO design goes
+wrong. A channel strip isn’t actually a type of guitar amp, and
+doesn’t actually need a cabinet at all. A better option would be to
+create a new base class that both the amps and the channel strip
+inherits from, but even that has limitations.
+
+Eventually, the new shared base class strategy breaks down, too.
+
+There’s a better way. You can inherit just the stuff you really need
+using object composition:
+
+#+BEGIN_SRC js
+  // Composition Example
+
+  const distortion = { distortion: 1 };
+  const volume = { volume: 1 };
+  const cabinet = { cabinet: "maple" };
+  const lowCut = { lowCut: 1 };
+  const inputLevel = { inputLevel: 1 };
+
+  const GuitarAmp = (options) => {
+    return Object.assign({}, distortion, volume, cabinet, options);
+  };
+
+  const BassAmp = (options) => {
+    return Object.assign({}, lowCut, volume, cabinet, options);
+  };
+
+  const ChannelStrip = (options) => {
+    return Object.assign({}, inputLevel, lowCut, volume, options);
+  };
+
+
+    const msgGuitarAmp = "should have distortion, volume, and cabinet";
+    const levelGuitarAmp = 2;
+    const cabinetGuitarAmp = "vintage";
+
+    const actualGuitarAmp = GuitarAmp({
+      distortion: levelGuitarAmp,
+      volume: levelGuitarAmp,
+      cabinet: cabinetGuitarAmp
+    });
+    const expectedGuitarAmp = {
+      distortion: levelGuitarAmp,
+      volume: levelGuitarAmp,
+      cabinet: cabinetGuitarAmp,
+    };
+
+    console.log("1.", actualGuitarAmp, expectedGuitarAmp, msgGuitarAmp);
+
+    const msgBassAmp = "should have volume, lowCut, and cabinet";
+    const levelBassAmp = 2;
+    const cabinetBassAmp = "vintage";
+
+    const actualBassAmp = BassAmp({
+      lowCut: levelBassAmp,
+      volume: levelBassAmp,
+      cabinet: cabinetBassAmp
+    });
+    const expectedBassAmp = {
+      lowCut: levelBassAmp,
+      volume: levelBassAmp,
+      cabinet: cabinetBassAmp,
+    };
+
+    console.log("2.", actualBassAmp, expectedBassAmp, msgBassAmp);
+
+  const msgChannel = "should have inputLevel, lowCut, and volume";
+  const levelChannel = 2;
+
+  const actualChannel = ChannelStrip({
+      inputLevel: levelChannel,
+      lowCut: levelChannel,
+      volume: levelChannel,
+    });
+    const expectedChannel = {
+      inputLevel: levelChannel,
+      lowCut: levelChannel,
+      volume: levelChannel,
+    };
+
+  console.log("2.", actualChannel, expectedChannel, msgChannel);
+#+END_SRC
+
+#+RESULTS:
+: 1. { distortion: 2, volume: 2, cabinet: 'vintage' } { distortion: 2, volume: 2, cabinet: 'vintage' } should have distortion, volume, and cabinet
+: 2. { lowCut: 2, volume: 2, cabinet: 'vintage' } { lowCut: 2, volume: 2, cabinet: 'vintage' } should have volume, lowCut, and cabinet
+: 2. { inputLevel: 2, lowCut: 2, volume: 2 } { inputLevel: 2, lowCut: 2, volume: 2 } should have inputLevel, lowCut, and volume
+: undefined
+
+If you look carefully, you might see that we're being much more
+specific about which objects get which properties because with
+composition, we can. It wasn't really an option with class
+inheritance. When you inherit from a class, you get everything, even
+if you don’t want it.
+
+At this point, you may be thinking to yourself, "that's nice, but where are the prototypes?"
+
+To understand that, you have to understand that there are three different kinds of prototypal OO.
+
+*** Concatenative inheritance
+The process of inheriting features directly from one object to another
+by copying the source objects properties. In JavaScript, source
+prototypes are commonly referred to as mixins. Since ES6, this feature
+has a convenience utility in JavaScript called
+`Object.assign()`. Prior to ES6, this was commonly done with
+Underscore/Lodash's `.extend()` jQuery's `$.extend()`, and so on… The
+composition example above uses concatenative inheritance.
+
+*** Prototype delegation
+In JavaScript, an object may have a link to a prototype for
+delegation. If a property is not found on the object, the lookup is
+delegated to the delegate prototype, which may have a link to its own
+delegate prototype, and so on up the chain until you arrive at
+`Object.prototype`, which is the root delegate. This is the prototype
+that gets hooked up when you attach to a `Constructor.prototype` and
+instantiate with `new`. You can also use `Object.create()` for this
+purpose, and even mix this technique with concatenation in order to
+flatten multiple prototypes to a single delegate, or extend the object
+instance after creation.
+
+The JS prototype chain:
+#+BEGIN_SRC artist
+ +---------------------+       +----------------------+	       +---------------------+
+ |       George        |       |      Prototype       +--------+ Object.prototype    |
+ | name	               +-------+  hello()             |	       | ...                 |
+ | [[Prototype]]       |       |  [[Prototype]]       |	       |                     |
+ |                     |       |                      |	       |                     |
+ +---------------------+       +----------------------+	       +---------------------+
+#+END_SRC
+
+*** Functional inheritance
+In JavaScript, any function can create an object. When that function
+is not a constructor (or `class`), it's called a factory
+function. Functional inheritance works by producing an object from a
+factory, and extending the produced object by assigning properties to
+it directly (using concatenative inheritance). Douglas Crockford
+coined the term, but functional inheritance has been in common use in
+JavaScript for a long time.
+
+As you're probably starting to realize, concatenative inheritance is
+the secret sauce that enables object composition in JavaScript, which
+makes both prototype delegation and functional inheritance a lot more
+interesting.
+
+When most people think of prototypal OO in JavaScript, they think of
+prototype delegation. By now you should see that they’re missing out
+on a lot. Delegate prototypes aren't the great alternative to class
+inheritance — object composition is.
+
+** Why Composition is Immune to the Fragile Base Class Problem
+To understand the fragile base class problem and why it doesn’t apply
+to composition, first you have to understand how it happens:
+
+`A` is the base class
+
+`B` inherits from `A`
+
+`C` inherits from `B`
+
+`D` inherits from `B`
+
+`C` calls `super`, which runs code in `B`. `B` calls `super` which runs code in `A`.
+
+`A` and `B` contain unrelated features needed by both `C` & `D`. `D`
+is a new use case, and needs slightly different behavior in `A`'s init
+code than `C` needs. So the newbie dev goes and tweaks `A`'s init
+code. `C` breaks because it depends on the existing behavior, and `D`
+starts working.
+
+What we have here are features spread out between `A` and `B` that `C`
+and `D` need to use in various ways. `C` and `D` don't use every
+feature of `A` and `B`… they just want to inherit some stuff that's
+already defined in `A` and `B`. But by inheriting and calling `super`,
+you don't get to be selective about what you inherit. You inherit
+everything:
+
+ ** ...the problem with object-oriented languages is they’ve got all this
+implicit environment that they carry around with them. You wanted a
+banana but what you got was a gorilla holding the banana and the
+entire jungle.” ~ Joe Armstrong — “Coders at Work **
+
+With Composition
+
+Imagine you have features instead of classes:
+
+#+BEGIN_SRC js
+  feat1, feat2, feat3, feat4
+#+END_SRC
+
+`C` needs `feat1` and `feat3`, `D` needs `feat1`, `feat2`, `feat4`:
+
+#+BEGIN_SRC js
+  const C = compose(feat1, feat3);
+  const D = compose(feat1, feat2, feat4);
+#+END_SRC
+
+Now, imagine you discover that `D` needs slightly different behavior
+from `feat1`. It doesn’t actually need to change `feat1`, instead, you
+can make a customized version of `feat1` and use that, instead. You
+can still inherit the existing behaviors from `feat2` and `feat4` with
+no changes:
+
+#+BEGIN_SRC js
+const D = compose(custom1, feat2, feat4);  
+#+END_SRC
+
+And `C` remains unaffected.
+
+The reason this is not possible with class inheritance is because when
+you use class inheritance, you buy into the whole existing class
+taxonomy.
+
+If you want to adapt a little for a new use-case, you either end up
+duplicating parts of the existing taxonomy (the duplication by
+necessity problem), or you refactor everything that depends on the
+existing taxonomy to adapt the taxonomy to the new use case due to the
+fragile base class problem.
+
+Composition is immune to both.
+
+** You think you know Prototypes, but...
+If you were taught to build classes or constructor functions and
+inherit from those, what you were taught was not prototypal
+inheritance. You were taught how to mimic class inheritance using
+prototypes. 
+
+In JavaScript, class inheritance piggybacks on top of the very rich,
+flexible prototypal inheritance features built into the language a
+long time ago, but when you use class inheritance — even the ES6+
+`class` inheritance built on top of prototypes, you're not using the
+full power & flexibility of prototypal OO. In fact, you're painting
+yourself into corners and opting into all of the class inheritance
+problems.
+
+Using class inheritance in JavaScript is like driving your new Tesla
+Model S to the dealer and trading it in for a rusted out 1973 Ford
+Pinto.
+** Source
+Almost all by this great article:
+[[https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9]]
 * Referential Transparency / Opacity in JS
 Referential transparency is used in many domains, for example:
 mathematics, logic, linguistics, philosophy and programming. It has
@@ -63,7 +424,7 @@ By means of our Referential Transparency definition we may change the above stat
   `5`, we can return the cached value instead of calculating once
   again.
 
- 
+
 `An expression is called referentially transparent if it can be
 replaced with its corresponding value (and vice-versa) without
 changing the program's behavior.[1] This requires that the expression
@@ -618,7 +979,7 @@ We could not use this in the global scope.
     }, timeout);
   });
 }
-  
+
 // SyntaxError: await is only valid in async functions
 await setTimeoutAsync(3000);
 #+END_SRC
@@ -632,7 +993,7 @@ function setTimeoutAsync(timeout) {
     }, timeout);
   });
 }
-  
+
 // Waits for timeout - no error thrown
 await setTimeoutAsync(3000);
 #+END_SRC
@@ -714,14 +1075,14 @@ class Car {
     return #color in this;
   }
 }
-  
+
 class House {
   #color;
   hasColor() {
     return #color in this;
   }
 }
-  
+
 const car = new Car();
 const house = new House();
 console.log(car.hasColor()); // true;
@@ -778,7 +1139,7 @@ console.log(str.at(-2)); // t
 const typedArray = new Uint8Array([16, 32, 48, 64]);
 
 console.log(typedArray.at(-1)); // 64
-console.log(typedArray.at(-2)); // 48  
+console.log(typedArray.at(-2)); // 48
 #+END_SRC
 
 ** RegExp Match Indices
@@ -879,7 +1240,7 @@ obj.age = 2;
 obj.hasOwnProperty = () => false;
 
 console.log(Object.prototype.hasOwnProperty.call(obj, 'color')); // true
-console.log(Object.prototype.hasOwnProperty.call(obj, 'name')); // false  
+console.log(Object.prototype.hasOwnProperty.call(obj, 'name')); // false
 #+END_SRC
 
 This isn’t very convenient. We can write a reusable function to avoid
@@ -911,7 +1272,7 @@ obj.age = 2;
 obj.hasOwnProperty = () => false;
 
 console.log(Object.hasOwn(obj, 'color')); // true
-console.log(Object.hasOwn(obj, 'name')); // false  
+console.log(Object.hasOwn(obj, 'name')); // false
 #+END_SRC
 
 ** Error Cause
@@ -964,7 +1325,7 @@ const found = letters.find((item) => item.value === 'y');
 const foundIndex = letters.findIndex((item) => item.value === 'y');
 
 console.log(found); // { value: 'y' }
-console.log(foundIndex); // 3  
+console.log(foundIndex); // 3
 #+END_SRC
 
 This works, but as the target object is closer to the tail of the
@@ -985,7 +1346,7 @@ const found = letters.findLast((item) => item.value === 'y');
 const foundIndex = letters.findLastIndex((item) => item.value === 'y');
 
 console.log(found); // { value: 'y' }
-console.log(foundIndex); // 3  
+console.log(foundIndex); // 3
 #+END_SRC
 
 Another use case might require that we specifically search the array
@@ -1002,7 +1363,7 @@ const lastEven = nums.find((value) => value % 2 === 0);
 
 const lastEvenIndex = nums.findIndex((value) => value % 2 === 0);
 console.log(lastEven); // 14
-console.log(lastEvenIndex); // 1  
+console.log(lastEvenIndex); // 1
 #+END_SRC
 
 We could call the reverse() method on the array to reverse the order
@@ -1036,7 +1397,7 @@ const lastEvenIndex = reversed.length - 1 - reversedIndex;
 
 console.log(lastEven); // 10
 console.log(reversedIndex); // 1
-console.log(lastEvenIndex); // 4  
+console.log(lastEvenIndex); // 4
 #+END_SRC
 
 It’s in cases like where the findLast() and findLastIndex() methods
@@ -1050,10 +1411,9 @@ const lastEven = nums.findLast((num) => num % 2 === 0);
 const lastEvenIndex = nums.findLastIndex((num) => num % 2 === 0);
 
 console.log(lastEven); // 10
-console.log(lastEvenIndex); // 4  
+console.log(lastEvenIndex); // 4
 #+END_SRC
 
 ** Source
 This topic came from:
 [[https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497]]
-
