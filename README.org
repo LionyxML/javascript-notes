@@ -1,7 +1,12 @@
 #+TITLE: JavaScript Notes
 #+AUTHOR: Rahul M. Juliato
-#+OPTIONS: toc:nil
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
+
+* What is: Function Composition
+... 
+** Source:
+[[https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0]]
 * What is: Difference Between Class & Prototypal Inheritance
 ** Class Inheritance
 A Class is like a blueprint - a description of the object to be
@@ -15,7 +20,7 @@ languages like Java don't technically exist in Javascript. Constructor
 functions are used, instead. The ES6 **class** keyword desugars to a
 constructor function:
 
-#+BEGIN_SRC js
+#+BEGIN_SRC js :exports both
   class Foo {};
   console.log(typeof Foo);
 #+END_SRC
@@ -79,7 +84,7 @@ Reusable Object Oriented Software"
 *** Before the three
 Before we dive into the other kinds of inheritance, let's take a
 closer look at what I mean by class inheritance:
-#+BEGIN_SRC js
+#+BEGIN_SRC js :exports both :exports both
   // Class Inheritance Example
   // NOT RECOMMENDED. Use object composition, instead.
    class GuitarAmp {
@@ -133,7 +138,7 @@ Eventually, the new shared base class strategy breaks down, too.
 There’s a better way. You can inherit just the stuff you really need
 using object composition:
 
-#+BEGIN_SRC js
+#+BEGIN_SRC js :exports both
   // Composition Example
 
   const distortion = { distortion: 1 };
@@ -246,7 +251,7 @@ instance after creation.
 The JS prototype chain:
 #+BEGIN_SRC artist
  +---------------------+       +----------------------+	       +---------------------+
- |       George        |       |      Prototype       +--------+ Object.prototype    |
+ |       George        |       |      Prototype       +--------+   Object.prototype  |
  | name	               +-------+  hello()             |	       | ...                 |
  | [[Prototype]]       |       |  [[Prototype]]       |	       |                     |
  |                     |       |                      |	       |                     |
@@ -308,13 +313,13 @@ With Composition
 
 Imagine you have features instead of classes:
 
-#+BEGIN_SRC js
+#+BEGIN_SRC js :exports both
   feat1, feat2, feat3, feat4
 #+END_SRC
 
 `C` needs `feat1` and `feat3`, `D` needs `feat1`, `feat2`, `feat4`:
 
-#+BEGIN_SRC js
+#+BEGIN_SRC js :exports both
   const C = compose(feat1, feat3);
   const D = compose(feat1, feat2, feat4);
 #+END_SRC
@@ -325,7 +330,7 @@ can make a customized version of `feat1` and use that, instead. You
 can still inherit the existing behaviors from `feat2` and `feat4` with
 no changes:
 
-#+BEGIN_SRC js
+#+BEGIN_SRC js :exports both
 const D = compose(custom1, feat2, feat4);  
 #+END_SRC
 
@@ -373,7 +378,7 @@ composed of subprograms that are programs themselves. It relates to those subpro
 Subprograms can be signified by methods.
 
 Example:
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports
 var identifty = (i) => { return i }
 #+END_SRC
 
@@ -385,12 +390,12 @@ var identifty = (i) => { return i }
 - There is no global reference inside our function.
 
 At the present conceive this function is used between other function calls like this:
-#+BEGIN_SRC
+#+BEGIN_SRC js
   sum(4,5) + identity(1)
 #+END_SRC
 
 By means of our Referential Transparency definition we may change the above statement into this:
-#+BEGIN_SRC
+#+BEGIN_SRC js
   sum(4,5) + 1
 #+END_SRC
 
@@ -433,7 +438,7 @@ evaluation must have no side effects. An expression that is not
 referentially transparent is called referentially opaque.`
 
 Examples of both:
-#+BEGIN_SRC js
+#+BEGIN_SRC js :exports both
   var g = 0;
 
   function rt (x) {
@@ -509,7 +514,7 @@ function. You can’t get at the data from an outside scope except
 through the object’s privileged methods. In JavaScript, any exposed
 method defined within the closure scope is privileged. For example:
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const getSecret = (secret) => {
   return {
     get: () => secret
@@ -546,7 +551,7 @@ influenced by their internal state, e.g.:
 
 `const secret = msg => () => msg;`
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 // Secret - creates closures with secret messages.
 // https://gist.github.com/ericelliott/f6a87bc41de31562d0f9
 // https://jsbin.com/hitusu/edit?html,js,output
@@ -588,7 +593,7 @@ parameters. You can write a generic function that will partially apply
 arguments to the target function. It will have the following
 signature:
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
   partialApply(targetFunction: Function, ...fixedArgs: Any[]) =>
   functionWithFewerParams(...remainingArgs: Any[])
 #+END_SRC
@@ -598,7 +603,7 @@ by arguments we want to partially apply to the function, and returns a
 function that will take the remaining arguments
 
 An example will help. Say you have a function that adds two numbers:
-#+BEGIN_SRC
+#+BEGIN_SRC js
 const add = (a, b) => a + b;
 #+END_SRC
 
@@ -606,7 +611,7 @@ Now you want a function that adds 10 to any number. We'll call it
 `add10()`. The result of `add10(5)` should be `15`. Our
 `partialApply()` function can make that happen:
 
-#+BEGIN_SRC
+#+BEGIN_SRC js
 const add10 = partialApply(add, 10);
 add10(5);
 #+END_SRC
@@ -616,7 +621,7 @@ remembered inside the `add10()` closure scope.
 
 Let's look at a possible `partialApply()` implementation:
 
-#+BEGIN_SRC
+#+BEGIN_SRC js
 // Generic Partial Application Function
 // https://jsbin.com/biyupu/edit?html,js,output
 // https://gist.github.com/ericelliott/f0a8fd662111ea2f569e
@@ -673,14 +678,14 @@ If a function where:
 - Produces no side effects
 
 If I have a function like:
-#+BEGIN_SRC
+#+BEGIN_SRC js
 function double(number) {
     return 2 * number;
 }
 #+END_SRC
 
 I can say that these are both "the same"
-#+BEGIN_SRC
+#+BEGIN_SRC js
 console.log(double(5));
 console.log(10);        // They produces the same result
 #+END_SRC
@@ -734,7 +739,7 @@ doesn't matter how many times we call it
 
 But we can't say the same for `Math.random()` for example.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 Math.random();
 // 0.8335683328172347
 
@@ -748,7 +753,7 @@ Math.random();
 Even tough we didn't pass any arguments into any of the function
 calls, they produced different output. This function is not pure.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const time = () => new Date().toLocaleTimeString();
 
 time(); // '8:45:51 AM'
@@ -757,7 +762,7 @@ time(); // '8:45:51 AM'
 This is also not pure, even thought it repeats its output one time each day.
 
 Now an example of pure function:
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const highpass = (cutoff, value) => value >= cutoff;
 
 highpass(5, 5); // => true  Always the same result given the same inputs
@@ -787,7 +792,7 @@ functions must not mutate external state.
 
 Consider this mutating, impure `addToCart()` function:
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 // impure addToCart mutates existing cart
 const addToCart = (cart, item, quantity) => {
   cart.items.push({
@@ -833,7 +838,7 @@ order. Refactoring the code could result in bugs popping up and
 unhappy customers.
 
 Consider this version:
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 // Pure addToCart() returns a new cart
 // It does not mutate the original.
 const addToCart = (cart, item, quantity) => {
@@ -899,7 +904,7 @@ This topic is based on:
 ** Class Field Declarations
 
 Before ES13 we could not declare class fields outside the constructor:
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Car {
   constructor() {
     this.color = 'blue';
@@ -912,7 +917,7 @@ console.log(car.age); // 2
 #+END_SRC
 
 ES13 removes this limitation:
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Car {
   color = 'blue';
   age = 2;
@@ -925,7 +930,7 @@ console.log(car.age); // 2
 ** Private Methods and Fields
 Members were usually prefixed with an _ to indicate it should be private.
 But could still be accessed from outside.
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Person {
   _firstName = 'Joseph';
   _lastName = 'Stevens';
@@ -949,7 +954,7 @@ console.log(person.name); // Robert Becker
 #+END_SRC
 
 Now we use # to add private fields to our classes
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Person {
   #firstName = 'Joseph';
   #lastName = 'Stevens';
@@ -971,7 +976,7 @@ console.log(person.#lastName);
 ** await Operator at Top level
 Previously we could only use await with async function.
 We could not use this in the global scope.
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
   function setTimeoutAsync(timeout) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -985,7 +990,7 @@ await setTimeoutAsync(3000);
 #+END_SRC
 
 Now it is possible:
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 function setTimeoutAsync(timeout) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -1004,7 +1009,7 @@ class in ES13. Static methods can access other private/public static
 members in the class using the this keyword, and instance methods can
 access them using this.constructor.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Person {
   static #count = 0;
   static getCount() {
@@ -1035,7 +1040,7 @@ field initializers, in the order they are declared. We can use the
 super property in a static block to access properties of the super
 class.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Vehicle {
   static defaultColor = 'blue';
 }
@@ -1055,7 +1060,7 @@ console.log(Car.colors); // [ 'blue', 'red', 'green' ]
 
 ** Ergonomic Brand Checks for Private Fields
 We can use this new feature to check if an object has a particular private field in it, using the in operator.
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Car {
   #color;
   hasColor() {
@@ -1068,7 +1073,7 @@ console.log(car.hasColor()); // true;
 #+END_SRC
 
 The in operator can correctly distinguish private fields with the same names from different classes:
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Car {
   #color;
   hasColor() {
@@ -1096,7 +1101,7 @@ We typically use square brackets ([]) in JavaScript to access the Nth
 element of an array, which is usually a simple process. We just access
 the N - 1 property of the array.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const arr = ['a', 'b', 'c', 'd'];
 console.log(arr[1]); // b
 #+END_SRC
@@ -1104,7 +1109,7 @@ console.log(arr[1]); // b
 However, we have to use an index of arr.length - N if we want to
 access the Nth item from the end of the array with square brackets.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const arr = ['a', 'b', 'c', 'd'];
 
 // 1st element from the end
@@ -1118,7 +1123,7 @@ The new at() method lets us do this more concisely and
 expressively. To access the Nth element from the end of the array, we
 simply pass a negative value of -N to at().
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const arr = ['a', 'b', 'c', 'd'];
 
 // 1st element from the end
@@ -1130,7 +1135,7 @@ console.log(arr.at(-2)); // c
 
 Apart from arrays, strings and TypedArray objects also now have at() methods.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const str = 'Coding Beauty';
 
 console.log(str.at(-1)); // y
@@ -1148,7 +1153,7 @@ starting and ending indices of the matches of a RegExp object in a
 given string.  Previously, we could only get the starting index of a
 regex match in a string.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const str = 'sun and moon';
 const regex = /and/;
 const matchObj = regex.exec(str);
@@ -1162,7 +1167,7 @@ match starts and ends.  With the d flag set, the object returned will
 have an indices property that contains the starting and ending
 indices.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const str = 'sun and moon';
 const regex = /and/d;
 const matchObj = regex.exec(str);
@@ -1182,7 +1187,7 @@ console.log(matchObj);
 In JavaScript, we can use the Object.prototype.hasOwnProperty() method
 to check if an object has a given property.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Car {
   color = 'green';
   age = 2;
@@ -1200,7 +1205,7 @@ which could have completely different behavior from
 
 Object.prototype.hasOwnProperty().
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 class Car {
   color = 'green';
   age = 2;
@@ -1221,7 +1226,7 @@ Another issue is that for objects created with a null prototype (using
 Object.create(null)), trying to call this method on them will cause an
 error.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const obj = Object.create(null);
 obj.color = 'green';
 obj.age = 2;
@@ -1233,7 +1238,7 @@ console.log(obj.hasOwnProperty('color'));
 One way to solve these issues is to use to call the call() method on
 the Object.prototype.hasOwnProperty Function property, like this:
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const obj = Object.create(null);
 obj.color = 'green';
 obj.age = 2;
@@ -1246,7 +1251,7 @@ console.log(Object.prototype.hasOwnProperty.call(obj, 'name')); // false
 This isn’t very convenient. We can write a reusable function to avoid
 repeating ourselves:
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 function objHasOwnProp(obj, propertyKey) {
   return Object.prototype.hasOwnProperty.call(obj, propertyKey);
 }
@@ -1265,7 +1270,7 @@ Object.hasOwn() method. Like our reusable function, it takes an object
 and property as arguments and returns true if the specified property
 is a direct property of the object. Otherwise, it returns false.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const obj = Object.create(null);
 obj.color = 'green';
 obj.age = 2;
@@ -1283,7 +1288,7 @@ diagnosis of unexpected behavior. We can specify the cause of an error
 by setting a cause property on an object passed as the second argument
 to the Error() constructor.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js
 function userAction() {
   try {
     apiCallThatCanThrow();
@@ -1312,7 +1317,7 @@ might achieve better performance. For example, here we’re trying to
 get the item in the array with the value prop equal to y. With find()
 and findIndex():
 
-#+BEGIN_SRC
+#+BEGIN_SRC js
 const letters = [
   { value: 'v' },
   { value: 'w' },
@@ -1333,7 +1338,7 @@ array, we might be able to make this program run faster if we use the
 findLast() and findLastIndex() methods to search the array from the
 end.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js :exports both
 const letters = [
   { value: 'v' },
   { value: 'w' },
@@ -1354,7 +1359,7 @@ from the end to get the correct item. For example, if we want to find
 the last even number in a list of numbers, find() and findIndex()
 would produce a wrong result:
 
-#+BEGIN_SRC
+#+BEGIN_SRC js 
 const nums = [7, 14, 3, 8, 10, 9];
 // gives 14, instead of 10
 
@@ -1378,7 +1383,7 @@ reversing the elements would also mean changing the indexes they had
 in the original array. To get the original index, we would need to
 perform an additional calculation, which means writing more code.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js
 const nums = [7, 14, 3, 8, 10, 9];
 
 // Copying the entire array with the spread syntax before
@@ -1403,7 +1408,7 @@ console.log(lastEvenIndex); // 4
 It’s in cases like where the findLast() and findLastIndex() methods
 come in handy.
 
-#+BEGIN_SRC
+#+BEGIN_SRC js
 const nums = [7, 14, 3, 8, 10, 9];
 
 const lastEven = nums.findLast((num) => num % 2 === 0);

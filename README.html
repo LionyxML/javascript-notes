@@ -1,0 +1,2073 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-07-31 Sun 21:23 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JavaScript Notes</title>
+<meta name="author" content="Rahul M. Juliato" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">JavaScript Notes</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org3a9a36b">1. What is: Function Composition</a>
+<ul>
+<li><a href="#org8185149">1.1. Source:</a></li>
+</ul>
+</li>
+<li><a href="#org769d9b9">2. What is: Difference Between Class &amp; Prototypal Inheritance</a>
+<ul>
+<li><a href="#orgf3f5658">2.1. Class Inheritance</a></li>
+<li><a href="#org0fe2709">2.2. Prototypal Inheritance</a></li>
+<li><a href="#org47d1432">2.3. Why does this Matter?</a></li>
+<li><a href="#orgac88611">2.4. Three Different Kinds of Prototypal Inheritance</a>
+<ul>
+<li><a href="#org451dbff">2.4.1. Before the three</a></li>
+<li><a href="#org1b63123">2.4.2. Concatenative inheritance</a></li>
+<li><a href="#org92e79d1">2.4.3. Prototype delegation</a></li>
+<li><a href="#orgb5ef274">2.4.4. Functional inheritance</a></li>
+</ul>
+</li>
+<li><a href="#org30bb6c4">2.5. Why Composition is Immune to the Fragile Base Class Problem</a></li>
+<li><a href="#org1c79fc8">2.6. You think you know Prototypes, but&#x2026;</a></li>
+<li><a href="#orgf0cf82e">2.7. Source</a></li>
+</ul>
+</li>
+<li><a href="#org489dfed">3. Referential Transparency / Opacity in JS</a></li>
+<li><a href="#orgb421283">4. What is: Closure</a>
+<ul>
+<li><a href="#orge7541ff">4.1. What is it?</a></li>
+<li><a href="#orgcd30518">4.2. Using Closures (Examples)</a>
+<ul>
+<li><a href="#org99ae0dd">4.2.1. Application:</a></li>
+<li><a href="#orgb838a18">4.2.2. Partial Application:</a></li>
+</ul>
+</li>
+<li><a href="#org676bd5c">4.3. Source:</a></li>
+</ul>
+</li>
+<li><a href="#org51cae98">5. What is: Pure Functions</a>
+<ul>
+<li><a href="#orgdb1d0b5">5.1. General Definition</a></li>
+<li><a href="#org9a43b89">5.2. Functions as a whole</a></li>
+<li><a href="#org2aef1ab">5.3. Back to definition</a></li>
+<li><a href="#orgea7f347">5.4. Recommendation</a></li>
+<li><a href="#org152f57e">5.5. The most important design principle (KISS)</a></li>
+<li><a href="#org1ca59ee">5.6. Problem with Shared State</a></li>
+<li><a href="#orgf89be44">5.7. Given the same Input, Always Returns the Same Output</a></li>
+<li><a href="#org4019154">5.8. Pure functions Produce No SIDE EFFECTS</a>
+<ul>
+<li><a href="#orgc034aa6">5.8.1. Immutability</a></li>
+</ul>
+</li>
+<li><a href="#orgff5fc86">5.9. Source</a></li>
+</ul>
+</li>
+<li><a href="#org3e2fb2e">6. New features of ES13</a>
+<ul>
+<li><a href="#org142b194">6.1. Class Field Declarations</a></li>
+<li><a href="#org4ff6ad4">6.2. Private Methods and Fields</a></li>
+<li><a href="#org3aa9f80">6.3. await Operator at Top level</a></li>
+<li><a href="#orgf13af95">6.4. Static Class Fields and Static Private Methods</a></li>
+<li><a href="#org713c60c">6.5. Class static Block</a></li>
+<li><a href="#org88c8c61">6.6. Ergonomic Brand Checks for Private Fields</a></li>
+<li><a href="#orgd812ecd">6.7. at() Method for Indexing</a></li>
+<li><a href="#org1bf352f">6.8. RegExp Match Indices</a></li>
+<li><a href="#org661a981">6.9. Object.hasOwn() Method</a></li>
+<li><a href="#org3c55b12">6.10. Error Cause</a></li>
+<li><a href="#org1be8089">6.11. Array Find from Last</a></li>
+<li><a href="#orgaa3e31a">6.12. Source</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org3a9a36b" class="outline-2">
+<h2 id="org3a9a36b"><span class="section-number-2">1.</span> What is: Function Composition</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+&#x2026; 
+</p>
+</div>
+<div id="outline-container-org8185149" class="outline-3">
+<h3 id="org8185149"><span class="section-number-3">1.1.</span> Source:</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0</a>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org769d9b9" class="outline-2">
+<h2 id="org769d9b9"><span class="section-number-2">2.</span> What is: Difference Between Class &amp; Prototypal Inheritance</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgf3f5658" class="outline-3">
+<h3 id="orgf3f5658"><span class="section-number-3">2.1.</span> Class Inheritance</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+A Class is like a blueprint - a description of the object to be
+created. Classes inherit from classes and create subclass
+relationships: hierarchical class taxonomies.
+</p>
+
+<p>
+Instances are typically instantiated via constructor functions with
+the <b><b>new</b></b> keyword. Class inheritance may or may not use the
+<b><b>class</b></b> keyword from ES6. Classes as you may know them from
+languages like Java don't technically exist in Javascript. Constructor
+functions are used, instead. The ES6 <b><b>class</b></b> keyword desugars to a
+constructor function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">class Foo {};
+console.log(typeof Foo);
+</pre>
+</div>
+
+<pre class="example">
+function
+undefined
+</pre>
+
+
+<p>
+In JS, class inheritance is implemented on top of prototypal
+inheritance, but that does not mean that it does the same thing:
+</p>
+
+<p>
+JS class inheritance uses the prototype chain o wire the child
+`Constructor.prototype` to the parent `Constructor.prototype` for
+delegation.  Usually, the `super()` constructor is also called. Those
+steps form <b><b>single-ancestor parent/child hierarchies</b></b> and <b><b>create
+the tightest coupling available in OO design</b></b>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0fe2709" class="outline-3">
+<h3 id="org0fe2709"><span class="section-number-3">2.2.</span> Prototypal Inheritance</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+A prototype is a working object instance. Objects inherit directly
+from other objects.
+</p>
+
+<p>
+Instances may be composed from many different source objects, allowing
+for easy selective inheritance and flat <b><b>Prototype</b></b> delegation
+hierarchy. In other words, class taxonomies are not an automatic
+side-effect of prototypal OO: a critical distinction.
+</p>
+
+<p>
+Instances are typically instantiated via factory functions, object
+literals, or `Object.create()`.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org47d1432" class="outline-3">
+<h3 id="org47d1432"><span class="section-number-3">2.3.</span> Why does this Matter?</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Inheritance is fundamentally a code reuse mechanism: A way for
+different kinds of objects to share code. The way that you share code
+matters because if you get it wrong, it can create a lot of problems, specifically:
+</p>
+
+<p>
+<b><b>Class inheritance creates parent/child objects taxonomies as side-effect</b></b>
+</p>
+
+<p>
+Those are virtually impossible to get right for all new use cases, and
+widespread use of a base class leads to the <b><b>fragile base class
+problem</b></b>, which makes them difficult to fix when you get them wrong.
+In fact, class inheritance causes many well known problems in OO
+design:
+</p>
+
+<ul class="org-ul">
+<li>The tight coupling problem (class inheritance is the tightest
+coupling avaiable in oo design), which leads to&#x2026;</li>
+<li>The fragile base class problem</li>
+<li>Inflexible hierarchy problem (eventually, all evolving hierarchies
+are wrong for new uses)</li>
+<li>The duplication by necessity problem (due to inflexible hierarchies,
+new use cases are often shoe-horned in by duplicating, rather than
+adapting existing code)</li>
+<li>The Gorilla/banana problem (What you wanted was a banana, but what
+you got was a gorilla holding the banana, and the entire jungle)</li>
+</ul>
+
+<p>
+The solution to all of these problems:
+</p>
+
+<p>
+<b>* Favor object composition over class inheritance. *</b>
+</p>
+
+<p>
+~ The Gang of Four, "Design Patterns: Elements of
+Reusable Object Oriented Software"
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgac88611" class="outline-3">
+<h3 id="orgac88611"><span class="section-number-3">2.4.</span> Three Different Kinds of Prototypal Inheritance</h3>
+<div class="outline-text-3" id="text-2-4">
+</div>
+<div id="outline-container-org451dbff" class="outline-4">
+<h4 id="org451dbff"><span class="section-number-4">2.4.1.</span> Before the three</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<p>
+Before we dive into the other kinds of inheritance, let's take a
+closer look at what I mean by class inheritance:
+</p>
+<div class="org-src-container">
+<pre class="src src-js"> // Class Inheritance Example
+ // NOT RECOMMENDED. Use object composition, instead.
+  class GuitarAmp {
+   constructor ({ cabinet = "spruce", distortion = "1", volume = "0" } = {}) {
+     Object.assign(this, {
+	 cabinet, distortion, volume
+       });
+     }
+   }
+
+ class BassAmp extends GuitarAmp {
+   constructor (options = {}) {
+     super(options);
+     this.lowCut = options.lowCut;
+     }
+   }
+
+ class ChannelStrip extends BassAmp {
+   constructor (options = {}) {
+     super(options);
+     this.inputLevel = options.inputLevel;
+     }
+   }
+
+ const myAmp = new BassAmp();
+ const actualAmp = Object.keys(myAmp);
+ const expectedAmp = ["cabinet", "distortion", "volume", "lowCut"];
+
+ console.log("1.", actualAmp, expectedAmp, " instance should inherit props from GuitarAmp and BassAmp");
+
+ const myStrip = new ChannelStrip();
+ const actualStrip = Object.keys(myStrip);
+ const expectedStrip = ["cabinet", "distortion", "volume", "lowCut", "inputLevel"];
+
+console.log("2.", actualStrip, expectedStrip, " instance should inherit props from GuitarAmp, BassAmp and ChannelStrip");
+</pre>
+</div>
+
+<pre class="example">
+1. [ 'cabinet', 'distortion', 'volume', 'lowCut' ] [ 'cabinet', 'distortion', 'volume', 'lowCut' ]  instance should inherit props from GuitarAmp and BassAmp
+2. [ 'cabinet', 'distortion', 'volume', 'lowCut', 'inputLevel' ] [ 'cabinet', 'distortion', 'volume', 'lowCut', 'inputLevel' ]  instance should inherit props from GuitarAmp, BassAmp and ChannelStrip
+undefined
+</pre>
+
+
+<p>
+`BassAmp` inherits from `GuitarAmp`, and `ChannelStrip` inherits from
+`BassAmp` &amp; `GuitarAmp`. This is an example of how OO design goes
+wrong. A channel strip isn’t actually a type of guitar amp, and
+doesn’t actually need a cabinet at all. A better option would be to
+create a new base class that both the amps and the channel strip
+inherits from, but even that has limitations.
+</p>
+
+<p>
+Eventually, the new shared base class strategy breaks down, too.
+</p>
+
+<p>
+There’s a better way. You can inherit just the stuff you really need
+using object composition:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">// Composition Example
+
+const distortion = { distortion: 1 };
+const volume = { volume: 1 };
+const cabinet = { cabinet: "maple" };
+const lowCut = { lowCut: 1 };
+const inputLevel = { inputLevel: 1 };
+
+const GuitarAmp = (options) =&gt; {
+  return Object.assign({}, distortion, volume, cabinet, options);
+};
+
+const BassAmp = (options) =&gt; {
+  return Object.assign({}, lowCut, volume, cabinet, options);
+};
+
+const ChannelStrip = (options) =&gt; {
+  return Object.assign({}, inputLevel, lowCut, volume, options);
+};
+
+
+  const msgGuitarAmp = "should have distortion, volume, and cabinet";
+  const levelGuitarAmp = 2;
+  const cabinetGuitarAmp = "vintage";
+
+  const actualGuitarAmp = GuitarAmp({
+    distortion: levelGuitarAmp,
+    volume: levelGuitarAmp,
+    cabinet: cabinetGuitarAmp
+  });
+  const expectedGuitarAmp = {
+    distortion: levelGuitarAmp,
+    volume: levelGuitarAmp,
+    cabinet: cabinetGuitarAmp,
+  };
+
+  console.log("1.", actualGuitarAmp, expectedGuitarAmp, msgGuitarAmp);
+
+  const msgBassAmp = "should have volume, lowCut, and cabinet";
+  const levelBassAmp = 2;
+  const cabinetBassAmp = "vintage";
+
+  const actualBassAmp = BassAmp({
+    lowCut: levelBassAmp,
+    volume: levelBassAmp,
+    cabinet: cabinetBassAmp
+  });
+  const expectedBassAmp = {
+    lowCut: levelBassAmp,
+    volume: levelBassAmp,
+    cabinet: cabinetBassAmp,
+  };
+
+  console.log("2.", actualBassAmp, expectedBassAmp, msgBassAmp);
+
+const msgChannel = "should have inputLevel, lowCut, and volume";
+const levelChannel = 2;
+
+const actualChannel = ChannelStrip({
+    inputLevel: levelChannel,
+    lowCut: levelChannel,
+    volume: levelChannel,
+  });
+  const expectedChannel = {
+    inputLevel: levelChannel,
+    lowCut: levelChannel,
+    volume: levelChannel,
+  };
+
+console.log("2.", actualChannel, expectedChannel, msgChannel);
+</pre>
+</div>
+
+<pre class="example">
+1. { distortion: 2, volume: 2, cabinet: 'vintage' } { distortion: 2, volume: 2, cabinet: 'vintage' } should have distortion, volume, and cabinet
+2. { lowCut: 2, volume: 2, cabinet: 'vintage' } { lowCut: 2, volume: 2, cabinet: 'vintage' } should have volume, lowCut, and cabinet
+2. { inputLevel: 2, lowCut: 2, volume: 2 } { inputLevel: 2, lowCut: 2, volume: 2 } should have inputLevel, lowCut, and volume
+undefined
+</pre>
+
+
+<p>
+If you look carefully, you might see that we're being much more
+specific about which objects get which properties because with
+composition, we can. It wasn't really an option with class
+inheritance. When you inherit from a class, you get everything, even
+if you don’t want it.
+</p>
+
+<p>
+At this point, you may be thinking to yourself, "that's nice, but where are the prototypes?"
+</p>
+
+<p>
+To understand that, you have to understand that there are three different kinds of prototypal OO.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1b63123" class="outline-4">
+<h4 id="org1b63123"><span class="section-number-4">2.4.2.</span> Concatenative inheritance</h4>
+<div class="outline-text-4" id="text-2-4-2">
+<p>
+The process of inheriting features directly from one object to another
+by copying the source objects properties. In JavaScript, source
+prototypes are commonly referred to as mixins. Since ES6, this feature
+has a convenience utility in JavaScript called
+`Object.assign()`. Prior to ES6, this was commonly done with
+Underscore/Lodash's `.extend()` jQuery's `$.extend()`, and so on… The
+composition example above uses concatenative inheritance.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org92e79d1" class="outline-4">
+<h4 id="org92e79d1"><span class="section-number-4">2.4.3.</span> Prototype delegation</h4>
+<div class="outline-text-4" id="text-2-4-3">
+<p>
+In JavaScript, an object may have a link to a prototype for
+delegation. If a property is not found on the object, the lookup is
+delegated to the delegate prototype, which may have a link to its own
+delegate prototype, and so on up the chain until you arrive at
+`Object.prototype`, which is the root delegate. This is the prototype
+that gets hooked up when you attach to a `Constructor.prototype` and
+instantiate with `new`. You can also use `Object.create()` for this
+purpose, and even mix this technique with concatenation in order to
+flatten multiple prototypes to a single delegate, or extend the object
+instance after creation.
+</p>
+
+<p>
+The JS prototype chain:
+</p>
+<div class="org-src-container">
+<pre class="src src-artist">+---------------------+       +----------------------+	       +---------------------+
+|       George        |       |      Prototype       +--------+   Object.prototype  |
+| name	               +-------+  hello()             |	       | ...                 |
+| [[Prototype]]       |       |  [[Prototype]]       |	       |                     |
+|                     |       |                      |	       |                     |
++---------------------+       +----------------------+	       +---------------------+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb5ef274" class="outline-4">
+<h4 id="orgb5ef274"><span class="section-number-4">2.4.4.</span> Functional inheritance</h4>
+<div class="outline-text-4" id="text-2-4-4">
+<p>
+In JavaScript, any function can create an object. When that function
+is not a constructor (or `class`), it's called a factory
+function. Functional inheritance works by producing an object from a
+factory, and extending the produced object by assigning properties to
+it directly (using concatenative inheritance). Douglas Crockford
+coined the term, but functional inheritance has been in common use in
+JavaScript for a long time.
+</p>
+
+<p>
+As you're probably starting to realize, concatenative inheritance is
+the secret sauce that enables object composition in JavaScript, which
+makes both prototype delegation and functional inheritance a lot more
+interesting.
+</p>
+
+<p>
+When most people think of prototypal OO in JavaScript, they think of
+prototype delegation. By now you should see that they’re missing out
+on a lot. Delegate prototypes aren't the great alternative to class
+inheritance — object composition is.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org30bb6c4" class="outline-3">
+<h3 id="org30bb6c4"><span class="section-number-3">2.5.</span> Why Composition is Immune to the Fragile Base Class Problem</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+To understand the fragile base class problem and why it doesn’t apply
+to composition, first you have to understand how it happens:
+</p>
+
+<p>
+`A` is the base class
+</p>
+
+<p>
+`B` inherits from `A`
+</p>
+
+<p>
+`C` inherits from `B`
+</p>
+
+<p>
+`D` inherits from `B`
+</p>
+
+<p>
+`C` calls `super`, which runs code in `B`. `B` calls `super` which runs code in `A`.
+</p>
+
+<p>
+`A` and `B` contain unrelated features needed by both `C` &amp; `D`. `D`
+is a new use case, and needs slightly different behavior in `A`'s init
+code than `C` needs. So the newbie dev goes and tweaks `A`'s init
+code. `C` breaks because it depends on the existing behavior, and `D`
+starts working.
+</p>
+
+<p>
+What we have here are features spread out between `A` and `B` that `C`
+and `D` need to use in various ways. `C` and `D` don't use every
+feature of `A` and `B`… they just want to inherit some stuff that's
+already defined in `A` and `B`. But by inheriting and calling `super`,
+you don't get to be selective about what you inherit. You inherit
+everything:
+</p>
+
+<p>
+ ** &#x2026;the problem with object-oriented languages is they’ve got all this
+implicit environment that they carry around with them. You wanted a
+banana but what you got was a gorilla holding the banana and the
+entire jungle.” ~ Joe Armstrong — “Coders at Work **
+</p>
+
+<p>
+With Composition
+</p>
+
+<p>
+Imagine you have features instead of classes:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">feat1, feat2, feat3, feat4
+</pre>
+</div>
+
+<p>
+`C` needs `feat1` and `feat3`, `D` needs `feat1`, `feat2`, `feat4`:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const C = compose(feat1, feat3);
+const D = compose(feat1, feat2, feat4);
+</pre>
+</div>
+
+<p>
+Now, imagine you discover that `D` needs slightly different behavior
+from `feat1`. It doesn’t actually need to change `feat1`, instead, you
+can make a customized version of `feat1` and use that, instead. You
+can still inherit the existing behaviors from `feat2` and `feat4` with
+no changes:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const D = compose(custom1, feat2, feat4);  
+</pre>
+</div>
+
+<p>
+And `C` remains unaffected.
+</p>
+
+<p>
+The reason this is not possible with class inheritance is because when
+you use class inheritance, you buy into the whole existing class
+taxonomy.
+</p>
+
+<p>
+If you want to adapt a little for a new use-case, you either end up
+duplicating parts of the existing taxonomy (the duplication by
+necessity problem), or you refactor everything that depends on the
+existing taxonomy to adapt the taxonomy to the new use case due to the
+fragile base class problem.
+</p>
+
+<p>
+Composition is immune to both.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1c79fc8" class="outline-3">
+<h3 id="org1c79fc8"><span class="section-number-3">2.6.</span> You think you know Prototypes, but&#x2026;</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+If you were taught to build classes or constructor functions and
+inherit from those, what you were taught was not prototypal
+inheritance. You were taught how to mimic class inheritance using
+prototypes. 
+</p>
+
+<p>
+In JavaScript, class inheritance piggybacks on top of the very rich,
+flexible prototypal inheritance features built into the language a
+long time ago, but when you use class inheritance — even the ES6+
+`class` inheritance built on top of prototypes, you're not using the
+full power &amp; flexibility of prototypal OO. In fact, you're painting
+yourself into corners and opting into all of the class inheritance
+problems.
+</p>
+
+<p>
+Using class inheritance in JavaScript is like driving your new Tesla
+Model S to the dealer and trading it in for a rusted out 1973 Ford
+Pinto.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf0cf82e" class="outline-3">
+<h3 id="orgf0cf82e"><span class="section-number-3">2.7.</span> Source</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+Almost all by this great article:
+<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9">https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9</a>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org489dfed" class="outline-2">
+<h2 id="org489dfed"><span class="section-number-2">3.</span> Referential Transparency / Opacity in JS</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Referential transparency is used in many domains, for example:
+mathematics, logic, linguistics, philosophy and programming. It has
+quite changed meanings in each of these domains.
+</p>
+
+<p>
+Referential transparency in programming relates do programs. By way of programs are
+composed of subprograms that are programs themselves. It relates to those subprograms, also.
+Subprograms can be signified by methods.
+</p>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">var identifty = (i) =&gt; { return i }
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>We have defined a simple function named identity in the above code snippet.</li>
+<li>This function return whatsoever we're passing as its input.</li>
+<li>That is, if we passes 10, it returns back the value 10.</li>
+<li>As the function is only acts as a mirror and identity.</li>
+<li>Our function does work only on the incoming argument `i`.</li>
+<li>There is no global reference inside our function.</li>
+</ul>
+
+<p>
+At the present conceive this function is used between other function calls like this:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">sum(4,5) + identity(1)
+</pre>
+</div>
+
+<p>
+By means of our Referential Transparency definition we may change the above statement into this:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">sum(4,5) + 1
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>At this moment this process is called a Substitution model.</li>
+<li>By way of we can directly substitute the result of the function as
+is with its value.</li>
+<li>Generally due to the function doesn’t rely on other global variables
+for its logic.</li>
+<li>This leads to equivalent code and caching.</li>
+<li>We may easily run the above function with several threads deprived
+of even the need of synchronizing.</li>
+<li>The motive for synchronizing comes from the detail that threads
+shouldn't do global data when running equivalent.</li>
+<li>Functions that follow Referential Transparency depends only on
+inputs from its argument.</li>
+<li>Therefore, threads are allowed to run without any locking mechanism.</li>
+<li>Meanwhile the function returns the same value for the given input.</li>
+<li>We may, actually cache it. For instance, see there is a function
+called factorial.</li>
+<li>Calculates the factorial of the given number.</li>
+<li>Factorial takes the input as its argument for which the factorial
+needs to be calculated.</li>
+<li>We all recognize the factorial of 5 going to be 120.</li>
+<li>What would be if the user calls the factorial of 5 a second time?</li>
+<li>We see that the result is to be 120 if the factorial function
+follows Referential transparency as before.</li>
+<li>It only be contingent on the input argument.</li>
+<li>We may cache the values of our factorial function by keeping in mind
+these characters.</li>
+<li>Thus if a factorial is called for the second time with the input as
+`5`, we can return the cached value instead of calculating once
+again.</li>
+</ul>
+
+
+<p>
+`An expression is called referentially transparent if it can be
+replaced with its corresponding value (and vice-versa) without
+changing the program's behavior.[1] This requires that the expression
+be pure – its value must be the same for the same inputs and its
+evaluation must have no side effects. An expression that is not
+referentially transparent is called referentially opaque.`
+</p>
+
+<p>
+Examples of both:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">var g = 0;
+
+function rt (x) {
+  return x + 1
+}
+
+function ro (x) {
+  g++;
+  return x + g;
+}
+
+console.log(rt(1));
+console.log(rt(1));
+console.log(rt(1));
+
+console.log(ro(1));
+console.log(ro(1));
+console.log(ro(1));
+</pre>
+</div>
+
+<pre class="example">
+2
+2
+2
+2
+3
+4
+undefined
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb421283" class="outline-2">
+<h2 id="orgb421283"><span class="section-number-2">4.</span> What is: Closure</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Closures are important because they control what is and isn't in scope
+in a particular function, along with which variables are shared between
+sibling functions in the same containing scope. Understanding how
+variables and functions relate to each other is critical to
+understanding what's going on in your code, in both functional and
+object oriented programming styles.
+</p>
+
+<pre class="example">
+Coding without understanding of Closures is like trying to
+speak English without understanding the grammar rules.
+You might be able to get your ideas across, but probably a
+bit awkaardly.
+</pre>
+
+<p>
+In JS closures are frequently used for data privacy, in event handlers
+and callback functions, and in partial applications, currying and
+other functional programming patterns.
+</p>
+</div>
+
+<div id="outline-container-orge7541ff" class="outline-3">
+<h3 id="orge7541ff"><span class="section-number-3">4.1.</span> What is it?</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Is the combination of a function bundled together (enclosed) with
+references to its surrounding sate (the <b><b>lexical environment</b></b>). In
+other words, a closure gives you access to an outer function's scope
+from a inner function. In JavaScript, closures are created every time
+a function is created, at function creation time.
+</p>
+
+<p>
+To use a Closure, define a function inside another function and expose
+it. To expose a function, return it or pass it to another function.
+</p>
+
+<p>
+The inner function will have access to the variables in the outer
+function scope, even after the outer function has returned.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcd30518" class="outline-3">
+<h3 id="orgcd30518"><span class="section-number-3">4.2.</span> Using Closures (Examples)</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Among other things, closures are commonly used to give objects data
+privacy. Data privacy is an essential property that helps us <b><b>program
+to an interface, not an implementation</b></b>. This is an important concept
+that helps us build more robust software because implementation
+details are more likely to change in breaking ways than interface
+contracts.
+</p>
+
+<p>
+In JavaScript, closures are the primary mechanism used to enable data
+privacy. When you use closures for data privacy, the enclosed
+variables are only in scope within the containing (outer)
+function. You can’t get at the data from an outside scope except
+through the object’s privileged methods. In JavaScript, any exposed
+method defined within the closure scope is privileged. For example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const getSecret = (secret) =&gt; {
+  return {
+    get: () =&gt; secret
+  };
+};
+
+test('Closure for object privacy.', assert =&gt; {
+  const msg = '.get() should have access to the closure.';
+  const expected = 1;
+  const obj = getSecret(1);
+
+  const actual = obj.get();
+
+  try {
+    assert.ok(secret, 'This throws an error.');
+  } catch (e) {
+    assert.ok(true, `The secret var is only available
+      to privileged methods.`);
+  }
+
+  assert.equal(actual, expected, msg);
+  assert.end();
+});
+</pre>
+</div>
+
+<p>
+In the example above, the `.get()` method is defined inside the scope
+of `getSecret()`, which gives it access to any variables from
+`getSecret()`, and makes it a privileged method. In this case, the
+parameter, `secret`.
+</p>
+
+<p>
+Objects are not the only way to produce data privacy. Closures can
+also be used to create stateful functions whose return values may be
+influenced by their internal state, e.g.:
+</p>
+
+<p>
+`const secret = msg =&gt; () =&gt; msg;`
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">// Secret - creates closures with secret messages.
+// https://gist.github.com/ericelliott/f6a87bc41de31562d0f9
+// https://jsbin.com/hitusu/edit?html,js,output
+
+// secret(msg: String) =&gt; getSecret() =&gt; msg: String
+const secret = (msg) =&gt; () =&gt; msg;
+
+test('secret', assert =&gt; {
+  const msg = 'secret() should return a function that returns the passed secret.';
+
+  const theSecret = 'Closures are easy.';
+  const mySecret = secret(theSecret);
+
+  const actual = mySecret();
+  const expected = theSecret;
+
+  assert.equal(actual, expected, msg);
+  assert.end();
+});
+</pre>
+</div>
+
+<p>
+In functional programming, closures are frequently used for partial
+application &amp; currying. This requires some definitions:
+</p>
+</div>
+
+<div id="outline-container-org99ae0dd" class="outline-4">
+<h4 id="org99ae0dd"><span class="section-number-4">4.2.1.</span> Application:</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+The process of applying a function to its arguments in order to
+produce a return value.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb838a18" class="outline-4">
+<h4 id="orgb838a18"><span class="section-number-4">4.2.2.</span> Partial Application:</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+The process of applying a function to some of its arguments. The
+partially applied function gets returned for later use. Partial
+application fixes (partially applies the function to) one or more
+arguments inside the returned function, and the returned function
+takes the remaining parameters as arguments in order to complete the
+function application.
+</p>
+
+<p>
+Partial application takes advantage of closure scope in order to fix
+parameters. You can write a generic function that will partially apply
+arguments to the target function. It will have the following
+signature:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">partialApply(targetFunction: Function, ...fixedArgs: Any[]) =&gt;
+functionWithFewerParams(...remainingArgs: Any[])
+</pre>
+</div>
+
+<p>
+It will take a function that takes any number of arguments, followed
+by arguments we want to partially apply to the function, and returns a
+function that will take the remaining arguments
+</p>
+
+<p>
+An example will help. Say you have a function that adds two numbers:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">const add = (a, b) =&gt; a + b;
+</pre>
+</div>
+
+<p>
+Now you want a function that adds 10 to any number. We'll call it
+`add10()`. The result of `add10(5)` should be `15`. Our
+`partialApply()` function can make that happen:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const add10 = partialApply(add, 10);
+add10(5);
+</pre>
+</div>
+
+<p>
+In this example, the argument, `10` becomes a fixed parameter
+remembered inside the `add10()` closure scope.
+</p>
+
+<p>
+Let's look at a possible `partialApply()` implementation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">// Generic Partial Application Function
+// https://jsbin.com/biyupu/edit?html,js,output
+// https://gist.github.com/ericelliott/f0a8fd662111ea2f569e
+
+// partialApply(targetFunction: Function, ...fixedArgs: Any[]) =&gt;
+//   functionWithFewerParams(...remainingArgs: Any[])
+const partialApply = (fn, ...fixedArgs) =&gt; {
+  return function (...remainingArgs) {
+    return fn.apply(this, fixedArgs.concat(remainingArgs));
+  };
+};
+
+
+test('add10', assert =&gt; {
+  const msg = 'partialApply() should partially apply functions'
+
+  const add = (a, b) =&gt; a + b;
+
+  const add10 = partialApply(add, 10);
+
+
+  const actual = add10(5);
+  const expected = 15;
+
+  assert.equal(actual, expected, msg);
+});
+</pre>
+</div>
+
+<p>
+As you can see, it simply returns a function which retains access to
+the `fixedArgs` arguments that were passed into the `partialApply()`
+function.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org676bd5c" class="outline-3">
+<h3 id="org676bd5c"><span class="section-number-3">4.3.</span> Source:</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Heavily based on:
+<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org51cae98" class="outline-2">
+<h2 id="org51cae98"><span class="section-number-2">5.</span> What is: Pure Functions</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgdb1d0b5" class="outline-3">
+<h3 id="orgdb1d0b5"><span class="section-number-3">5.1.</span> General Definition</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+Is a function where:
+</p>
+<ul class="org-ul">
+<li>Given the same input, always returns the same output</li>
+<li>Produces no side effects</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9a43b89" class="outline-3">
+<h3 id="org9a43b89"><span class="section-number-3">5.2.</span> Functions as a whole</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Is a process of taking some input, called arguments, and producing
+some output to the called return value.
+</p>
+
+<p>
+Main purposes:
+</p>
+<ul class="org-ul">
+<li>Mapping: Process output based on given inputs. Maps input values to output values</li>
+<li>Procedures: A function to perform a sequence of steps. This is style is procedural programming.</li>
+<li>I/O: In order to communicate with the system: screen, storage, logs, network.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2aef1ab" class="outline-3">
+<h3 id="org2aef1ab"><span class="section-number-3">5.3.</span> Back to definition</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+If a function where:
+</p>
+<ul class="org-ul">
+<li>Given the same input, always returns the same output</li>
+<li>Produces no side effects</li>
+</ul>
+
+<p>
+If I have a function like:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">function double(number) {
+    return 2 * number;
+}
+</pre>
+</div>
+
+<p>
+I can say that these are both "the same"
+</p>
+<div class="org-src-container">
+<pre class="src src-js">console.log(double(5));
+console.log(10);        // They produces the same result
+</pre>
+</div>
+
+<p>
+If you want <b><b>Referential Transparency</b></b> you need to use pure functions.
+</p>
+
+<p>
+A dead giveaway that a function is impure is if it makes sense to call
+it without using its return value. For pure functions, that's a nope.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgea7f347" class="outline-3">
+<h3 id="orgea7f347"><span class="section-number-3">5.4.</span> Recommendation</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+Favor pure functions: If it is practical to implement a program
+requirement using pure functions, you should use them over other
+options. They are the simplest reusable build blocks of code in a program.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org152f57e" class="outline-3">
+<h3 id="org152f57e"><span class="section-number-3">5.5.</span> The most important design principle (KISS)</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+Keep it Simple Stupid or,
+Keep it Stupid Simple
+</p>
+
+<p>
+Pure functions are completely independent of outside state, and as
+such, they are immune to entire classes of bugs that happen with a
+shared mutable state.
+</p>
+
+<p>
+This independent nature makes them great candidates for parallel
+processing across many CPUs and distribute clusters.
+</p>
+
+<p>
+They are also easier to move around, refactor, and reorganize in the
+code, making programs more flexible and adaptable to future changes.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1ca59ee" class="outline-3">
+<h3 id="org1ca59ee"><span class="section-number-3">5.6.</span> Problem with Shared State</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+In an example: if you make requests from a query text field as the user types.
+You may have times where the last request "Java" for example comes and occupies
+the UI response element, before the request for "JavaScript" was even sent.
+</p>
+
+<p>
+To fix this, you should build a manager that cancels the previous AJAX request.
+</p>
+
+<p>
+Martin Odersky (Creator of Scala) puts it:
+`non-determinism = parallel processing + mutable state`
+</p>
+
+<p>
+You should avoid it.
+</p>
+
+<p>
+Program determinism is a LOT desirable in computing. If you think JS
+is immune because it only use single thread. Remember that AJAX, API
+I/O event listeners, web workers, iframes and timeouts can introduce
+indeterminism into your program. Combine that with shared state, you
+have a recipe for bugs.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf89be44" class="outline-3">
+<h3 id="orgf89be44"><span class="section-number-3">5.7.</span> Given the same Input, Always Returns the Same Output</h3>
+<div class="outline-text-3" id="text-5-7">
+<p>
+Our `double` function will always return 10 for 5 as parameter, it
+doesn't matter how many times we call it
+</p>
+
+<p>
+But we can't say the same for `Math.random()` for example.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">Math.random();
+// 0.8335683328172347
+
+Math.random();
+// 0.8910118593581697
+
+Math.random();
+//0.3099123827043109
+</pre>
+</div>
+
+<p>
+Even tough we didn't pass any arguments into any of the function
+calls, they produced different output. This function is not pure.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const time = () =&gt; new Date().toLocaleTimeString();
+
+time(); // '8:45:51 AM'
+</pre>
+</div>
+
+<p>
+This is also not pure, even thought it repeats its output one time each day.
+</p>
+
+<p>
+Now an example of pure function:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">const highpass = (cutoff, value) =&gt; value &gt;= cutoff;
+
+highpass(5, 5); // =&gt; true  Always the same result given the same inputs
+highpass(5, 5); // =&gt; true
+highpass(5, 5); // =&gt; true
+
+highpass(5, 123); // true  Many inputs may map to the same ouputs
+highpass(5, 6);   // true
+highpass(5, 18);  // true
+highpass(5, 1);   // false
+highpass(5, 3);   // false
+highpass(5, 4);   // false
+</pre>
+</div>
+
+<p>
+A pure function must not rely on any external mutable state, because
+it would no longer be deterministic or referentially transparent.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4019154" class="outline-3">
+<h3 id="org4019154"><span class="section-number-3">5.8.</span> Pure functions Produce No SIDE EFFECTS</h3>
+<div class="outline-text-3" id="text-5-8">
+<p>
+A pure function produces no side effects, which means that it can't
+alter any external state.
+</p>
+</div>
+
+<div id="outline-container-orgc034aa6" class="outline-4">
+<h4 id="orgc034aa6"><span class="section-number-4">5.8.1.</span> Immutability</h4>
+<div class="outline-text-4" id="text-5-8-1">
+<p>
+JavaScript's object arguments are references, which means that if a
+function were to mutate a property on an object or array parameter,
+that would mutate state that is accessible outside the function. Pure
+functions must not mutate external state.
+</p>
+
+<p>
+Consider this mutating, impure `addToCart()` function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">// impure addToCart mutates existing cart
+const addToCart = (cart, item, quantity) =&gt; {
+  cart.items.push({
+    item,
+    quantity
+  });
+  return cart;
+};
+
+
+test('addToCart()', assert =&gt; {
+  const msg = 'addToCart() should add a new item to the cart.';
+  const originalCart =     {
+    items: []
+  };
+  const cart = addToCart(
+    originalCart,
+    {
+      name: "Digital SLR Camera",
+      price: '1495'
+    },
+    1
+  );
+
+  const expected = 1; // num items in cart
+  const actual = cart.items.length;
+
+  assert.equal(actual, expected, msg);
+
+  assert.deepEqual(originalCart, cart, 'mutates original cart.');
+  assert.end();
+});
+</pre>
+</div>
+
+<p>
+It works by passing a cart and item to add to the cart. The function
+then returns the same cart, with the item added to it.
+</p>
+
+<p>
+The problem is that we've just mutated some shared state. Other
+functions may be relying on that cart object state to be what it was
+before the function was called and now we have to worry about what
+impact it will have on the program logic if we change the
+order. Refactoring the code could result in bugs popping up and
+unhappy customers.
+</p>
+
+<p>
+Consider this version:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">// Pure addToCart() returns a new cart
+// It does not mutate the original.
+const addToCart = (cart, item, quantity) =&gt; {
+  const newCart = lodash.cloneDeep(cart);
+
+  newCart.items.push({
+    item,
+    quantity
+  });
+  return newCart;
+
+};
+
+
+test('addToCart()', assert =&gt; {
+  const msg = 'addToCart() should add a new item to the cart.';
+  const originalCart = {
+    items: []
+  };
+
+  // deep-freeze on npm
+  // throws an error if original is mutated
+  deepFreeze(originalCart);
+
+  const cart = addToCart(
+    originalCart,
+    {
+      name: "Digital SLR Camera",
+      price: '1495'
+    },
+    1
+  );
+
+
+  const expected = 1; // num items in cart
+  const actual = cart.items.length;
+
+  assert.equal(actual, expected, msg);
+
+  assert.notDeepEqual(originalCart, cart,
+    'should not mutate original cart.');
+  assert.end();
+});
+</pre>
+</div>
+
+<p>
+In this example, we have an array nested in an object, which is why I
+reached for a deep clone. This is more complex state than you’ll
+typically be dealing with. For most things, you can break it down into
+smaller chunks.
+</p>
+
+<p>
+For example, Redux lets you compose reducers rather
+than deal with the entire app state inside each reducer. The result is
+that you don't have to create a deep clone of the entire app state
+every time you want to update just a small part of it. Instead, you
+can use non-destructive array methods, or `Object.assign()` to update
+a small part of the app state.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgff5fc86" class="outline-3">
+<h3 id="orgff5fc86"><span class="section-number-3">5.9.</span> Source</h3>
+<div class="outline-text-3" id="text-5-9">
+<p>
+This topic is based on:
+<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3e2fb2e" class="outline-2">
+<h2 id="org3e2fb2e"><span class="section-number-2">6.</span> New features of ES13</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-org142b194" class="outline-3">
+<h3 id="org142b194"><span class="section-number-3">6.1.</span> Class Field Declarations</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Before ES13 we could not declare class fields outside the constructor:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">class Car {
+  constructor() {
+    this.color = 'blue';
+    this.age = 2;
+  }
+}
+const car = new Car();
+console.log(car.color); // blue
+console.log(car.age); // 2
+</pre>
+</div>
+
+<p>
+ES13 removes this limitation:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">class Car {
+  color = 'blue';
+  age = 2;
+}
+const car = new Car();
+console.log(car.color); // blue
+console.log(car.age); // 2
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4ff6ad4" class="outline-3">
+<h3 id="org4ff6ad4"><span class="section-number-3">6.2.</span> Private Methods and Fields</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+Members were usually prefixed with an _ to indicate it should be private.
+But could still be accessed from outside.
+</p>
+<div class="org-src-container">
+<pre class="src src-js">class Person {
+  _firstName = 'Joseph';
+  _lastName = 'Stevens';
+  get name() {
+    return `${this._firstName} ${this._lastName}`;
+  }
+}
+
+const person = new Person();
+console.log(person.name); // Joseph Stevens
+
+// Members intended to be private can still be accessed
+// from outside the class
+console.log(person._firstName); // Joseph
+console.log(person._lastName); // Stevens
+
+// They can also be modified
+person._firstName = 'Robert';
+person._lastName = 'Becker';
+console.log(person.name); // Robert Becker
+</pre>
+</div>
+
+<p>
+Now we use # to add private fields to our classes
+</p>
+<div class="org-src-container">
+<pre class="src src-js">class Person {
+  #firstName = 'Joseph';
+  #lastName = 'Stevens';
+  get name() {
+    return `${this.#firstName} ${this.#lastName}`;
+  }
+}
+
+const person = new Person();
+
+console.log(person.name);
+
+// SyntaxError: Private field '#firstName' must be
+// declared in an enclosing class
+console.log(person.#firstName);
+console.log(person.#lastName);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3aa9f80" class="outline-3">
+<h3 id="org3aa9f80"><span class="section-number-3">6.3.</span> await Operator at Top level</h3>
+<div class="outline-text-3" id="text-6-3">
+<p>
+Previously we could only use await with async function.
+We could not use this in the global scope.
+</p>
+<div class="org-src-container">
+<pre class="src src-js">  function setTimeoutAsync(timeout) {
+  return new Promise((resolve) =&gt; {
+    setTimeout(() =&gt; {
+      resolve();
+    }, timeout);
+  });
+}
+
+// SyntaxError: await is only valid in async functions
+await setTimeoutAsync(3000);
+</pre>
+</div>
+
+<p>
+Now it is possible:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">function setTimeoutAsync(timeout) {
+  return new Promise((resolve) =&gt; {
+    setTimeout(() =&gt; {
+      resolve();
+    }, timeout);
+  });
+}
+
+// Waits for timeout - no error thrown
+await setTimeoutAsync(3000);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf13af95" class="outline-3">
+<h3 id="orgf13af95"><span class="section-number-3">6.4.</span> Static Class Fields and Static Private Methods</h3>
+<div class="outline-text-3" id="text-6-4">
+<p>
+We can now declare static fields and static private methods for a
+class in ES13. Static methods can access other private/public static
+members in the class using the this keyword, and instance methods can
+access them using this.constructor.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">class Person {
+  static #count = 0;
+  static getCount() {
+    return this.#count;
+  }
+  constructor() {
+    this.constructor.#incrementCount();
+  }
+  static #incrementCount() {
+    this.#count++;
+  }
+}
+
+const person1 = new Person();
+const person2 = new Person();
+console.log(Person.getCount()); // 2
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org713c60c" class="outline-3">
+<h3 id="org713c60c"><span class="section-number-3">6.5.</span> Class static Block</h3>
+<div class="outline-text-3" id="text-6-5">
+<p>
+ES13 allows the definition of static blocks that will be executed only
+once, at the creation of the class. This is similar to static
+constructors in other languages with support for object-oriented
+programming, like C# and Java.
+</p>
+
+<p>
+A class can have any number of static {} initialization blocks in its
+class body. They will be executed, along with any interleaved static
+field initializers, in the order they are declared. We can use the
+super property in a static block to access properties of the super
+class.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">class Vehicle {
+  static defaultColor = 'blue';
+}
+
+class Car extends Vehicle {
+  static colors = [];
+  static {
+    this.colors.push(super.defaultColor, 'red');
+  }
+  static {
+    this.colors.push('green');
+  }
+}
+
+console.log(Car.colors); // [ 'blue', 'red', 'green' ]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org88c8c61" class="outline-3">
+<h3 id="org88c8c61"><span class="section-number-3">6.6.</span> Ergonomic Brand Checks for Private Fields</h3>
+<div class="outline-text-3" id="text-6-6">
+<p>
+We can use this new feature to check if an object has a particular private field in it, using the in operator.
+</p>
+<div class="org-src-container">
+<pre class="src src-js">class Car {
+  #color;
+  hasColor() {
+    return #color in this;
+  }
+}
+
+const car = new Car();
+console.log(car.hasColor()); // true;
+</pre>
+</div>
+
+<p>
+The in operator can correctly distinguish private fields with the same names from different classes:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">class Car {
+  #color;
+  hasColor() {
+    return #color in this;
+  }
+}
+
+class House {
+  #color;
+  hasColor() {
+    return #color in this;
+  }
+}
+
+const car = new Car();
+const house = new House();
+console.log(car.hasColor()); // true;
+console.log(car.hasColor.call(house)); // false
+console.log(house.hasColor()); // true
+console.log(house.hasColor.call(car)); // false
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd812ecd" class="outline-3">
+<h3 id="orgd812ecd"><span class="section-number-3">6.7.</span> at() Method for Indexing</h3>
+<div class="outline-text-3" id="text-6-7">
+<p>
+We typically use square brackets ([]) in JavaScript to access the Nth
+element of an array, which is usually a simple process. We just access
+the N - 1 property of the array.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const arr = ['a', 'b', 'c', 'd'];
+console.log(arr[1]); // b
+</pre>
+</div>
+
+<p>
+However, we have to use an index of arr.length - N if we want to
+access the Nth item from the end of the array with square brackets.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const arr = ['a', 'b', 'c', 'd'];
+
+// 1st element from the end
+console.log(arr[arr.length - 1]); // d
+
+// 2nd element from the end
+console.log(arr[arr.length - 2]); // c
+</pre>
+</div>
+
+<p>
+The new at() method lets us do this more concisely and
+expressively. To access the Nth element from the end of the array, we
+simply pass a negative value of -N to at().
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const arr = ['a', 'b', 'c', 'd'];
+
+// 1st element from the end
+console.log(arr.at(-1)); // d
+
+// 2nd element from the end
+console.log(arr.at(-2)); // c
+</pre>
+</div>
+
+<p>
+Apart from arrays, strings and TypedArray objects also now have at() methods.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const str = 'Coding Beauty';
+
+console.log(str.at(-1)); // y
+console.log(str.at(-2)); // t
+
+const typedArray = new Uint8Array([16, 32, 48, 64]);
+
+console.log(typedArray.at(-1)); // 64
+console.log(typedArray.at(-2)); // 48
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1bf352f" class="outline-3">
+<h3 id="org1bf352f"><span class="section-number-3">6.8.</span> RegExp Match Indices</h3>
+<div class="outline-text-3" id="text-6-8">
+<p>
+This new feature allows us to specify that we want the get both the
+starting and ending indices of the matches of a RegExp object in a
+given string.  Previously, we could only get the starting index of a
+regex match in a string.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const str = 'sun and moon';
+const regex = /and/;
+const matchObj = regex.exec(str);
+
+// [ 'and', index: 4, input: 'sun and moon', groups: undefined ]
+console.log(matchObj);
+</pre>
+</div>
+
+<pre class="example">
+['and '(\, index:) 4 (\, input:) 'sun and moon '(\, groups:) undefined]
+</pre>
+
+
+<p>
+We can now specify a d regex flag to get the two indices where the
+match starts and ends.  With the d flag set, the object returned will
+have an indices property that contains the starting and ending
+indices.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const str = 'sun and moon';
+const regex = /and/d;
+const matchObj = regex.exec(str);
+/*
+[
+  'and',
+  index: 4,
+  input: 'sun and moon',
+  groups: undefined,
+  indices: [ [ 4, 7 ], groups: undefined ]
+]
+ */
+console.log(matchObj);
+</pre>
+</div>
+
+<pre class="example">
+['and '(\, index:) 4 (\, input:) 'sun and moon '(\, groups:) undefined (\, indices:) [[4 (\, 7)] (\, groups:) undefined]]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org661a981" class="outline-3">
+<h3 id="org661a981"><span class="section-number-3">6.9.</span> Object.hasOwn() Method</h3>
+<div class="outline-text-3" id="text-6-9">
+<p>
+In JavaScript, we can use the Object.prototype.hasOwnProperty() method
+to check if an object has a given property.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">class Car {
+  color = 'green';
+  age = 2;
+}
+const car = new Car();
+
+console.log(car.hasOwnProperty('age')); // true
+console.log(car.hasOwnProperty('name')); // false
+</pre>
+</div>
+
+<p>
+But there are certain problems with this approach. For one, the
+Object.prototype.hasOwnProperty() method is not protected - it can be
+overridden by defining a custom hasOwnProperty() method for a class,
+which could have completely different behavior from
+</p>
+
+<p>
+Object.prototype.hasOwnProperty().
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">class Car {
+  color = 'green';
+  age = 2;
+  // This method does not tell us whether an object of
+  // this class has a given property.
+  hasOwnProperty() {
+    return false;
+  }
+}
+
+const car = new Car();
+
+console.log(car.hasOwnProperty('age')); // false
+console.log(car.hasOwnProperty('name')); // false
+</pre>
+</div>
+
+<p>
+Another issue is that for objects created with a null prototype (using
+Object.create(null)), trying to call this method on them will cause an
+error.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const obj = Object.create(null);
+obj.color = 'green';
+obj.age = 2;
+
+// TypeError: obj.hasOwnProperty is not a function
+console.log(obj.hasOwnProperty('color'));
+</pre>
+</div>
+
+<p>
+One way to solve these issues is to use to call the call() method on
+the Object.prototype.hasOwnProperty Function property, like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const obj = Object.create(null);
+obj.color = 'green';
+obj.age = 2;
+obj.hasOwnProperty = () =&gt; false;
+
+console.log(Object.prototype.hasOwnProperty.call(obj, 'color')); // true
+console.log(Object.prototype.hasOwnProperty.call(obj, 'name')); // false
+</pre>
+</div>
+
+<p>
+This isn’t very convenient. We can write a reusable function to avoid
+repeating ourselves:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">function objHasOwnProp(obj, propertyKey) {
+  return Object.prototype.hasOwnProperty.call(obj, propertyKey);
+}
+
+const obj = Object.create(null);
+obj.color = 'green';
+obj.age = 2;
+obj.hasOwnProperty = () =&gt; false;
+
+console.log(objHasOwnProp(obj, 'color')); // true
+console.log(objHasOwnProp(obj, 'name')); // false
+</pre>
+</div>
+
+<p>
+No need for that though, as we can use the new built-in
+Object.hasOwn() method. Like our reusable function, it takes an object
+and property as arguments and returns true if the specified property
+is a direct property of the object. Otherwise, it returns false.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const obj = Object.create(null);
+obj.color = 'green';
+obj.age = 2;
+obj.hasOwnProperty = () =&gt; false;
+
+console.log(Object.hasOwn(obj, 'color')); // true
+console.log(Object.hasOwn(obj, 'name')); // false
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3c55b12" class="outline-3">
+<h3 id="org3c55b12"><span class="section-number-3">6.10.</span> Error Cause</h3>
+<div class="outline-text-3" id="text-6-10">
+<p>
+Error objects now have a cause property for specifying the original
+error that caused the error about to be thrown. This helps to add
+additional contextual information to the error and assist the
+diagnosis of unexpected behavior. We can specify the cause of an error
+by setting a cause property on an object passed as the second argument
+to the Error() constructor.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">function userAction() {
+  try {
+    apiCallThatCanThrow();
+  } catch (err) {
+    throw new Error('New error message', { cause: err });
+  }
+}
+try {
+  userAction();
+} catch (err) {
+  console.log(err);
+  console.log(`Cause by: ${err.cause}`);
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1be8089" class="outline-3">
+<h3 id="org1be8089"><span class="section-number-3">6.11.</span> Array Find from Last</h3>
+<div class="outline-text-3" id="text-6-11">
+<p>
+In JavaScript, we can already use the Array find() method to find an
+element in an array that passes a specified test condition. Similarly,
+we can use findIndex() to find the index of such an element. While
+find() and findIndex() both start searching from the first element of
+the array, there are instances where it would be preferable to start
+the search from the last element instead.
+</p>
+
+<p>
+There are scenarios where we know that finding from the last element
+might achieve better performance. For example, here we’re trying to
+get the item in the array with the value prop equal to y. With find()
+and findIndex():
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const letters = [
+  { value: 'v' },
+  { value: 'w' },
+  { value: 'x' },
+  { value: 'y' },
+  { value: 'z' },
+];
+
+const found = letters.find((item) =&gt; item.value === 'y');
+const foundIndex = letters.findIndex((item) =&gt; item.value === 'y');
+
+console.log(found); // { value: 'y' }
+console.log(foundIndex); // 3
+</pre>
+</div>
+
+<p>
+This works, but as the target object is closer to the tail of the
+array, we might be able to make this program run faster if we use the
+findLast() and findLastIndex() methods to search the array from the
+end.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const letters = [
+  { value: 'v' },
+  { value: 'w' },
+  { value: 'x' },
+  { value: 'y' },
+  { value: 'z' },
+];
+
+const found = letters.findLast((item) =&gt; item.value === 'y');
+const foundIndex = letters.findLastIndex((item) =&gt; item.value === 'y');
+
+console.log(found); // { value: 'y' }
+console.log(foundIndex); // 3
+</pre>
+</div>
+
+<p>
+Another use case might require that we specifically search the array
+from the end to get the correct item. For example, if we want to find
+the last even number in a list of numbers, find() and findIndex()
+would produce a wrong result:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const nums = [7, 14, 3, 8, 10, 9];
+// gives 14, instead of 10
+
+const lastEven = nums.find((value) =&gt; value % 2 === 0);
+// gives 1, instead of 4
+
+const lastEvenIndex = nums.findIndex((value) =&gt; value % 2 === 0);
+console.log(lastEven); // 14
+console.log(lastEvenIndex); // 1
+</pre>
+</div>
+
+<p>
+We could call the reverse() method on the array to reverse the order
+of the elements before calling find() and findIndex(). But this
+approach would cause unnecessary mutation of the array, as reverse()
+reverses the elements of an array in place. The only way to avoid this
+mutation would be to make a new copy of the entire array, which could
+cause performance problems for large arrays.
+</p>
+
+<p>
+Also, findIndex() would still not work on the reversed array, as
+reversing the elements would also mean changing the indexes they had
+in the original array. To get the original index, we would need to
+perform an additional calculation, which means writing more code.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const nums = [7, 14, 3, 8, 10, 9];
+
+// Copying the entire array with the spread syntax before
+// calling reverse()
+const reversed = [...nums].reverse();
+
+// correctly gives 10
+
+const lastEven = reversed.find((value) =&gt; value % 2 === 0);
+// gives 1, instead of 4
+
+const reversedIndex = reversed.findIndex((value) =&gt; value % 2 === 0);
+// Need to re-calculate to get original index
+
+const lastEvenIndex = reversed.length - 1 - reversedIndex;
+
+console.log(lastEven); // 10
+console.log(reversedIndex); // 1
+console.log(lastEvenIndex); // 4
+</pre>
+</div>
+
+<p>
+It’s in cases like where the findLast() and findLastIndex() methods
+come in handy.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const nums = [7, 14, 3, 8, 10, 9];
+
+const lastEven = nums.findLast((num) =&gt; num % 2 === 0);
+
+const lastEvenIndex = nums.findLastIndex((num) =&gt; num % 2 === 0);
+
+console.log(lastEven); // 10
+console.log(lastEvenIndex); // 4
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaa3e31a" class="outline-3">
+<h3 id="orgaa3e31a"><span class="section-number-3">6.12.</span> Source</h3>
+<div class="outline-text-3" id="text-6-12">
+<p>
+This topic came from:
+<a href="https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497">https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Rahul M. Juliato</p>
+<p class="date">Created: 2022-07-31 Sun 21:23</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
