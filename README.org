@@ -4,7 +4,74 @@
 
 
 * What is: Function Composition
-... 
+** Function composition
+Is the process of combining two or more functions to produce a new
+function. Composing funcitons together is like snapping together a
+series of pipes for our data to flow throug.
+
+The composition of functions `f` and `g` can be defined as `f(g(x))`,
+which evaluates from the inside out, right to left. In other words:
+1. `x`
+2. `g`
+3. `f`
+   
+** Example of what is
+You want to do the following:
+
+1. split the name into an array on spaces
+2. map the name to lower case
+3. join with dashes
+4. encode the URI component
+
+#+BEGIN_SRC js
+  const toSlug = input => encodeURIComponent(
+    input.split(' ')
+    .map(str => str.toLowerCase())
+    .join('-')
+    );
+  console.log(toSlug('JS Cheerleader'));  // 'js-cheerleader'
+#+END_SRC
+
+Not bad, but what about do it more readable?
+
+#+BEGIN_SRC js
+  const toSlug = input => encodeURIComponent(
+    join('-')(
+      map(toLowercase)(
+	split(' ')(
+	  input
+	)
+	)
+      )
+  )
+
+  console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
+#+END_SRC
+
+It looks even harder to read, but wait a bit...
+
+If we use composable forms of common utilities, like.
+
+#+BEGIN_SRC js
+  const curry = fn => (...args) => fn.bind(null, ...args);
+  const map = curry((fn, arr) => arr.map(fn));
+  const join = curry((str, arr) => arr.join(str));
+  const toLowerCase = str => str.toLowerCase();
+
+  const split = curry((splitOn, str) => str.split(splitOn));
+#+END_SRC
+
+Or even production-tested versions available from Loadash/fp or
+ramda. You can import like this:
+
+#+BEGIN_SRC js
+  import { curry, map, join, split } from 'lodash/fp';
+  // ...or like this...
+  const curry = require('lodash/fp/curry');
+  const map = require('lodash/fp/map');
+#+END_SRC
+
+... to be continued
 ** Source:
 [[https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0]]
 * What is: Difference Between Class & Prototypal Inheritance
