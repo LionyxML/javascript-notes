@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-07-31 Sun 21:23 -->
+<!-- 2022-08-30 Tue 23:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>JavaScript Notes</title>
@@ -23,103 +23,447 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3a9a36b">1. What is: Function Composition</a>
+<li><a href="#orga6f4f74">1. What is: Functional Programming</a>
 <ul>
-<li><a href="#org8185149">1.1. Source:</a></li>
+<li><a href="#org240415d">1.1. Source</a></li>
 </ul>
 </li>
-<li><a href="#org769d9b9">2. What is: Difference Between Class &amp; Prototypal Inheritance</a>
+<li><a href="#org4ab85cc">2. Curry or Partial Application?</a>
 <ul>
-<li><a href="#orgf3f5658">2.1. Class Inheritance</a></li>
-<li><a href="#org0fe2709">2.2. Prototypal Inheritance</a></li>
-<li><a href="#org47d1432">2.3. Why does this Matter?</a></li>
-<li><a href="#orgac88611">2.4. Three Different Kinds of Prototypal Inheritance</a>
-<ul>
-<li><a href="#org451dbff">2.4.1. Before the three</a></li>
-<li><a href="#org1b63123">2.4.2. Concatenative inheritance</a></li>
-<li><a href="#org92e79d1">2.4.3. Prototype delegation</a></li>
-<li><a href="#orgb5ef274">2.4.4. Functional inheritance</a></li>
+<li><a href="#orgf2578d2">2.1. Source</a></li>
 </ul>
 </li>
-<li><a href="#org30bb6c4">2.5. Why Composition is Immune to the Fragile Base Class Problem</a></li>
-<li><a href="#org1c79fc8">2.6. You think you know Prototypes, but&#x2026;</a></li>
-<li><a href="#orgf0cf82e">2.7. Source</a></li>
+<li><a href="#orgea7c9ef">3. What is: Function Composition</a>
+<ul>
+<li><a href="#org2afe2c7">3.1. Function composition</a></li>
+<li><a href="#org001b103">3.2. Example of what is</a></li>
+<li><a href="#orge22772d">3.3. Source:</a></li>
 </ul>
 </li>
-<li><a href="#org489dfed">3. Referential Transparency / Opacity in JS</a></li>
-<li><a href="#orgb421283">4. What is: Closure</a>
+<li><a href="#orgc5106db">4. What is: Difference Between Class &amp; Prototypal Inheritance</a>
 <ul>
-<li><a href="#orge7541ff">4.1. What is it?</a></li>
-<li><a href="#orgcd30518">4.2. Using Closures (Examples)</a>
+<li><a href="#org2b1acf9">4.1. Class Inheritance</a></li>
+<li><a href="#orgeca7557">4.2. Prototypal Inheritance</a></li>
+<li><a href="#org52bbff2">4.3. Why does this Matter?</a></li>
+<li><a href="#orgcc9ce70">4.4. Three Different Kinds of Prototypal Inheritance</a>
 <ul>
-<li><a href="#org99ae0dd">4.2.1. Application:</a></li>
-<li><a href="#orgb838a18">4.2.2. Partial Application:</a></li>
+<li><a href="#orgca2f0c6">4.4.1. Before the three</a></li>
+<li><a href="#orgce6300c">4.4.2. Concatenative inheritance</a></li>
+<li><a href="#orgfdc1de5">4.4.3. Prototype delegation</a></li>
+<li><a href="#org5773f73">4.4.4. Functional inheritance</a></li>
 </ul>
 </li>
-<li><a href="#org676bd5c">4.3. Source:</a></li>
+<li><a href="#org5c2f4f8">4.5. Why Composition is Immune to the Fragile Base Class Problem</a></li>
+<li><a href="#org0106fd9">4.6. You think you know Prototypes, but&#x2026;</a></li>
+<li><a href="#org92d6f92">4.7. Source</a></li>
 </ul>
 </li>
-<li><a href="#org51cae98">5. What is: Pure Functions</a>
+<li><a href="#orgb54c2c0">5. Referential Transparency / Opacity in JS</a></li>
+<li><a href="#org382a86d">6. What is: Closure</a>
 <ul>
-<li><a href="#orgdb1d0b5">5.1. General Definition</a></li>
-<li><a href="#org9a43b89">5.2. Functions as a whole</a></li>
-<li><a href="#org2aef1ab">5.3. Back to definition</a></li>
-<li><a href="#orgea7f347">5.4. Recommendation</a></li>
-<li><a href="#org152f57e">5.5. The most important design principle (KISS)</a></li>
-<li><a href="#org1ca59ee">5.6. Problem with Shared State</a></li>
-<li><a href="#orgf89be44">5.7. Given the same Input, Always Returns the Same Output</a></li>
-<li><a href="#org4019154">5.8. Pure functions Produce No SIDE EFFECTS</a>
+<li><a href="#orge54ff5f">6.1. What is it?</a></li>
+<li><a href="#org4b931f5">6.2. Using Closures (Examples)</a>
 <ul>
-<li><a href="#orgc034aa6">5.8.1. Immutability</a></li>
+<li><a href="#org7ecba91">6.2.1. Application:</a></li>
+<li><a href="#org834e8fd">6.2.2. Partial Application:</a></li>
 </ul>
 </li>
-<li><a href="#orgff5fc86">5.9. Source</a></li>
+<li><a href="#org0b1bedd">6.3. Source:</a></li>
 </ul>
 </li>
-<li><a href="#org3e2fb2e">6. New features of ES13</a>
+<li><a href="#org40f6b2e">7. What is: Pure Functions</a>
 <ul>
-<li><a href="#org142b194">6.1. Class Field Declarations</a></li>
-<li><a href="#org4ff6ad4">6.2. Private Methods and Fields</a></li>
-<li><a href="#org3aa9f80">6.3. await Operator at Top level</a></li>
-<li><a href="#orgf13af95">6.4. Static Class Fields and Static Private Methods</a></li>
-<li><a href="#org713c60c">6.5. Class static Block</a></li>
-<li><a href="#org88c8c61">6.6. Ergonomic Brand Checks for Private Fields</a></li>
-<li><a href="#orgd812ecd">6.7. at() Method for Indexing</a></li>
-<li><a href="#org1bf352f">6.8. RegExp Match Indices</a></li>
-<li><a href="#org661a981">6.9. Object.hasOwn() Method</a></li>
-<li><a href="#org3c55b12">6.10. Error Cause</a></li>
-<li><a href="#org1be8089">6.11. Array Find from Last</a></li>
-<li><a href="#orgaa3e31a">6.12. Source</a></li>
+<li><a href="#org27db963">7.1. General Definition</a></li>
+<li><a href="#org89aab36">7.2. Functions as a whole</a></li>
+<li><a href="#org796e291">7.3. Back to definition</a></li>
+<li><a href="#org68a63e8">7.4. Recommendation</a></li>
+<li><a href="#org00014fa">7.5. The most important design principle (KISS)</a></li>
+<li><a href="#org6ce01bc">7.6. Problem with Shared State</a></li>
+<li><a href="#org82c00ff">7.7. Given the same Input, Always Returns the Same Output</a></li>
+<li><a href="#org6022f8c">7.8. Pure functions Produce No SIDE EFFECTS</a>
+<ul>
+<li><a href="#orgdc64eb8">7.8.1. Immutability</a></li>
+</ul>
+</li>
+<li><a href="#org1d17c5a">7.9. Source</a></li>
+</ul>
+</li>
+<li><a href="#orge497463">8. New features of ES13</a>
+<ul>
+<li><a href="#org54cc502">8.1. Class Field Declarations</a></li>
+<li><a href="#orgce9a4c4">8.2. Private Methods and Fields</a></li>
+<li><a href="#org21acf23">8.3. await Operator at Top level</a></li>
+<li><a href="#org356d91b">8.4. Static Class Fields and Static Private Methods</a></li>
+<li><a href="#org83abe6c">8.5. Class static Block</a></li>
+<li><a href="#org7d10443">8.6. Ergonomic Brand Checks for Private Fields</a></li>
+<li><a href="#orgc65cb9c">8.7. at() Method for Indexing</a></li>
+<li><a href="#orgbf7d772">8.8. RegExp Match Indices</a></li>
+<li><a href="#org0329b10">8.9. Object.hasOwn() Method</a></li>
+<li><a href="#orgab010ac">8.10. Error Cause</a></li>
+<li><a href="#org68d415d">8.11. Array Find from Last</a></li>
+<li><a href="#org6a3af77">8.12. Source</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org3a9a36b" class="outline-2">
-<h2 id="org3a9a36b"><span class="section-number-2">1.</span> What is: Function Composition</h2>
+<div id="outline-container-orga6f4f74" class="outline-2">
+<h2 id="orga6f4f74"><span class="section-number-2">1.</span> What is: Functional Programming</h2>
 <div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org240415d" class="outline-3">
+<h3 id="org240415d"><span class="section-number-3">1.1.</span> Source</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
-&#x2026; 
+<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3</a>
 </p>
 </div>
-<div id="outline-container-org8185149" class="outline-3">
-<h3 id="org8185149"><span class="section-number-3">1.1.</span> Source:</h3>
-<div class="outline-text-3" id="text-1-1">
+</div>
+</div>
+
+<div id="outline-container-org4ab85cc" class="outline-2">
+<h2 id="org4ab85cc"><span class="section-number-2">2.</span> Curry or Partial Application?</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgf2578d2" class="outline-3">
+<h3 id="orgf2578d2"><span class="section-number-3">2.1.</span> Source</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+<a href="https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.13tj19278">https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.13tj19278</a>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgea7c9ef" class="outline-2">
+<h2 id="orgea7c9ef"><span class="section-number-2">3.</span> What is: Function Composition</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org2afe2c7" class="outline-3">
+<h3 id="org2afe2c7"><span class="section-number-3">3.1.</span> Function composition</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Is the process of combining two or more functions to produce a new
+function. Composing funcitons together is like snapping together a
+series of pipes for our data to flow throug.
+</p>
+
+<p>
+The composition of functions `f` and `g` can be defined as `f(g(x))`,
+which evaluates from the inside out, right to left. In other words:
+</p>
+<ol class="org-ol">
+<li>`x`</li>
+<li>`g`</li>
+<li>`f`</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org001b103" class="outline-3">
+<h3 id="org001b103"><span class="section-number-3">3.2.</span> Example of what is</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+You want to do the following:
+</p>
+
+<ol class="org-ol">
+<li>split the name into an array on spaces</li>
+<li>map the name to lower case</li>
+<li>join with dashes</li>
+<li>encode the URI component</li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-js">const toSlug = input =&gt; encodeURIComponent(
+  input.split(' ')
+  .map(str =&gt; str.toLowerCase())
+  .join('-')
+  );
+console.log(toSlug('JS Cheerleader'));  // 'js-cheerleader'
+</pre>
+</div>
+
+<p>
+Not bad, but what about do it more readable?
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const toSlug = input =&gt; encodeURIComponent(
+  join('-')(
+    map(toLowercase)(
+      split(' ')(
+	input
+      )
+      )
+    )
+)
+
+console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
+</pre>
+</div>
+
+<p>
+It looks even harder to read, but wait a bit&#x2026;
+</p>
+
+<p>
+If we use composable forms of common utilities, like.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const curry = fn =&gt; (...args) =&gt; fn.bind(null, ...args);
+const map = curry((fn, arr) =&gt; arr.map(fn));
+const join = curry((str, arr) =&gt; arr.join(str));
+const toLowerCase = str =&gt; str.toLowerCase();
+
+const split = curry((splitOn, str) =&gt; str.split(splitOn));
+</pre>
+</div>
+
+<p>
+Or even production-tested versions available from Loadash/fp or
+ramda. You can import like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">import { curry, map, join, split } from 'lodash/fp';
+// ...or like this...
+const curry = require('lodash/fp/curry');
+const map = require('lodash/fp/map');
+</pre>
+</div>
+
+<p>
+To be honest, this implementation of curry is a little bit lazy, a
+real curry would always produce a unary function. Instead, this is a
+simple partial application. For the porposes of this demo, it will
+work interchangeable.
+</p>
+
+<p>
+Going back to our `toSlug()` implementation, it looks like a lot of
+nesting, and a bit confusing to read. We can flatten the nesting with
+a function that will compose these functions automatically, meaning
+that it will take the output from one function and automatically patch
+it to input of the next function until it spits out the final value.
+</p>
+
+<p>
+Come to think of it we have an extras utility that sounds like
+something like that. It takes a list of values and applies a function
+to each of those values, accumulating a single result. The values
+themselves can be functions. The functions is called `reduce()`, but
+to match the compose behavior above, we need it to reduce right to left,
+instead of left to right.
+</p>
+
+<p>
+Good thing there's a `reduceRight()` that does exactly what we're looking for:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">const compose = (...fns) =&gt; x =&gt; fns.reduceRight((v, f) =&gt; f(v), x);
+</pre>
+</div>
+
+<p>
+Like `.reduce()`, the array `.reduceRight()` method takes a reducer
+function and an initial value (`x`). We iterate over the array
+functions (from right to left), applying each in turn to the
+accumulated value (`v`).
+</p>
+
+<p>
+With compose, we can rewrite our composition above without the
+nesting:
+</p>
+<div class="org-src-container">
+<pre class="src src-js">const toSlug = compose(
+  encodeURIComponent,
+  join('-'),
+  map(toLowerCase),
+  split(' ')
+);
+
+console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
+</pre>
+</div>
+
+<p>
+Of course, `compose()` comes with a loadash/fp or ramda as well:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">import { compose } from 'lodash/fp';
+// or
+const compose = require('lodash/fp/compose');
+</pre>
+</div>
+
+<p>
+Compose is great when you're thinking in terms of the mathematical
+form of composition, inside out… but what if you want to think in
+terms of the sequence from left to right?
+</p>
+
+<p>
+There’s another form commonly called `pipe()`. Lodash calls it
+`flow()`:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const pipe = (...fns) =&gt; x =&gt; fns.reduce((v, f) =&gt; f(v), x);
+
+const fn1 = s =&gt; s.toLowerCase();
+const fn2 = s =&gt; s.split('').reverse().join('');
+const fn3 = s =&gt; s + '!'
+
+const newFunc = pipe(fn1, fn2, fn3);
+const result = newFunc('Time'); // emit!
+</pre>
+</div>
+
+<p>
+Notice the implementation is exactly the same as `compose()`, except
+that we're using `.reduce()` instead of `.reduceRight()`, which
+reduces left to right instead of right to left.
+</p>
+
+<p>
+Let's look at our `toSlug()` function implemented with `pipe()`:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const toSlug = pipe(
+  split(' '),
+  map(toLowerCase),
+  join('-'),
+  encodeURIComponent
+);
+
+console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
+</pre>
+</div>
+
+<p>
+For me, this is much easier to read.
+</p>
+
+<p>
+Hardcore functional programmers define their entire application in
+terms of function compositions. I use it frequently to eliminate the
+need for temporary variables. Look at the `pipe()` version of
+`toSlug()` carefully and you might notice something special.
+</p>
+
+<p>
+In imperative programming, when you're performing transformations on
+some variable, you’ll find references to the variable in each step of
+the transformation. The `pipe()` implementation above is written in a
+points-free style, which means that it does not identify the arguments
+on which it operates at all.
+</p>
+
+<p>
+I frequently use pipes in things like unit tests and Redux state
+reducers to eliminate the need for intermediary variables which exist
+only to hold transient values between one operation and the next.
+</p>
+
+<p>
+That may sound weird at first, but as you get practice with it, you'll
+find that in functional programming, you're working with very
+abstract, generalized functions in which the names of things don't
+matter so much. Names just get in the way. You may start to think of
+variables as unnecessary boilerplate.
+</p>
+
+<p>
+That said, I'm of the opinion that points-free style can be taken too
+far. It can become too dense, and harder to understand, but if you get
+confused, here's a little tip… you can tap into the flow to trace
+what's going on:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const trace = curry((label, x) =&gt; {
+  console.log(`== ${ label }:  ${ x }`);
+  return x;
+});
+</pre>
+</div>
+
+<p>
+Here's how you use it:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">  const toSlug = pipe(
+  trace('input'),
+  split(' '),
+  map(toLowerCase),
+  trace('after map'),
+  join('-'),
+  encodeURIComponent
+);
+
+console.log(toSlug('JS Cheerleader'));
+// '== input:  JS Cheerleader'
+// '== after map:  js,cheerleader'
+// 'js-cheerleader'
+</pre>
+</div>
+
+<p>
+`trace()` is just a special form of the more general `tap()`, which
+lets you perform some action for each value that flows through the
+pipe. Get it? Pipe? Tap? You can write `tap()` like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const tap = curry((fn, x) =&gt; {
+  fn(x);
+  return x;
+});
+</pre>
+</div>
+
+<p>
+Now you can see how `trace()` is just a special-cased `tap()`:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">const trace = label =&gt; {
+  return tap(x =&gt; console.log(`== ${ label }:  ${ x }`));
+};
+</pre>
+</div>
+
+<p>
+You should be starting to get a sense of what functional programming
+is like, and how partial application &amp; currying collaborate with
+function composition to help you write programs which are more
+readable with less boilerplate.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge22772d" class="outline-3">
+<h3 id="orge22772d"><span class="section-number-3">3.3.</span> Source:</h3>
+<div class="outline-text-3" id="text-3-3">
 <p>
 <a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0</a>
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org769d9b9" class="outline-2">
-<h2 id="org769d9b9"><span class="section-number-2">2.</span> What is: Difference Between Class &amp; Prototypal Inheritance</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgc5106db" class="outline-2">
+<h2 id="orgc5106db"><span class="section-number-2">4.</span> What is: Difference Between Class &amp; Prototypal Inheritance</h2>
+<div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgf3f5658" class="outline-3">
-<h3 id="orgf3f5658"><span class="section-number-3">2.1.</span> Class Inheritance</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-org2b1acf9" class="outline-3">
+<h3 id="org2b1acf9"><span class="section-number-3">4.1.</span> Class Inheritance</h3>
+<div class="outline-text-3" id="text-4-1">
 <p>
 A Class is like a blueprint - a description of the object to be
 created. Classes inherit from classes and create subclass
@@ -162,9 +506,9 @@ the tightest coupling available in OO design</b></b>.
 </div>
 </div>
 
-<div id="outline-container-org0fe2709" class="outline-3">
-<h3 id="org0fe2709"><span class="section-number-3">2.2.</span> Prototypal Inheritance</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgeca7557" class="outline-3">
+<h3 id="orgeca7557"><span class="section-number-3">4.2.</span> Prototypal Inheritance</h3>
+<div class="outline-text-3" id="text-4-2">
 <p>
 A prototype is a working object instance. Objects inherit directly
 from other objects.
@@ -184,9 +528,9 @@ literals, or `Object.create()`.
 </div>
 </div>
 
-<div id="outline-container-org47d1432" class="outline-3">
-<h3 id="org47d1432"><span class="section-number-3">2.3.</span> Why does this Matter?</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-org52bbff2" class="outline-3">
+<h3 id="org52bbff2"><span class="section-number-3">4.3.</span> Why does this Matter?</h3>
+<div class="outline-text-3" id="text-4-3">
 <p>
 Inheritance is fundamentally a code reuse mechanism: A way for
 different kinds of objects to share code. The way that you share code
@@ -233,13 +577,13 @@ Reusable Object Oriented Software"
 </div>
 </div>
 
-<div id="outline-container-orgac88611" class="outline-3">
-<h3 id="orgac88611"><span class="section-number-3">2.4.</span> Three Different Kinds of Prototypal Inheritance</h3>
-<div class="outline-text-3" id="text-2-4">
+<div id="outline-container-orgcc9ce70" class="outline-3">
+<h3 id="orgcc9ce70"><span class="section-number-3">4.4.</span> Three Different Kinds of Prototypal Inheritance</h3>
+<div class="outline-text-3" id="text-4-4">
 </div>
-<div id="outline-container-org451dbff" class="outline-4">
-<h4 id="org451dbff"><span class="section-number-4">2.4.1.</span> Before the three</h4>
-<div class="outline-text-4" id="text-2-4-1">
+<div id="outline-container-orgca2f0c6" class="outline-4">
+<h4 id="orgca2f0c6"><span class="section-number-4">4.4.1.</span> Before the three</h4>
+<div class="outline-text-4" id="text-4-4-1">
 <p>
 Before we dive into the other kinds of inheritance, let's take a
 closer look at what I mean by class inheritance:
@@ -408,9 +752,9 @@ To understand that, you have to understand that there are three different kinds 
 </div>
 </div>
 
-<div id="outline-container-org1b63123" class="outline-4">
-<h4 id="org1b63123"><span class="section-number-4">2.4.2.</span> Concatenative inheritance</h4>
-<div class="outline-text-4" id="text-2-4-2">
+<div id="outline-container-orgce6300c" class="outline-4">
+<h4 id="orgce6300c"><span class="section-number-4">4.4.2.</span> Concatenative inheritance</h4>
+<div class="outline-text-4" id="text-4-4-2">
 <p>
 The process of inheriting features directly from one object to another
 by copying the source objects properties. In JavaScript, source
@@ -423,9 +767,9 @@ composition example above uses concatenative inheritance.
 </div>
 </div>
 
-<div id="outline-container-org92e79d1" class="outline-4">
-<h4 id="org92e79d1"><span class="section-number-4">2.4.3.</span> Prototype delegation</h4>
-<div class="outline-text-4" id="text-2-4-3">
+<div id="outline-container-orgfdc1de5" class="outline-4">
+<h4 id="orgfdc1de5"><span class="section-number-4">4.4.3.</span> Prototype delegation</h4>
+<div class="outline-text-4" id="text-4-4-3">
 <p>
 In JavaScript, an object may have a link to a prototype for
 delegation. If a property is not found on the object, the lookup is
@@ -454,9 +798,9 @@ The JS prototype chain:
 </div>
 </div>
 
-<div id="outline-container-orgb5ef274" class="outline-4">
-<h4 id="orgb5ef274"><span class="section-number-4">2.4.4.</span> Functional inheritance</h4>
-<div class="outline-text-4" id="text-2-4-4">
+<div id="outline-container-org5773f73" class="outline-4">
+<h4 id="org5773f73"><span class="section-number-4">4.4.4.</span> Functional inheritance</h4>
+<div class="outline-text-4" id="text-4-4-4">
 <p>
 In JavaScript, any function can create an object. When that function
 is not a constructor (or `class`), it's called a factory
@@ -484,9 +828,9 @@ inheritance — object composition is.
 </div>
 </div>
 
-<div id="outline-container-org30bb6c4" class="outline-3">
-<h3 id="org30bb6c4"><span class="section-number-3">2.5.</span> Why Composition is Immune to the Fragile Base Class Problem</h3>
-<div class="outline-text-3" id="text-2-5">
+<div id="outline-container-org5c2f4f8" class="outline-3">
+<h3 id="org5c2f4f8"><span class="section-number-3">4.5.</span> Why Composition is Immune to the Fragile Base Class Problem</h3>
+<div class="outline-text-3" id="text-4-5">
 <p>
 To understand the fragile base class problem and why it doesn’t apply
 to composition, first you have to understand how it happens:
@@ -596,9 +940,9 @@ Composition is immune to both.
 </div>
 </div>
 
-<div id="outline-container-org1c79fc8" class="outline-3">
-<h3 id="org1c79fc8"><span class="section-number-3">2.6.</span> You think you know Prototypes, but&#x2026;</h3>
-<div class="outline-text-3" id="text-2-6">
+<div id="outline-container-org0106fd9" class="outline-3">
+<h3 id="org0106fd9"><span class="section-number-3">4.6.</span> You think you know Prototypes, but&#x2026;</h3>
+<div class="outline-text-3" id="text-4-6">
 <p>
 If you were taught to build classes or constructor functions and
 inherit from those, what you were taught was not prototypal
@@ -623,9 +967,9 @@ Pinto.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf0cf82e" class="outline-3">
-<h3 id="orgf0cf82e"><span class="section-number-3">2.7.</span> Source</h3>
-<div class="outline-text-3" id="text-2-7">
+<div id="outline-container-org92d6f92" class="outline-3">
+<h3 id="org92d6f92"><span class="section-number-3">4.7.</span> Source</h3>
+<div class="outline-text-3" id="text-4-7">
 <p>
 Almost all by this great article:
 <a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9">https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9</a>
@@ -633,9 +977,9 @@ Almost all by this great article:
 </div>
 </div>
 </div>
-<div id="outline-container-org489dfed" class="outline-2">
-<h2 id="org489dfed"><span class="section-number-2">3.</span> Referential Transparency / Opacity in JS</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-orgb54c2c0" class="outline-2">
+<h2 id="orgb54c2c0"><span class="section-number-2">5.</span> Referential Transparency / Opacity in JS</h2>
+<div class="outline-text-2" id="text-5">
 <p>
 Referential transparency is used in many domains, for example:
 mathematics, logic, linguistics, philosophy and programming. It has
@@ -643,7 +987,7 @@ quite changed meanings in each of these domains.
 </p>
 
 <p>
-Referential transparency in programming relates do programs. By way of programs are
+Referential transparency in programming relates to programs. By the way of programs are
 composed of subprograms that are programs themselves. It relates to those subprograms, also.
 Subprograms can be signified by methods.
 </p>
@@ -760,9 +1104,9 @@ undefined
 </div>
 </div>
 
-<div id="outline-container-orgb421283" class="outline-2">
-<h2 id="orgb421283"><span class="section-number-2">4.</span> What is: Closure</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-org382a86d" class="outline-2">
+<h2 id="org382a86d"><span class="section-number-2">6.</span> What is: Closure</h2>
+<div class="outline-text-2" id="text-6">
 <p>
 Closures are important because they control what is and isn't in scope
 in a particular function, along with which variables are shared between
@@ -786,9 +1130,9 @@ other functional programming patterns.
 </p>
 </div>
 
-<div id="outline-container-orge7541ff" class="outline-3">
-<h3 id="orge7541ff"><span class="section-number-3">4.1.</span> What is it?</h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-orge54ff5f" class="outline-3">
+<h3 id="orge54ff5f"><span class="section-number-3">6.1.</span> What is it?</h3>
+<div class="outline-text-3" id="text-6-1">
 <p>
 Is the combination of a function bundled together (enclosed) with
 references to its surrounding sate (the <b><b>lexical environment</b></b>). In
@@ -809,9 +1153,9 @@ function scope, even after the outer function has returned.
 </div>
 </div>
 
-<div id="outline-container-orgcd30518" class="outline-3">
-<h3 id="orgcd30518"><span class="section-number-3">4.2.</span> Using Closures (Examples)</h3>
-<div class="outline-text-3" id="text-4-2">
+<div id="outline-container-org4b931f5" class="outline-3">
+<h3 id="org4b931f5"><span class="section-number-3">6.2.</span> Using Closures (Examples)</h3>
+<div class="outline-text-3" id="text-6-2">
 <p>
 Among other things, closures are commonly used to give objects data
 privacy. Data privacy is an essential property that helps us <b><b>program
@@ -903,9 +1247,9 @@ application &amp; currying. This requires some definitions:
 </p>
 </div>
 
-<div id="outline-container-org99ae0dd" class="outline-4">
-<h4 id="org99ae0dd"><span class="section-number-4">4.2.1.</span> Application:</h4>
-<div class="outline-text-4" id="text-4-2-1">
+<div id="outline-container-org7ecba91" class="outline-4">
+<h4 id="org7ecba91"><span class="section-number-4">6.2.1.</span> Application:</h4>
+<div class="outline-text-4" id="text-6-2-1">
 <p>
 The process of applying a function to its arguments in order to
 produce a return value.
@@ -913,9 +1257,9 @@ produce a return value.
 </div>
 </div>
 
-<div id="outline-container-orgb838a18" class="outline-4">
-<h4 id="orgb838a18"><span class="section-number-4">4.2.2.</span> Partial Application:</h4>
-<div class="outline-text-4" id="text-4-2-2">
+<div id="outline-container-org834e8fd" class="outline-4">
+<h4 id="org834e8fd"><span class="section-number-4">6.2.2.</span> Partial Application:</h4>
+<div class="outline-text-4" id="text-6-2-2">
 <p>
 The process of applying a function to some of its arguments. The
 partially applied function gets returned for later use. Partial
@@ -1012,9 +1356,9 @@ function.
 </div>
 </div>
 
-<div id="outline-container-org676bd5c" class="outline-3">
-<h3 id="org676bd5c"><span class="section-number-3">4.3.</span> Source:</h3>
-<div class="outline-text-3" id="text-4-3">
+<div id="outline-container-org0b1bedd" class="outline-3">
+<h3 id="org0b1bedd"><span class="section-number-3">6.3.</span> Source:</h3>
+<div class="outline-text-3" id="text-6-3">
 <p>
 Heavily based on:
 <a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36</a>
@@ -1023,13 +1367,13 @@ Heavily based on:
 </div>
 </div>
 
-<div id="outline-container-org51cae98" class="outline-2">
-<h2 id="org51cae98"><span class="section-number-2">5.</span> What is: Pure Functions</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-org40f6b2e" class="outline-2">
+<h2 id="org40f6b2e"><span class="section-number-2">7.</span> What is: Pure Functions</h2>
+<div class="outline-text-2" id="text-7">
 </div>
-<div id="outline-container-orgdb1d0b5" class="outline-3">
-<h3 id="orgdb1d0b5"><span class="section-number-3">5.1.</span> General Definition</h3>
-<div class="outline-text-3" id="text-5-1">
+<div id="outline-container-org27db963" class="outline-3">
+<h3 id="org27db963"><span class="section-number-3">7.1.</span> General Definition</h3>
+<div class="outline-text-3" id="text-7-1">
 <p>
 Is a function where:
 </p>
@@ -1039,9 +1383,9 @@ Is a function where:
 </ul>
 </div>
 </div>
-<div id="outline-container-org9a43b89" class="outline-3">
-<h3 id="org9a43b89"><span class="section-number-3">5.2.</span> Functions as a whole</h3>
-<div class="outline-text-3" id="text-5-2">
+<div id="outline-container-org89aab36" class="outline-3">
+<h3 id="org89aab36"><span class="section-number-3">7.2.</span> Functions as a whole</h3>
+<div class="outline-text-3" id="text-7-2">
 <p>
 Is a process of taking some input, called arguments, and producing
 some output to the called return value.
@@ -1058,9 +1402,9 @@ Main purposes:
 </div>
 </div>
 
-<div id="outline-container-org2aef1ab" class="outline-3">
-<h3 id="org2aef1ab"><span class="section-number-3">5.3.</span> Back to definition</h3>
-<div class="outline-text-3" id="text-5-3">
+<div id="outline-container-org796e291" class="outline-3">
+<h3 id="org796e291"><span class="section-number-3">7.3.</span> Back to definition</h3>
+<div class="outline-text-3" id="text-7-3">
 <p>
 If a function where:
 </p>
@@ -1099,9 +1443,9 @@ it without using its return value. For pure functions, that's a nope.
 </div>
 </div>
 
-<div id="outline-container-orgea7f347" class="outline-3">
-<h3 id="orgea7f347"><span class="section-number-3">5.4.</span> Recommendation</h3>
-<div class="outline-text-3" id="text-5-4">
+<div id="outline-container-org68a63e8" class="outline-3">
+<h3 id="org68a63e8"><span class="section-number-3">7.4.</span> Recommendation</h3>
+<div class="outline-text-3" id="text-7-4">
 <p>
 Favor pure functions: If it is practical to implement a program
 requirement using pure functions, you should use them over other
@@ -1110,9 +1454,9 @@ options. They are the simplest reusable build blocks of code in a program.
 </div>
 </div>
 
-<div id="outline-container-org152f57e" class="outline-3">
-<h3 id="org152f57e"><span class="section-number-3">5.5.</span> The most important design principle (KISS)</h3>
-<div class="outline-text-3" id="text-5-5">
+<div id="outline-container-org00014fa" class="outline-3">
+<h3 id="org00014fa"><span class="section-number-3">7.5.</span> The most important design principle (KISS)</h3>
+<div class="outline-text-3" id="text-7-5">
 <p>
 Keep it Simple Stupid or,
 Keep it Stupid Simple
@@ -1136,9 +1480,9 @@ code, making programs more flexible and adaptable to future changes.
 </div>
 </div>
 
-<div id="outline-container-org1ca59ee" class="outline-3">
-<h3 id="org1ca59ee"><span class="section-number-3">5.6.</span> Problem with Shared State</h3>
-<div class="outline-text-3" id="text-5-6">
+<div id="outline-container-org6ce01bc" class="outline-3">
+<h3 id="org6ce01bc"><span class="section-number-3">7.6.</span> Problem with Shared State</h3>
+<div class="outline-text-3" id="text-7-6">
 <p>
 In an example: if you make requests from a query text field as the user types.
 You may have times where the last request "Java" for example comes and occupies
@@ -1168,9 +1512,9 @@ have a recipe for bugs.
 </div>
 </div>
 
-<div id="outline-container-orgf89be44" class="outline-3">
-<h3 id="orgf89be44"><span class="section-number-3">5.7.</span> Given the same Input, Always Returns the Same Output</h3>
-<div class="outline-text-3" id="text-5-7">
+<div id="outline-container-org82c00ff" class="outline-3">
+<h3 id="org82c00ff"><span class="section-number-3">7.7.</span> Given the same Input, Always Returns the Same Output</h3>
+<div class="outline-text-3" id="text-7-7">
 <p>
 Our `double` function will always return 10 for 5 as parameter, it
 doesn't matter how many times we call it
@@ -1234,18 +1578,18 @@ it would no longer be deterministic or referentially transparent.
 </div>
 </div>
 
-<div id="outline-container-org4019154" class="outline-3">
-<h3 id="org4019154"><span class="section-number-3">5.8.</span> Pure functions Produce No SIDE EFFECTS</h3>
-<div class="outline-text-3" id="text-5-8">
+<div id="outline-container-org6022f8c" class="outline-3">
+<h3 id="org6022f8c"><span class="section-number-3">7.8.</span> Pure functions Produce No SIDE EFFECTS</h3>
+<div class="outline-text-3" id="text-7-8">
 <p>
 A pure function produces no side effects, which means that it can't
 alter any external state.
 </p>
 </div>
 
-<div id="outline-container-orgc034aa6" class="outline-4">
-<h4 id="orgc034aa6"><span class="section-number-4">5.8.1.</span> Immutability</h4>
-<div class="outline-text-4" id="text-5-8-1">
+<div id="outline-container-orgdc64eb8" class="outline-4">
+<h4 id="orgdc64eb8"><span class="section-number-4">7.8.1.</span> Immutability</h4>
+<div class="outline-text-4" id="text-7-8-1">
 <p>
 JavaScript's object arguments are references, which means that if a
 function were to mutate a property on an object or array parameter,
@@ -1376,9 +1720,9 @@ a small part of the app state.
 </div>
 </div>
 
-<div id="outline-container-orgff5fc86" class="outline-3">
-<h3 id="orgff5fc86"><span class="section-number-3">5.9.</span> Source</h3>
-<div class="outline-text-3" id="text-5-9">
+<div id="outline-container-org1d17c5a" class="outline-3">
+<h3 id="org1d17c5a"><span class="section-number-3">7.9.</span> Source</h3>
+<div class="outline-text-3" id="text-7-9">
 <p>
 This topic is based on:
 <a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976</a>
@@ -1387,13 +1731,13 @@ This topic is based on:
 </div>
 </div>
 
-<div id="outline-container-org3e2fb2e" class="outline-2">
-<h2 id="org3e2fb2e"><span class="section-number-2">6.</span> New features of ES13</h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-orge497463" class="outline-2">
+<h2 id="orge497463"><span class="section-number-2">8.</span> New features of ES13</h2>
+<div class="outline-text-2" id="text-8">
 </div>
-<div id="outline-container-org142b194" class="outline-3">
-<h3 id="org142b194"><span class="section-number-3">6.1.</span> Class Field Declarations</h3>
-<div class="outline-text-3" id="text-6-1">
+<div id="outline-container-org54cc502" class="outline-3">
+<h3 id="org54cc502"><span class="section-number-3">8.1.</span> Class Field Declarations</h3>
+<div class="outline-text-3" id="text-8-1">
 <p>
 Before ES13 we could not declare class fields outside the constructor:
 </p>
@@ -1426,9 +1770,9 @@ console.log(car.age); // 2
 </div>
 </div>
 
-<div id="outline-container-org4ff6ad4" class="outline-3">
-<h3 id="org4ff6ad4"><span class="section-number-3">6.2.</span> Private Methods and Fields</h3>
-<div class="outline-text-3" id="text-6-2">
+<div id="outline-container-orgce9a4c4" class="outline-3">
+<h3 id="orgce9a4c4"><span class="section-number-3">8.2.</span> Private Methods and Fields</h3>
+<div class="outline-text-3" id="text-8-2">
 <p>
 Members were usually prefixed with an _ to indicate it should be private.
 But could still be accessed from outside.
@@ -1482,9 +1826,9 @@ console.log(person.#lastName);
 </div>
 </div>
 
-<div id="outline-container-org3aa9f80" class="outline-3">
-<h3 id="org3aa9f80"><span class="section-number-3">6.3.</span> await Operator at Top level</h3>
-<div class="outline-text-3" id="text-6-3">
+<div id="outline-container-org21acf23" class="outline-3">
+<h3 id="org21acf23"><span class="section-number-3">8.3.</span> await Operator at Top level</h3>
+<div class="outline-text-3" id="text-8-3">
 <p>
 Previously we could only use await with async function.
 We could not use this in the global scope.
@@ -1522,9 +1866,9 @@ await setTimeoutAsync(3000);
 </div>
 </div>
 
-<div id="outline-container-orgf13af95" class="outline-3">
-<h3 id="orgf13af95"><span class="section-number-3">6.4.</span> Static Class Fields and Static Private Methods</h3>
-<div class="outline-text-3" id="text-6-4">
+<div id="outline-container-org356d91b" class="outline-3">
+<h3 id="org356d91b"><span class="section-number-3">8.4.</span> Static Class Fields and Static Private Methods</h3>
+<div class="outline-text-3" id="text-8-4">
 <p>
 We can now declare static fields and static private methods for a
 class in ES13. Static methods can access other private/public static
@@ -1554,9 +1898,9 @@ console.log(Person.getCount()); // 2
 </div>
 </div>
 
-<div id="outline-container-org713c60c" class="outline-3">
-<h3 id="org713c60c"><span class="section-number-3">6.5.</span> Class static Block</h3>
-<div class="outline-text-3" id="text-6-5">
+<div id="outline-container-org83abe6c" class="outline-3">
+<h3 id="org83abe6c"><span class="section-number-3">8.5.</span> Class static Block</h3>
+<div class="outline-text-3" id="text-8-5">
 <p>
 ES13 allows the definition of static blocks that will be executed only
 once, at the creation of the class. This is similar to static
@@ -1593,9 +1937,9 @@ console.log(Car.colors); // [ 'blue', 'red', 'green' ]
 </div>
 </div>
 
-<div id="outline-container-org88c8c61" class="outline-3">
-<h3 id="org88c8c61"><span class="section-number-3">6.6.</span> Ergonomic Brand Checks for Private Fields</h3>
-<div class="outline-text-3" id="text-6-6">
+<div id="outline-container-org7d10443" class="outline-3">
+<h3 id="org7d10443"><span class="section-number-3">8.6.</span> Ergonomic Brand Checks for Private Fields</h3>
+<div class="outline-text-3" id="text-8-6">
 <p>
 We can use this new feature to check if an object has a particular private field in it, using the in operator.
 </p>
@@ -1641,9 +1985,9 @@ console.log(house.hasColor.call(car)); // false
 </div>
 </div>
 
-<div id="outline-container-orgd812ecd" class="outline-3">
-<h3 id="orgd812ecd"><span class="section-number-3">6.7.</span> at() Method for Indexing</h3>
-<div class="outline-text-3" id="text-6-7">
+<div id="outline-container-orgc65cb9c" class="outline-3">
+<h3 id="orgc65cb9c"><span class="section-number-3">8.7.</span> at() Method for Indexing</h3>
+<div class="outline-text-3" id="text-8-7">
 <p>
 We typically use square brackets ([]) in JavaScript to access the Nth
 element of an array, which is usually a simple process. We just access
@@ -1708,9 +2052,9 @@ console.log(typedArray.at(-2)); // 48
 </div>
 </div>
 
-<div id="outline-container-org1bf352f" class="outline-3">
-<h3 id="org1bf352f"><span class="section-number-3">6.8.</span> RegExp Match Indices</h3>
-<div class="outline-text-3" id="text-6-8">
+<div id="outline-container-orgbf7d772" class="outline-3">
+<h3 id="orgbf7d772"><span class="section-number-3">8.8.</span> RegExp Match Indices</h3>
+<div class="outline-text-3" id="text-8-8">
 <p>
 This new feature allows us to specify that we want the get both the
 starting and ending indices of the matches of a RegExp object in a
@@ -1763,9 +2107,9 @@ console.log(matchObj);
 </div>
 </div>
 
-<div id="outline-container-org661a981" class="outline-3">
-<h3 id="org661a981"><span class="section-number-3">6.9.</span> Object.hasOwn() Method</h3>
-<div class="outline-text-3" id="text-6-9">
+<div id="outline-container-org0329b10" class="outline-3">
+<h3 id="org0329b10"><span class="section-number-3">8.9.</span> Object.hasOwn() Method</h3>
+<div class="outline-text-3" id="text-8-9">
 <p>
 In JavaScript, we can use the Object.prototype.hasOwnProperty() method
 to check if an object has a given property.
@@ -1884,9 +2228,9 @@ console.log(Object.hasOwn(obj, 'name')); // false
 </div>
 </div>
 
-<div id="outline-container-org3c55b12" class="outline-3">
-<h3 id="org3c55b12"><span class="section-number-3">6.10.</span> Error Cause</h3>
-<div class="outline-text-3" id="text-6-10">
+<div id="outline-container-orgab010ac" class="outline-3">
+<h3 id="orgab010ac"><span class="section-number-3">8.10.</span> Error Cause</h3>
+<div class="outline-text-3" id="text-8-10">
 <p>
 Error objects now have a cause property for specifying the original
 error that caused the error about to be thrown. This helps to add
@@ -1915,9 +2259,9 @@ try {
 </div>
 </div>
 
-<div id="outline-container-org1be8089" class="outline-3">
-<h3 id="org1be8089"><span class="section-number-3">6.11.</span> Array Find from Last</h3>
-<div class="outline-text-3" id="text-6-11">
+<div id="outline-container-org68d415d" class="outline-3">
+<h3 id="org68d415d"><span class="section-number-3">8.11.</span> Array Find from Last</h3>
+<div class="outline-text-3" id="text-8-11">
 <p>
 In JavaScript, we can already use the Array find() method to find an
 element in an array that passes a specified test condition. Similarly,
@@ -2053,9 +2397,9 @@ console.log(lastEvenIndex); // 4
 </div>
 </div>
 
-<div id="outline-container-orgaa3e31a" class="outline-3">
-<h3 id="orgaa3e31a"><span class="section-number-3">6.12.</span> Source</h3>
-<div class="outline-text-3" id="text-6-12">
+<div id="outline-container-org6a3af77" class="outline-3">
+<h3 id="org6a3af77"><span class="section-number-3">8.12.</span> Source</h3>
+<div class="outline-text-3" id="text-8-12">
 <p>
 This topic came from:
 <a href="https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497">https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497</a>
@@ -2066,7 +2410,7 @@ This topic came from:
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Rahul M. Juliato</p>
-<p class="date">Created: 2022-07-31 Sun 21:23</p>
+<p class="date">Created: 2022-08-30 Tue 23:57</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
