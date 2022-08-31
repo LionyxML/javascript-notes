@@ -3,6 +3,9 @@
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
 
+* Curry or Partial Application?
+** Source
+https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.13tj19278
 * What is: Function Composition
 ** Function composition
 Is the process of combining two or more functions to produce a new
@@ -71,7 +74,167 @@ ramda. You can import like this:
   const map = require('lodash/fp/map');
 #+END_SRC
 
-... to be continued
+To be honest, this implementation of curry is a little bit lazy, a
+real curry would always produce a unary function. Instead, this is a
+simple partial application. For the porposes of this demo, it will
+work interchangeable.
+
+Going back to our `toSlug()` implementation, it looks like a lot of
+nesting, and a bit confusing to read. We can flatten the nesting with
+a function that will compose these functions automatically, meaning
+that it will take the output from one function and automatically patch
+it to input of the next function until it spits out the final value.
+
+Come to think of it we have an extras utility that sounds like
+something like that. It takes a list of values and applies a function
+to each of those values, accumulating a single result. The values
+themselves can be functions. The functions is called `reduce()`, but
+to match the compose behavior above, we need it to reduce right to left,
+instead of left to right.
+
+Good thing there's a `reduceRight()` that does exactly what we're looking for:
+#+BEGIN_SRC js
+  const compose = (...fns) => x => fns.reduceRight((v, f) => f(v), x);
+#+END_SRC
+
+Like `.reduce()`, the array `.reduceRight()` method takes a reducer
+function and an initial value (`x`). We iterate over the array
+functions (from right to left), applying each in turn to the
+accumulated value (`v`).
+
+With compose, we can rewrite our composition above without the
+nesting:
+#+BEGIN_SRC js
+  const toSlug = compose(
+    encodeURIComponent,
+    join('-'),
+    map(toLowerCase),
+    split(' ')
+  );
+
+  console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
+#+END_SRC
+
+Of course, `compose()` comes with a loadash/fp or ramda as well:
+
+#+BEGIN_SRC js
+  import { compose } from 'lodash/fp';
+  // or
+  const compose = require('lodash/fp/compose');
+#+END_SRC
+
+Compose is great when you're thinking in terms of the mathematical
+form of composition, inside out… but what if you want to think in
+terms of the sequence from left to right?
+
+There’s another form commonly called `pipe()`. Lodash calls it
+`flow()`:
+
+#+BEGIN_SRC js
+const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
+
+const fn1 = s => s.toLowerCase();
+const fn2 = s => s.split('').reverse().join('');
+const fn3 = s => s + '!'
+
+const newFunc = pipe(fn1, fn2, fn3);
+const result = newFunc('Time'); // emit!
+#+END_SRC
+
+Notice the implementation is exactly the same as `compose()`, except
+that we're using `.reduce()` instead of `.reduceRight()`, which
+reduces left to right instead of right to left.
+
+Let's look at our `toSlug()` function implemented with `pipe()`:
+
+#+BEGIN_SRC js
+  const toSlug = pipe(
+    split(' '),
+    map(toLowerCase),
+    join('-'),
+    encodeURIComponent
+  );
+
+  console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
+#+END_SRC
+
+For me, this is much easier to read.
+
+Hardcore functional programmers define their entire application in
+terms of function compositions. I use it frequently to eliminate the
+need for temporary variables. Look at the `pipe()` version of
+`toSlug()` carefully and you might notice something special.
+
+In imperative programming, when you're performing transformations on
+some variable, you’ll find references to the variable in each step of
+the transformation. The `pipe()` implementation above is written in a
+points-free style, which means that it does not identify the arguments
+on which it operates at all.
+
+I frequently use pipes in things like unit tests and Redux state
+reducers to eliminate the need for intermediary variables which exist
+only to hold transient values between one operation and the next.
+
+That may sound weird at first, but as you get practice with it, you'll
+find that in functional programming, you're working with very
+abstract, generalized functions in which the names of things don't
+matter so much. Names just get in the way. You may start to think of
+variables as unnecessary boilerplate.
+
+That said, I'm of the opinion that points-free style can be taken too
+far. It can become too dense, and harder to understand, but if you get
+confused, here's a little tip… you can tap into the flow to trace
+what's going on:
+
+#+BEGIN_SRC js
+  const trace = curry((label, x) => {
+    console.log(`== ${ label }:  ${ x }`);
+    return x;
+  });
+#+END_SRC
+
+Here's how you use it:
+
+#+BEGIN_SRC js
+  const toSlug = pipe(
+  trace('input'),
+  split(' '),
+  map(toLowerCase),
+  trace('after map'),
+  join('-'),
+  encodeURIComponent
+);
+
+console.log(toSlug('JS Cheerleader'));
+// '== input:  JS Cheerleader'
+// '== after map:  js,cheerleader'
+// 'js-cheerleader'
+#+END_SRC
+
+`trace()` is just a special form of the more general `tap()`, which
+lets you perform some action for each value that flows through the
+pipe. Get it? Pipe? Tap? You can write `tap()` like this:
+
+#+BEGIN_SRC js
+  const tap = curry((fn, x) => {
+    fn(x);
+    return x;
+  });
+#+END_SRC
+
+Now you can see how `trace()` is just a special-cased `tap()`:
+
+#+BEGIN_SRC js
+  const trace = label => {
+    return tap(x => console.log(`== ${ label }:  ${ x }`));
+  };
+#+END_SRC
+
+You should be starting to get a sense of what functional programming
+is like, and how partial application & currying collaborate with
+function composition to help you write programs which are more
+readable with less boilerplate.
+
 ** Source:
 [[https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0]]
 * What is: Difference Between Class & Prototypal Inheritance
@@ -440,7 +603,7 @@ Referential transparency is used in many domains, for example:
 mathematics, logic, linguistics, philosophy and programming. It has
 quite changed meanings in each of these domains.
 
-Referential transparency in programming relates do programs. By way of programs are
+Referential transparency in programming relates to programs. By the way of programs are
 composed of subprograms that are programs themselves. It relates to those subprograms, also.
 Subprograms can be signified by methods.
 
