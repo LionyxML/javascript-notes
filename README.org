@@ -7,6 +7,21 @@
 https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3
 
 * Curry or Partial Application?
+** Definitions
+*** Application
+The process of applying a function to its arguments in order to
+produce a return value.
+*** Partial Application
+The process of applying a function to some of its arguments. The
+partially applied function gets returned for later use. In other
+words, a function that takes a function with multiple parameters and
+returns a function with fewer parameters. Partial application fixes
+(partially applies the function to) one or more arguments inside the
+returned function, and the returned function takes the remaining
+parameters as arguments in order to complete the function application.
+*** Curry
+A function that takes a function with multiple parameters as input and
+returns a function with exactly one parameter.
 ** Source
 https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.13tj19278
 * What is: Function Composition
