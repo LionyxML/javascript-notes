@@ -2,6 +2,9 @@
 #+AUTHOR: Rahul M. Juliato
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
+* What is: Functional Programming
+** Source
+https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3
 
 * Curry or Partial Application?
 ** Source
