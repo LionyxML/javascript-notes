@@ -2,7 +2,159 @@
 #+AUTHOR: Rahul M. Juliato
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
-* What is: Functional Programming
+* Await inside loops
+What will be the output of this snippet?
+
+#+BEGIN_SRC js
+  const arr = [1 ,2 , 3 , 4];
+  let resValue = 1;
+
+  const incAfter1Sec = () => new Promise((res, rej) => {
+    setTimeout(() => { res(resValue++) }, 1000);
+  });
+
+  const testing  = async () => {
+    console.log('🚀 Start')
+
+    arr.forEach(async (each) => {
+      const val = await incAfter1Sec()
+      console.log("🚀 each", val)
+
+     })
+
+    console.log('🚀 End');
+
+  }
+
+  testing();
+
+#+END_SRC
+
+#+RESULTS:
+: 🚀 Start
+: 🚀 End
+: 🚀 each 1
+: 🚀 each 2
+: 🚀 each 3
+: 🚀 each 4
+
+
+What about instead of a forEach, mapping?
+
+#+BEGIN_SRC js
+  const arr = [1 ,2 , 3 , 4];
+  let resValue = 1;
+
+  const incAfter1Sec = () => new Promise((res, rej) => {
+    setTimeout(() => { res(resValue++) }, 1000);
+  });
+
+  const testing  = async () => {
+    console.log('🚀 Start')
+
+    arr.map(async (each) => {
+      const val = await incAfter1Sec()
+      console.log("🚀 each", val)
+
+     })
+
+    console.log('🚀 End');
+
+  }
+
+  testing();
+
+#+END_SRC
+
+#+RESULTS:
+: 🚀 Start
+: 🚀 End
+: 🚀 each 1
+: 🚀 each 2
+: 🚀 each 3
+: 🚀 each 4
+
+
+In simple terms, each (from the code) is called on separate function
+that is syncrhonous. forEach (and map) expects a synchronous function
+and does not wait for promises. This can be explained by the concept
+of `generators`.
+
+`each` iteration end calls the `next()` method, `yield` the value and
+exit, then, call `next()` again, and since `next()` accepts only
+synchronous stuff, promises don`t work as intended when we use await.
+
+The `solution`, simply use a for loop:
+#+BEGIN_SRC js
+  const arr = [1 ,2 , 3 , 4];
+  let resValue = 1;
+
+  const incAfter1Sec = () => new Promise((res, rej) => {
+    setTimeout(() => { res(resValue++) }, 1000);
+  });
+
+  const testing  = async () => {
+    console.log('🚀 Start')
+
+    for (let i = 0; i < arr.length ; i++) {
+	    console.log("🚀 each", i);
+	    await incAfter1Sec()
+
+      }
+
+    console.log('🚀 End');
+  }
+
+  testing();
+
+#+END_SRC
+
+#+RESULTS:
+: 🚀 Start
+: 🚀 each 0
+: 🚀 each 1
+: 🚀 each 2
+: 🚀 each 3
+: 🚀 End
+
+It could be also written in this fashion:
+#+BEGIN_SRC js
+  const arr = [1 ,2 , 3 , 4];
+  let resValue = 1;
+
+  const incAfter1Sec = () => new Promise((res, rej) => {
+    setTimeout(() => { res(resValue++) }, 1000);
+  });
+
+  const testing  = async () => {
+    console.log('🚀 Start')
+
+    for (const i in arr) {
+	    console.log("🚀 each", i);
+	    await incAfter1Sec()
+
+      }
+
+    console.log('🚀 End');
+  }
+
+  testing();
+
+#+END_SRC
+
+#+RESULTS:
+: 🚀 Start
+: 🚀 each 0
+: 🚀 each 1
+: 🚀 each 2
+: 🚀 each 3
+: 🚀 End
+
+
+
+
+
+* What is: Functional Programming [TODO]
 ** Source
 https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3
 
