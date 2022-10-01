@@ -153,7 +153,6 @@ It could be also written in this fashion:
 
 
 
-
 * What is: Functional Programming [TODO]
 ** Source
 https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3

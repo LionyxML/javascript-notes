@@ -1,239 +1,482 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-<!-- 2022-08-31 Wed 00:06 -->
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>JavaScript Notes</title>
-<meta name="author" content="Rahul M. Juliato" />
-<meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
-</head>
-<body>
-<div id="content" class="content">
-<h1 class="title">JavaScript Notes</h1>
-<div id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#orgaab24ff">1. What is: Functional Programming</a>
-<ul>
-<li><a href="#orgf3e4c2d">1.1. Source</a></li>
-</ul>
-</li>
-<li><a href="#org83d4a60">2. Curry or Partial Application?</a>
-<ul>
-<li><a href="#orgcb0ac26">2.1. Definitions</a>
-<ul>
-<li><a href="#org14d549e">2.1.1. Application</a></li>
-<li><a href="#org5ab100d">2.1.2. Partial Application</a></li>
-<li><a href="#orgc244577">2.1.3. Curry</a></li>
-</ul>
-</li>
-<li><a href="#org8ec02f5">2.2. Source</a></li>
-</ul>
-</li>
-<li><a href="#org7ad0745">3. What is: Function Composition</a>
-<ul>
-<li><a href="#org90ffb93">3.1. Function composition</a></li>
-<li><a href="#org9e180c7">3.2. Example of what is</a></li>
-<li><a href="#org8dad4b7">3.3. Source:</a></li>
-</ul>
-</li>
-<li><a href="#org27d730e">4. What is: Difference Between Class &amp; Prototypal Inheritance</a>
-<ul>
-<li><a href="#org4d5c2ce">4.1. Class Inheritance</a></li>
-<li><a href="#org742f2a7">4.2. Prototypal Inheritance</a></li>
-<li><a href="#orge5b4cfd">4.3. Why does this Matter?</a></li>
-<li><a href="#orgf4bf57b">4.4. Three Different Kinds of Prototypal Inheritance</a>
-<ul>
-<li><a href="#org8054d50">4.4.1. Before the three</a></li>
-<li><a href="#org89e3305">4.4.2. Concatenative inheritance</a></li>
-<li><a href="#orge6573d1">4.4.3. Prototype delegation</a></li>
-<li><a href="#orga643c36">4.4.4. Functional inheritance</a></li>
-</ul>
-</li>
-<li><a href="#org1930fe0">4.5. Why Composition is Immune to the Fragile Base Class Problem</a></li>
-<li><a href="#orgf5926b9">4.6. You think you know Prototypes, but&#x2026;</a></li>
-<li><a href="#orgd54554e">4.7. Source</a></li>
-</ul>
-</li>
-<li><a href="#org0c5b136">5. Referential Transparency / Opacity in JS</a></li>
-<li><a href="#orge634952">6. What is: Closure</a>
-<ul>
-<li><a href="#orgd2de1aa">6.1. What is it?</a></li>
-<li><a href="#org49f136a">6.2. Using Closures (Examples)</a>
-<ul>
-<li><a href="#orgc47abfe">6.2.1. Application:</a></li>
-<li><a href="#orgba46d78">6.2.2. Partial Application:</a></li>
-</ul>
-</li>
-<li><a href="#orgdbf0e41">6.3. Source:</a></li>
-</ul>
-</li>
-<li><a href="#org1cc2660">7. What is: Pure Functions</a>
-<ul>
-<li><a href="#org741945d">7.1. General Definition</a></li>
-<li><a href="#org6524c0b">7.2. Functions as a whole</a></li>
-<li><a href="#orgfc2bbc6">7.3. Back to definition</a></li>
-<li><a href="#org4ee03f5">7.4. Recommendation</a></li>
-<li><a href="#org1fa313b">7.5. The most important design principle (KISS)</a></li>
-<li><a href="#org081fad6">7.6. Problem with Shared State</a></li>
-<li><a href="#orgf282928">7.7. Given the same Input, Always Returns the Same Output</a></li>
-<li><a href="#orgf241ddf">7.8. Pure functions Produce No SIDE EFFECTS</a>
-<ul>
-<li><a href="#orgae19158">7.8.1. Immutability</a></li>
-</ul>
-</li>
-<li><a href="#org2f4c3c2">7.9. Source</a></li>
-</ul>
-</li>
-<li><a href="#orgc7dc699">8. New features of ES13</a>
-<ul>
-<li><a href="#org2d779d0">8.1. Class Field Declarations</a></li>
-<li><a href="#orge0e54d5">8.2. Private Methods and Fields</a></li>
-<li><a href="#orgb530d90">8.3. await Operator at Top level</a></li>
-<li><a href="#org83ef901">8.4. Static Class Fields and Static Private Methods</a></li>
-<li><a href="#org92b041e">8.5. Class static Block</a></li>
-<li><a href="#orga2ff9f7">8.6. Ergonomic Brand Checks for Private Fields</a></li>
-<li><a href="#org502b638">8.7. at() Method for Indexing</a></li>
-<li><a href="#orgaf4982e">8.8. RegExp Match Indices</a></li>
-<li><a href="#orgb5e7b5a">8.9. Object.hasOwn() Method</a></li>
-<li><a href="#orgc518c91">8.10. Error Cause</a></li>
-<li><a href="#org1605464">8.11. Array Find from Last</a></li>
-<li><a href="#orgfa3b0fd">8.12. Source</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
+  <head>
+    <!-- 2022-10-01 Sáb 18:08 -->
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JavaScript Notes</title>
+    <meta name="author" content="Rahul M. Juliato" />
+    <meta name="generator" content="Org Mode" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"
+    ></script>
+  </head>
+  <body>
+    <div id="content" class="content">
+      <h1 class="title">JavaScript Notes</h1>
+      <div id="table-of-contents" role="doc-toc">
+        <h2>Table of Contents</h2>
+        <div id="text-table-of-contents" role="doc-toc">
+          <ul>
+            <li><a href="#orgb4bc28d">1. Await inside loops</a></li>
+            <li>
+              <a href="#orgec04ba7"
+                >2. What is: Functional Programming [TODO]</a
+              >
+              <ul>
+                <li><a href="#org658d8bf">2.1. Source</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#org780a9c6">3. Curry or Partial Application?</a>
+              <ul>
+                <li>
+                  <a href="#org1016cf4">3.1. Definitions</a>
+                  <ul>
+                    <li><a href="#orgaea582b">3.1.1. Application</a></li>
+                    <li>
+                      <a href="#orgc3ada7b">3.1.2. Partial Application</a>
+                    </li>
+                    <li><a href="#org2d7ec4a">3.1.3. Curry</a></li>
+                  </ul>
+                </li>
+                <li><a href="#org9d4cea3">3.2. Source</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#orgcf3cbd4">4. What is: Function Composition</a>
+              <ul>
+                <li><a href="#orga54d3bd">4.1. Function composition</a></li>
+                <li><a href="#orgfd8f7a6">4.2. Example of what is</a></li>
+                <li><a href="#org7ac8488">4.3. Source:</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#orgb49a060"
+                >5. What is: Difference Between Class &amp; Prototypal
+                Inheritance</a
+              >
+              <ul>
+                <li><a href="#org7b70f0c">5.1. Class Inheritance</a></li>
+                <li><a href="#orgb21c868">5.2. Prototypal Inheritance</a></li>
+                <li><a href="#org4f5329e">5.3. Why does this Matter?</a></li>
+                <li>
+                  <a href="#orgbc4ea95"
+                    >5.4. Three Different Kinds of Prototypal Inheritance</a
+                  >
+                  <ul>
+                    <li><a href="#org7d87754">5.4.1. Before the three</a></li>
+                    <li>
+                      <a href="#orgf8b016d">5.4.2. Concatenative inheritance</a>
+                    </li>
+                    <li>
+                      <a href="#org3fbe9dc">5.4.3. Prototype delegation</a>
+                    </li>
+                    <li>
+                      <a href="#orgf4e7844">5.4.4. Functional inheritance</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#orgbd82260"
+                    >5.5. Why Composition is Immune to the Fragile Base Class
+                    Problem</a
+                  >
+                </li>
+                <li>
+                  <a href="#orgca8ee63"
+                    >5.6. You think you know Prototypes, but&#x2026;</a
+                  >
+                </li>
+                <li><a href="#org4b7dfdb">5.7. Source</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#org53a4ed7"
+                >6. Referential Transparency / Opacity in JS</a
+              >
+            </li>
+            <li>
+              <a href="#org7993093">7. What is: Closure</a>
+              <ul>
+                <li><a href="#orgbe2bb3f">7.1. What is it?</a></li>
+                <li>
+                  <a href="#org834d2b2">7.2. Using Closures (Examples)</a>
+                  <ul>
+                    <li><a href="#org4f57bd9">7.2.1. Application:</a></li>
+                    <li>
+                      <a href="#orgb81007c">7.2.2. Partial Application:</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a href="#org29803b0">7.3. Source:</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#org1adb7de">8. What is: Pure Functions</a>
+              <ul>
+                <li><a href="#orgbfe6f0d">8.1. General Definition</a></li>
+                <li><a href="#org889ecb5">8.2. Functions as a whole</a></li>
+                <li><a href="#org89b0ac3">8.3. Back to definition</a></li>
+                <li><a href="#orgabb4ee7">8.4. Recommendation</a></li>
+                <li>
+                  <a href="#org1f70027"
+                    >8.5. The most important design principle (KISS)</a
+                  >
+                </li>
+                <li>
+                  <a href="#orge169a50">8.6. Problem with Shared State</a>
+                </li>
+                <li>
+                  <a href="#org88ac51d"
+                    >8.7. Given the same Input, Always Returns the Same
+                    Output</a
+                  >
+                </li>
+                <li>
+                  <a href="#org50fa64e"
+                    >8.8. Pure functions Produce No SIDE EFFECTS</a
+                  >
+                  <ul>
+                    <li><a href="#org685b326">8.8.1. Immutability</a></li>
+                  </ul>
+                </li>
+                <li><a href="#orgfb0b66e">8.9. Source</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#org8633269">9. New features of ES13</a>
+              <ul>
+                <li><a href="#orgb11321c">9.1. Class Field Declarations</a></li>
+                <li>
+                  <a href="#org1e2a07a">9.2. Private Methods and Fields</a>
+                </li>
+                <li>
+                  <a href="#org2bdbe6d">9.3. await Operator at Top level</a>
+                </li>
+                <li>
+                  <a href="#org34a8f52"
+                    >9.4. Static Class Fields and Static Private Methods</a
+                  >
+                </li>
+                <li><a href="#org739d02e">9.5. Class static Block</a></li>
+                <li>
+                  <a href="#org8081ef4"
+                    >9.6. Ergonomic Brand Checks for Private Fields</a
+                  >
+                </li>
+                <li><a href="#org73a1d97">9.7. at() Method for Indexing</a></li>
+                <li><a href="#orgf31b09b">9.8. RegExp Match Indices</a></li>
+                <li><a href="#org5260a81">9.9. Object.hasOwn() Method</a></li>
+                <li><a href="#org198c831">9.10. Error Cause</a></li>
+                <li><a href="#org8143fe9">9.11. Array Find from Last</a></li>
+                <li><a href="#orgdbb32eb">9.12. Source</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-<div id="outline-container-orgaab24ff" class="outline-2">
-<h2 id="orgaab24ff"><span class="section-number-2">1.</span> What is: Functional Programming</h2>
-<div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-orgf3e4c2d" class="outline-3">
-<h3 id="orgf3e4c2d"><span class="section-number-3">1.1.</span> Source</h3>
-<div class="outline-text-3" id="text-1-1">
-<p>
-<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3</a>
-</p>
-</div>
-</div>
-</div>
+      <div id="outline-container-orgb4bc28d" class="outline-2">
+        <h2 id="orgb4bc28d">
+          <span class="section-number-2">1.</span> Await inside loops
+        </h2>
+        <div class="outline-text-2" id="text-1">
+          <p>What will be the output of this snippet?</p>
 
-<div id="outline-container-org83d4a60" class="outline-2">
-<h2 id="org83d4a60"><span class="section-number-2">2.</span> Curry or Partial Application?</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-orgcb0ac26" class="outline-3">
-<h3 id="orgcb0ac26"><span class="section-number-3">2.1.</span> Definitions</h3>
-<div class="outline-text-3" id="text-2-1">
-</div>
-<div id="outline-container-org14d549e" class="outline-4">
-<h4 id="org14d549e"><span class="section-number-4">2.1.1.</span> Application</h4>
-<div class="outline-text-4" id="text-2-1-1">
-<p>
-The process of applying a function to its arguments in order to
-produce a return value.
-</p>
-</div>
-</div>
-<div id="outline-container-org5ab100d" class="outline-4">
-<h4 id="org5ab100d"><span class="section-number-4">2.1.2.</span> Partial Application</h4>
-<div class="outline-text-4" id="text-2-1-2">
-<p>
-The process of applying a function to some of its arguments. The
-partially applied function gets returned for later use. In other
-words, a function that takes a function with multiple parameters and
-returns a function with fewer parameters. Partial application fixes
-(partially applies the function to) one or more arguments inside the
-returned function, and the returned function takes the remaining
-parameters as arguments in order to complete the function application.
-</p>
-</div>
-</div>
-<div id="outline-container-orgc244577" class="outline-4">
-<h4 id="orgc244577"><span class="section-number-4">2.1.3.</span> Curry</h4>
-<div class="outline-text-4" id="text-2-1-3">
-<p>
-A function that takes a function with multiple parameters as input and
-returns a function with exactly one parameter.
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org8ec02f5" class="outline-3">
-<h3 id="org8ec02f5"><span class="section-number-3">2.2.</span> Source</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-<a href="https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.13tj19278">https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.13tj19278</a>
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org7ad0745" class="outline-2">
-<h2 id="org7ad0745"><span class="section-number-2">3.</span> What is: Function Composition</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org90ffb93" class="outline-3">
-<h3 id="org90ffb93"><span class="section-number-3">3.1.</span> Function composition</h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-Is the process of combining two or more functions to produce a new
-function. Composing funcitons together is like snapping together a
-series of pipes for our data to flow throug.
-</p>
+          <div class="org-src-container">
+            <pre class="src src-js">
+const arr = [1 ,2 , 3 , 4];
+let resValue = 1;
 
-<p>
-The composition of functions `f` and `g` can be defined as `f(g(x))`,
-which evaluates from the inside out, right to left. In other words:
-</p>
-<ol class="org-ol">
-<li>`x`</li>
-<li>`g`</li>
-<li>`f`</li>
-</ol>
-</div>
-</div>
+const incAfter1Sec = () =&gt; new Promise((res, rej) =&gt; {
+  setTimeout(() =&gt; { res(resValue++) }, 1000);
+});
 
-<div id="outline-container-org9e180c7" class="outline-3">
-<h3 id="org9e180c7"><span class="section-number-3">3.2.</span> Example of what is</h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-You want to do the following:
-</p>
+const testing  = async () =&gt; {
+  console.log('🚀 Start')
 
-<ol class="org-ol">
-<li>split the name into an array on spaces</li>
-<li>map the name to lower case</li>
-<li>join with dashes</li>
-<li>encode the URI component</li>
-</ol>
+  arr.forEach(async (each) =&gt; {
+    const val = await incAfter1Sec()
+    console.log("🚀 each", val)
 
-<div class="org-src-container">
-<pre class="src src-js">const toSlug = input =&gt; encodeURIComponent(
+   })
+
+  console.log('🚀 End');
+
+}
+
+testing();
+
+</pre
+            >
+          </div>
+
+          <p>What about instead of a forEach, mapping?</p>
+
+          <div class="org-src-container">
+            <pre class="src src-js">
+const arr = [1 ,2 , 3 , 4];
+let resValue = 1;
+
+const incAfter1Sec = () =&gt; new Promise((res, rej) =&gt; {
+  setTimeout(() =&gt; { res(resValue++) }, 1000);
+});
+
+const testing  = async () =&gt; {
+  console.log('🚀 Start')
+
+  arr.map(async (each) =&gt; {
+    const val = await incAfter1Sec()
+    console.log("🚀 each", val)
+
+   })
+
+  console.log('🚀 End');
+
+}
+
+testing();
+
+</pre
+            >
+          </div>
+
+          <p>
+            In simple terms, each (from the code) is called on separate function
+            that is syncrhonous. forEach (and map) expects a synchronous
+            function and does not wait for promises. This can be explained by
+            the concept of `generators`.
+          </p>
+
+          <p>
+            `each` iteration end calls the `next()` method, `yield` the value
+            and exit, then, call `next()` again, and since `next()` accepts only
+            synchronous stuff, promises don`t work as intended when we use
+            await.
+          </p>
+
+          <p>The `solution`, simply use a for loop:</p>
+          <div class="org-src-container">
+            <pre class="src src-js">
+const arr = [1 ,2 , 3 , 4];
+let resValue = 1;
+
+const incAfter1Sec = () =&gt; new Promise((res, rej) =&gt; {
+  setTimeout(() =&gt; { res(resValue++) }, 1000);
+});
+
+const testing  = async () =&gt; {
+  console.log('🚀 Start')
+
+  for (let i = 0; i &lt; arr.length ; i++) {
+	  console.log("🚀 each", i);
+	  await incAfter1Sec()
+
+    }
+
+  console.log('🚀 End');
+}
+
+testing();
+
+</pre
+            >
+          </div>
+
+          <p>It could be also written in this fashion:</p>
+          <div class="org-src-container">
+            <pre class="src src-js">
+const arr = [1 ,2 , 3 , 4];
+let resValue = 1;
+
+const incAfter1Sec = () =&gt; new Promise((res, rej) =&gt; {
+  setTimeout(() =&gt; { res(resValue++) }, 1000);
+});
+
+const testing  = async () =&gt; {
+  console.log('🚀 Start')
+
+  for (const i in arr) {
+	  console.log("🚀 each", i);
+	  await incAfter1Sec()
+
+    }
+
+  console.log('🚀 End');
+}
+
+testing();
+
+</pre
+            >
+          </div>
+        </div>
+      </div>
+
+      <div id="outline-container-orgec04ba7" class="outline-2">
+        <h2 id="orgec04ba7">
+          <span class="section-number-2">2.</span> What is: Functional
+          Programming [TODO]
+        </h2>
+        <div class="outline-text-2" id="text-2"></div>
+        <div id="outline-container-org658d8bf" class="outline-3">
+          <h3 id="org658d8bf">
+            <span class="section-number-3">2.1.</span> Source
+          </h3>
+          <div class="outline-text-3" id="text-2-1">
+            <p>
+              <a
+                href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3"
+                >https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0#.jddz30xy3</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div id="outline-container-org780a9c6" class="outline-2">
+        <h2 id="org780a9c6">
+          <span class="section-number-2">3.</span> Curry or Partial Application?
+        </h2>
+        <div class="outline-text-2" id="text-3"></div>
+        <div id="outline-container-org1016cf4" class="outline-3">
+          <h3 id="org1016cf4">
+            <span class="section-number-3">3.1.</span> Definitions
+          </h3>
+          <div class="outline-text-3" id="text-3-1"></div>
+          <div id="outline-container-orgaea582b" class="outline-4">
+            <h4 id="orgaea582b">
+              <span class="section-number-4">3.1.1.</span> Application
+            </h4>
+            <div class="outline-text-4" id="text-3-1-1">
+              <p>
+                The process of applying a function to its arguments in order to
+                produce a return value.
+              </p>
+            </div>
+          </div>
+          <div id="outline-container-orgc3ada7b" class="outline-4">
+            <h4 id="orgc3ada7b">
+              <span class="section-number-4">3.1.2.</span> Partial Application
+            </h4>
+            <div class="outline-text-4" id="text-3-1-2">
+              <p>
+                The process of applying a function to some of its arguments. The
+                partially applied function gets returned for later use. In other
+                words, a function that takes a function with multiple parameters
+                and returns a function with fewer parameters. Partial
+                application fixes (partially applies the function to) one or
+                more arguments inside the returned function, and the returned
+                function takes the remaining parameters as arguments in order to
+                complete the function application.
+              </p>
+            </div>
+          </div>
+          <div id="outline-container-org2d7ec4a" class="outline-4">
+            <h4 id="org2d7ec4a">
+              <span class="section-number-4">3.1.3.</span> Curry
+            </h4>
+            <div class="outline-text-4" id="text-3-1-3">
+              <p>
+                A function that takes a function with multiple parameters as
+                input and returns a function with exactly one parameter.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="outline-container-org9d4cea3" class="outline-3">
+          <h3 id="org9d4cea3">
+            <span class="section-number-3">3.2.</span> Source
+          </h3>
+          <div class="outline-text-3" id="text-3-2">
+            <p>
+              <a
+                href="https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.13tj19278"
+                >https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.13tj19278</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-orgcf3cbd4" class="outline-2">
+        <h2 id="orgcf3cbd4">
+          <span class="section-number-2">4.</span> What is: Function Composition
+        </h2>
+        <div class="outline-text-2" id="text-4"></div>
+        <div id="outline-container-orga54d3bd" class="outline-3">
+          <h3 id="orga54d3bd">
+            <span class="section-number-3">4.1.</span> Function composition
+          </h3>
+          <div class="outline-text-3" id="text-4-1">
+            <p>
+              Is the process of combining two or more functions to produce a new
+              function. Composing funcitons together is like snapping together a
+              series of pipes for our data to flow throug.
+            </p>
+
+            <p>
+              The composition of functions `f` and `g` can be defined as
+              `f(g(x))`, which evaluates from the inside out, right to left. In
+              other words:
+            </p>
+            <ol class="org-ol">
+              <li>`x`</li>
+              <li>`g`</li>
+              <li>`f`</li>
+            </ol>
+          </div>
+        </div>
+
+        <div id="outline-container-orgfd8f7a6" class="outline-3">
+          <h3 id="orgfd8f7a6">
+            <span class="section-number-3">4.2.</span> Example of what is
+          </h3>
+          <div class="outline-text-3" id="text-4-2">
+            <p>You want to do the following:</p>
+
+            <ol class="org-ol">
+              <li>split the name into an array on spaces</li>
+              <li>map the name to lower case</li>
+              <li>join with dashes</li>
+              <li>encode the URI component</li>
+            </ol>
+
+            <div class="org-src-container">
+              <pre class="src src-js">
+const toSlug = input =&gt; encodeURIComponent(
   input.split(' ')
   .map(str =&gt; str.toLowerCase())
   .join('-')
   );
 console.log(toSlug('JS Cheerleader'));  // 'js-cheerleader'
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Not bad, but what about do it more readable?
-</p>
+            <p>Not bad, but what about do it more readable?</p>
 
-<div class="org-src-container">
-<pre class="src src-js">const toSlug = input =&gt; encodeURIComponent(
+            <div class="org-src-container">
+              <pre class="src src-js">
+const toSlug = input =&gt; encodeURIComponent(
   join('-')(
     map(toLowercase)(
       split(' ')(
@@ -244,85 +487,91 @@ Not bad, but what about do it more readable?
 )
 
 console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-It looks even harder to read, but wait a bit&#x2026;
-</p>
+            <p>It looks even harder to read, but wait a bit&#x2026;</p>
 
-<p>
-If we use composable forms of common utilities, like.
-</p>
+            <p>If we use composable forms of common utilities, like.</p>
 
-<div class="org-src-container">
-<pre class="src src-js">const curry = fn =&gt; (...args) =&gt; fn.bind(null, ...args);
+            <div class="org-src-container">
+              <pre class="src src-js">
+const curry = fn =&gt; (...args) =&gt; fn.bind(null, ...args);
 const map = curry((fn, arr) =&gt; arr.map(fn));
 const join = curry((str, arr) =&gt; arr.join(str));
 const toLowerCase = str =&gt; str.toLowerCase();
 
 const split = curry((splitOn, str) =&gt; str.split(splitOn));
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Or even production-tested versions available from Loadash/fp or
-ramda. You can import like this:
-</p>
+            <p>
+              Or even production-tested versions available from Loadash/fp or
+              ramda. You can import like this:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">import { curry, map, join, split } from 'lodash/fp';
+            <div class="org-src-container">
+              <pre class="src src-js">
+import { curry, map, join, split } from 'lodash/fp';
 // ...or like this...
 const curry = require('lodash/fp/curry');
 const map = require('lodash/fp/map');
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-To be honest, this implementation of curry is a little bit lazy, a
-real curry would always produce a unary function. Instead, this is a
-simple partial application. For the porposes of this demo, it will
-work interchangeable.
-</p>
+            <p>
+              To be honest, this implementation of curry is a little bit lazy, a
+              real curry would always produce a unary function. Instead, this is
+              a simple partial application. For the porposes of this demo, it
+              will work interchangeable.
+            </p>
 
-<p>
-Going back to our `toSlug()` implementation, it looks like a lot of
-nesting, and a bit confusing to read. We can flatten the nesting with
-a function that will compose these functions automatically, meaning
-that it will take the output from one function and automatically patch
-it to input of the next function until it spits out the final value.
-</p>
+            <p>
+              Going back to our `toSlug()` implementation, it looks like a lot
+              of nesting, and a bit confusing to read. We can flatten the
+              nesting with a function that will compose these functions
+              automatically, meaning that it will take the output from one
+              function and automatically patch it to input of the next function
+              until it spits out the final value.
+            </p>
 
-<p>
-Come to think of it we have an extras utility that sounds like
-something like that. It takes a list of values and applies a function
-to each of those values, accumulating a single result. The values
-themselves can be functions. The functions is called `reduce()`, but
-to match the compose behavior above, we need it to reduce right to left,
-instead of left to right.
-</p>
+            <p>
+              Come to think of it we have an extras utility that sounds like
+              something like that. It takes a list of values and applies a
+              function to each of those values, accumulating a single result.
+              The values themselves can be functions. The functions is called
+              `reduce()`, but to match the compose behavior above, we need it to
+              reduce right to left, instead of left to right.
+            </p>
 
-<p>
-Good thing there's a `reduceRight()` that does exactly what we're looking for:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">const compose = (...fns) =&gt; x =&gt; fns.reduceRight((v, f) =&gt; f(v), x);
-</pre>
-</div>
+            <p>
+              Good thing there's a `reduceRight()` that does exactly what we're
+              looking for:
+            </p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+const compose = (...fns) =&gt; x =&gt; fns.reduceRight((v, f) =&gt; f(v), x);
+</pre
+              >
+            </div>
 
-<p>
-Like `.reduce()`, the array `.reduceRight()` method takes a reducer
-function and an initial value (`x`). We iterate over the array
-functions (from right to left), applying each in turn to the
-accumulated value (`v`).
-</p>
+            <p>
+              Like `.reduce()`, the array `.reduceRight()` method takes a
+              reducer function and an initial value (`x`). We iterate over the
+              array functions (from right to left), applying each in turn to the
+              accumulated value (`v`).
+            </p>
 
-<p>
-With compose, we can rewrite our composition above without the
-nesting:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">const toSlug = compose(
+            <p>
+              With compose, we can rewrite our composition above without the
+              nesting:
+            </p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+const toSlug = compose(
   encodeURIComponent,
   join('-'),
   map(toLowerCase),
@@ -330,33 +579,37 @@ nesting:
 );
 
 console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Of course, `compose()` comes with a loadash/fp or ramda as well:
-</p>
+            <p>
+              Of course, `compose()` comes with a loadash/fp or ramda as well:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">import { compose } from 'lodash/fp';
+            <div class="org-src-container">
+              <pre class="src src-js">
+import { compose } from 'lodash/fp';
 // or
 const compose = require('lodash/fp/compose');
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Compose is great when you're thinking in terms of the mathematical
-form of composition, inside out… but what if you want to think in
-terms of the sequence from left to right?
-</p>
+            <p>
+              Compose is great when you're thinking in terms of the mathematical
+              form of composition, inside out… but what if you want to think in
+              terms of the sequence from left to right?
+            </p>
 
-<p>
-There’s another form commonly called `pipe()`. Lodash calls it
-`flow()`:
-</p>
+            <p>
+              There’s another form commonly called `pipe()`. Lodash calls it
+              `flow()`:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const pipe = (...fns) =&gt; x =&gt; fns.reduce((v, f) =&gt; f(v), x);
+            <div class="org-src-container">
+              <pre class="src src-js">
+const pipe = (...fns) =&gt; x =&gt; fns.reduce((v, f) =&gt; f(v), x);
 
 const fn1 = s =&gt; s.toLowerCase();
 const fn2 = s =&gt; s.split('').reverse().join('');
@@ -364,21 +617,23 @@ const fn3 = s =&gt; s + '!'
 
 const newFunc = pipe(fn1, fn2, fn3);
 const result = newFunc('Time'); // emit!
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Notice the implementation is exactly the same as `compose()`, except
-that we're using `.reduce()` instead of `.reduceRight()`, which
-reduces left to right instead of right to left.
-</p>
+            <p>
+              Notice the implementation is exactly the same as `compose()`,
+              except that we're using `.reduce()` instead of `.reduceRight()`,
+              which reduces left to right instead of right to left.
+            </p>
 
-<p>
-Let's look at our `toSlug()` function implemented with `pipe()`:
-</p>
+            <p>
+              Let's look at our `toSlug()` function implemented with `pipe()`:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const toSlug = pipe(
+            <div class="org-src-container">
+              <pre class="src src-js">
+const toSlug = pipe(
   split(' '),
   map(toLowerCase),
   join('-'),
@@ -386,63 +641,64 @@ Let's look at our `toSlug()` function implemented with `pipe()`:
 );
 
 console.log(toSlug('JS Cheerleader')); // 'js-cheerleader'
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-For me, this is much easier to read.
-</p>
+            <p>For me, this is much easier to read.</p>
 
-<p>
-Hardcore functional programmers define their entire application in
-terms of function compositions. I use it frequently to eliminate the
-need for temporary variables. Look at the `pipe()` version of
-`toSlug()` carefully and you might notice something special.
-</p>
+            <p>
+              Hardcore functional programmers define their entire application in
+              terms of function compositions. I use it frequently to eliminate
+              the need for temporary variables. Look at the `pipe()` version of
+              `toSlug()` carefully and you might notice something special.
+            </p>
 
-<p>
-In imperative programming, when you're performing transformations on
-some variable, you’ll find references to the variable in each step of
-the transformation. The `pipe()` implementation above is written in a
-points-free style, which means that it does not identify the arguments
-on which it operates at all.
-</p>
+            <p>
+              In imperative programming, when you're performing transformations
+              on some variable, you’ll find references to the variable in each
+              step of the transformation. The `pipe()` implementation above is
+              written in a points-free style, which means that it does not
+              identify the arguments on which it operates at all.
+            </p>
 
-<p>
-I frequently use pipes in things like unit tests and Redux state
-reducers to eliminate the need for intermediary variables which exist
-only to hold transient values between one operation and the next.
-</p>
+            <p>
+              I frequently use pipes in things like unit tests and Redux state
+              reducers to eliminate the need for intermediary variables which
+              exist only to hold transient values between one operation and the
+              next.
+            </p>
 
-<p>
-That may sound weird at first, but as you get practice with it, you'll
-find that in functional programming, you're working with very
-abstract, generalized functions in which the names of things don't
-matter so much. Names just get in the way. You may start to think of
-variables as unnecessary boilerplate.
-</p>
+            <p>
+              That may sound weird at first, but as you get practice with it,
+              you'll find that in functional programming, you're working with
+              very abstract, generalized functions in which the names of things
+              don't matter so much. Names just get in the way. You may start to
+              think of variables as unnecessary boilerplate.
+            </p>
 
-<p>
-That said, I'm of the opinion that points-free style can be taken too
-far. It can become too dense, and harder to understand, but if you get
-confused, here's a little tip… you can tap into the flow to trace
-what's going on:
-</p>
+            <p>
+              That said, I'm of the opinion that points-free style can be taken
+              too far. It can become too dense, and harder to understand, but if
+              you get confused, here's a little tip… you can tap into the flow
+              to trace what's going on:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const trace = curry((label, x) =&gt; {
+            <div class="org-src-container">
+              <pre class="src src-js">
+const trace = curry((label, x) =&gt; {
   console.log(`== ${ label }:  ${ x }`);
   return x;
 });
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Here's how you use it:
-</p>
+            <p>Here's how you use it:</p>
 
-<div class="org-src-container">
-<pre class="src src-js">  const toSlug = pipe(
+            <div class="org-src-container">
+              <pre class="src src-js">
+  const toSlug = pipe(
   trace('input'),
   split(' '),
   map(toLowerCase),
@@ -455,185 +711,228 @@ console.log(toSlug('JS Cheerleader'));
 // '== input:  JS Cheerleader'
 // '== after map:  js,cheerleader'
 // 'js-cheerleader'
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-`trace()` is just a special form of the more general `tap()`, which
-lets you perform some action for each value that flows through the
-pipe. Get it? Pipe? Tap? You can write `tap()` like this:
-</p>
+            <p>
+              `trace()` is just a special form of the more general `tap()`,
+              which lets you perform some action for each value that flows
+              through the pipe. Get it? Pipe? Tap? You can write `tap()` like
+              this:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const tap = curry((fn, x) =&gt; {
+            <div class="org-src-container">
+              <pre class="src src-js">
+const tap = curry((fn, x) =&gt; {
   fn(x);
   return x;
 });
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Now you can see how `trace()` is just a special-cased `tap()`:
-</p>
+            <p>
+              Now you can see how `trace()` is just a special-cased `tap()`:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const trace = label =&gt; {
+            <div class="org-src-container">
+              <pre class="src src-js">
+const trace = label =&gt; {
   return tap(x =&gt; console.log(`== ${ label }:  ${ x }`));
 };
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-You should be starting to get a sense of what functional programming
-is like, and how partial application &amp; currying collaborate with
-function composition to help you write programs which are more
-readable with less boilerplate.
-</p>
-</div>
-</div>
+            <p>
+              You should be starting to get a sense of what functional
+              programming is like, and how partial application &amp; currying
+              collaborate with function composition to help you write programs
+              which are more readable with less boilerplate.
+            </p>
+          </div>
+        </div>
 
-<div id="outline-container-org8dad4b7" class="outline-3">
-<h3 id="org8dad4b7"><span class="section-number-3">3.3.</span> Source:</h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0</a>
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org27d730e" class="outline-2">
-<h2 id="org27d730e"><span class="section-number-2">4.</span> What is: Difference Between Class &amp; Prototypal Inheritance</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-org4d5c2ce" class="outline-3">
-<h3 id="org4d5c2ce"><span class="section-number-3">4.1.</span> Class Inheritance</h3>
-<div class="outline-text-3" id="text-4-1">
-<p>
-A Class is like a blueprint - a description of the object to be
-created. Classes inherit from classes and create subclass
-relationships: hierarchical class taxonomies.
-</p>
+        <div id="outline-container-org7ac8488" class="outline-3">
+          <h3 id="org7ac8488">
+            <span class="section-number-3">4.3.</span> Source:
+          </h3>
+          <div class="outline-text-3" id="text-4-3">
+            <p>
+              <a
+                href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0"
+                >https://medium.com/javascript-scene/master-the-javascript-interview-what-is-function-composition-20dfb109a1a0</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-orgb49a060" class="outline-2">
+        <h2 id="orgb49a060">
+          <span class="section-number-2">5.</span> What is: Difference Between
+          Class &amp; Prototypal Inheritance
+        </h2>
+        <div class="outline-text-2" id="text-5"></div>
+        <div id="outline-container-org7b70f0c" class="outline-3">
+          <h3 id="org7b70f0c">
+            <span class="section-number-3">5.1.</span> Class Inheritance
+          </h3>
+          <div class="outline-text-3" id="text-5-1">
+            <p>
+              A Class is like a blueprint - a description of the object to be
+              created. Classes inherit from classes and create subclass
+              relationships: hierarchical class taxonomies.
+            </p>
 
-<p>
-Instances are typically instantiated via constructor functions with
-the <b><b>new</b></b> keyword. Class inheritance may or may not use the
-<b><b>class</b></b> keyword from ES6. Classes as you may know them from
-languages like Java don't technically exist in Javascript. Constructor
-functions are used, instead. The ES6 <b><b>class</b></b> keyword desugars to a
-constructor function:
-</p>
+            <p>
+              Instances are typically instantiated via constructor functions
+              with the <b><b>new</b></b> keyword. Class inheritance may or may
+              not use the <b><b>class</b></b> keyword from ES6. Classes as you
+              may know them from languages like Java don't technically exist in
+              Javascript. Constructor functions are used, instead. The ES6
+              <b><b>class</b></b> keyword desugars to a constructor function:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">class Foo {};
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Foo {};
 console.log(typeof Foo);
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<pre class="example">
+            <pre class="example">
 function
 undefined
-</pre>
+</pre
+            >
 
+            <p>
+              In JS, class inheritance is implemented on top of prototypal
+              inheritance, but that does not mean that it does the same thing:
+            </p>
 
-<p>
-In JS, class inheritance is implemented on top of prototypal
-inheritance, but that does not mean that it does the same thing:
-</p>
+            <p>
+              JS class inheritance uses the prototype chain o wire the child
+              `Constructor.prototype` to the parent `Constructor.prototype` for
+              delegation. Usually, the `super()` constructor is also called.
+              Those steps form
+              <b><b>single-ancestor parent/child hierarchies</b></b> and
+              <b><b>create the tightest coupling available in OO design</b></b
+              >.
+            </p>
+          </div>
+        </div>
 
-<p>
-JS class inheritance uses the prototype chain o wire the child
-`Constructor.prototype` to the parent `Constructor.prototype` for
-delegation.  Usually, the `super()` constructor is also called. Those
-steps form <b><b>single-ancestor parent/child hierarchies</b></b> and <b><b>create
-the tightest coupling available in OO design</b></b>.
-</p>
-</div>
-</div>
+        <div id="outline-container-orgb21c868" class="outline-3">
+          <h3 id="orgb21c868">
+            <span class="section-number-3">5.2.</span> Prototypal Inheritance
+          </h3>
+          <div class="outline-text-3" id="text-5-2">
+            <p>
+              A prototype is a working object instance. Objects inherit directly
+              from other objects.
+            </p>
 
-<div id="outline-container-org742f2a7" class="outline-3">
-<h3 id="org742f2a7"><span class="section-number-3">4.2.</span> Prototypal Inheritance</h3>
-<div class="outline-text-3" id="text-4-2">
-<p>
-A prototype is a working object instance. Objects inherit directly
-from other objects.
-</p>
+            <p>
+              Instances may be composed from many different source objects,
+              allowing for easy selective inheritance and flat
+              <b><b>Prototype</b></b> delegation hierarchy. In other words,
+              class taxonomies are not an automatic side-effect of prototypal
+              OO: a critical distinction.
+            </p>
 
-<p>
-Instances may be composed from many different source objects, allowing
-for easy selective inheritance and flat <b><b>Prototype</b></b> delegation
-hierarchy. In other words, class taxonomies are not an automatic
-side-effect of prototypal OO: a critical distinction.
-</p>
+            <p>
+              Instances are typically instantiated via factory functions, object
+              literals, or `Object.create()`.
+            </p>
+          </div>
+        </div>
 
-<p>
-Instances are typically instantiated via factory functions, object
-literals, or `Object.create()`.
-</p>
-</div>
-</div>
+        <div id="outline-container-org4f5329e" class="outline-3">
+          <h3 id="org4f5329e">
+            <span class="section-number-3">5.3.</span> Why does this Matter?
+          </h3>
+          <div class="outline-text-3" id="text-5-3">
+            <p>
+              Inheritance is fundamentally a code reuse mechanism: A way for
+              different kinds of objects to share code. The way that you share
+              code matters because if you get it wrong, it can create a lot of
+              problems, specifically:
+            </p>
 
-<div id="outline-container-orge5b4cfd" class="outline-3">
-<h3 id="orge5b4cfd"><span class="section-number-3">4.3.</span> Why does this Matter?</h3>
-<div class="outline-text-3" id="text-4-3">
-<p>
-Inheritance is fundamentally a code reuse mechanism: A way for
-different kinds of objects to share code. The way that you share code
-matters because if you get it wrong, it can create a lot of problems, specifically:
-</p>
+            <p>
+              <b
+                ><b
+                  >Class inheritance creates parent/child objects taxonomies as
+                  side-effect</b
+                ></b
+              >
+            </p>
 
-<p>
-<b><b>Class inheritance creates parent/child objects taxonomies as side-effect</b></b>
-</p>
+            <p>
+              Those are virtually impossible to get right for all new use cases,
+              and widespread use of a base class leads to the
+              <b><b>fragile base class problem</b></b
+              >, which makes them difficult to fix when you get them wrong. In
+              fact, class inheritance causes many well known problems in OO
+              design:
+            </p>
 
-<p>
-Those are virtually impossible to get right for all new use cases, and
-widespread use of a base class leads to the <b><b>fragile base class
-problem</b></b>, which makes them difficult to fix when you get them wrong.
-In fact, class inheritance causes many well known problems in OO
-design:
-</p>
+            <ul class="org-ul">
+              <li>
+                The tight coupling problem (class inheritance is the tightest
+                coupling avaiable in oo design), which leads to&#x2026;
+              </li>
+              <li>The fragile base class problem</li>
+              <li>
+                Inflexible hierarchy problem (eventually, all evolving
+                hierarchies are wrong for new uses)
+              </li>
+              <li>
+                The duplication by necessity problem (due to inflexible
+                hierarchies, new use cases are often shoe-horned in by
+                duplicating, rather than adapting existing code)
+              </li>
+              <li>
+                The Gorilla/banana problem (What you wanted was a banana, but
+                what you got was a gorilla holding the banana, and the entire
+                jungle)
+              </li>
+            </ul>
 
-<ul class="org-ul">
-<li>The tight coupling problem (class inheritance is the tightest
-coupling avaiable in oo design), which leads to&#x2026;</li>
-<li>The fragile base class problem</li>
-<li>Inflexible hierarchy problem (eventually, all evolving hierarchies
-are wrong for new uses)</li>
-<li>The duplication by necessity problem (due to inflexible hierarchies,
-new use cases are often shoe-horned in by duplicating, rather than
-adapting existing code)</li>
-<li>The Gorilla/banana problem (What you wanted was a banana, but what
-you got was a gorilla holding the banana, and the entire jungle)</li>
-</ul>
+            <p>The solution to all of these problems:</p>
 
-<p>
-The solution to all of these problems:
-</p>
+            <p>
+              <b>* Favor object composition over class inheritance. *</b>
+            </p>
 
-<p>
-<b>* Favor object composition over class inheritance. *</b>
-</p>
+            <p>
+              ~ The Gang of Four, "Design Patterns: Elements of Reusable Object
+              Oriented Software"
+            </p>
+          </div>
+        </div>
 
-<p>
-~ The Gang of Four, "Design Patterns: Elements of
-Reusable Object Oriented Software"
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgf4bf57b" class="outline-3">
-<h3 id="orgf4bf57b"><span class="section-number-3">4.4.</span> Three Different Kinds of Prototypal Inheritance</h3>
-<div class="outline-text-3" id="text-4-4">
-</div>
-<div id="outline-container-org8054d50" class="outline-4">
-<h4 id="org8054d50"><span class="section-number-4">4.4.1.</span> Before the three</h4>
-<div class="outline-text-4" id="text-4-4-1">
-<p>
-Before we dive into the other kinds of inheritance, let's take a
-closer look at what I mean by class inheritance:
-</p>
-<div class="org-src-container">
-<pre class="src src-js"> // Class Inheritance Example
+        <div id="outline-container-orgbc4ea95" class="outline-3">
+          <h3 id="orgbc4ea95">
+            <span class="section-number-3">5.4.</span> Three Different Kinds of
+            Prototypal Inheritance
+          </h3>
+          <div class="outline-text-3" id="text-5-4"></div>
+          <div id="outline-container-org7d87754" class="outline-4">
+            <h4 id="org7d87754">
+              <span class="section-number-4">5.4.1.</span> Before the three
+            </h4>
+            <div class="outline-text-4" id="text-5-4-1">
+              <p>
+                Before we dive into the other kinds of inheritance, let's take a
+                closer look at what I mean by class inheritance:
+              </p>
+              <div class="org-src-container">
+                <pre class="src src-js">
+ // Class Inheritance Example
  // NOT RECOMMENDED. Use object composition, instead.
   class GuitarAmp {
    constructor ({ cabinet = "spruce", distortion = "1", volume = "0" } = {}) {
@@ -668,36 +967,39 @@ closer look at what I mean by class inheritance:
  const expectedStrip = ["cabinet", "distortion", "volume", "lowCut", "inputLevel"];
 
 console.log("2.", actualStrip, expectedStrip, " instance should inherit props from GuitarAmp, BassAmp and ChannelStrip");
-</pre>
-</div>
+</pre
+                >
+              </div>
 
-<pre class="example">
+              <pre class="example">
 1. [ 'cabinet', 'distortion', 'volume', 'lowCut' ] [ 'cabinet', 'distortion', 'volume', 'lowCut' ]  instance should inherit props from GuitarAmp and BassAmp
 2. [ 'cabinet', 'distortion', 'volume', 'lowCut', 'inputLevel' ] [ 'cabinet', 'distortion', 'volume', 'lowCut', 'inputLevel' ]  instance should inherit props from GuitarAmp, BassAmp and ChannelStrip
 undefined
-</pre>
+</pre
+              >
 
+              <p>
+                `BassAmp` inherits from `GuitarAmp`, and `ChannelStrip` inherits
+                from `BassAmp` &amp; `GuitarAmp`. This is an example of how OO
+                design goes wrong. A channel strip isn’t actually a type of
+                guitar amp, and doesn’t actually need a cabinet at all. A better
+                option would be to create a new base class that both the amps
+                and the channel strip inherits from, but even that has
+                limitations.
+              </p>
 
-<p>
-`BassAmp` inherits from `GuitarAmp`, and `ChannelStrip` inherits from
-`BassAmp` &amp; `GuitarAmp`. This is an example of how OO design goes
-wrong. A channel strip isn’t actually a type of guitar amp, and
-doesn’t actually need a cabinet at all. A better option would be to
-create a new base class that both the amps and the channel strip
-inherits from, but even that has limitations.
-</p>
+              <p>
+                Eventually, the new shared base class strategy breaks down, too.
+              </p>
 
-<p>
-Eventually, the new shared base class strategy breaks down, too.
-</p>
+              <p>
+                There’s a better way. You can inherit just the stuff you really
+                need using object composition:
+              </p>
 
-<p>
-There’s a better way. You can inherit just the stuff you really need
-using object composition:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-js">// Composition Example
+              <div class="org-src-container">
+                <pre class="src src-js">
+// Composition Example
 
 const distortion = { distortion: 1 };
 const volume = { volume: 1 };
@@ -767,355 +1069,411 @@ const actualChannel = ChannelStrip({
   };
 
 console.log("2.", actualChannel, expectedChannel, msgChannel);
-</pre>
-</div>
+</pre
+                >
+              </div>
 
-<pre class="example">
+              <pre class="example">
 1. { distortion: 2, volume: 2, cabinet: 'vintage' } { distortion: 2, volume: 2, cabinet: 'vintage' } should have distortion, volume, and cabinet
 2. { lowCut: 2, volume: 2, cabinet: 'vintage' } { lowCut: 2, volume: 2, cabinet: 'vintage' } should have volume, lowCut, and cabinet
 2. { inputLevel: 2, lowCut: 2, volume: 2 } { inputLevel: 2, lowCut: 2, volume: 2 } should have inputLevel, lowCut, and volume
 undefined
-</pre>
+</pre
+              >
 
+              <p>
+                If you look carefully, you might see that we're being much more
+                specific about which objects get which properties because with
+                composition, we can. It wasn't really an option with class
+                inheritance. When you inherit from a class, you get everything,
+                even if you don’t want it.
+              </p>
 
-<p>
-If you look carefully, you might see that we're being much more
-specific about which objects get which properties because with
-composition, we can. It wasn't really an option with class
-inheritance. When you inherit from a class, you get everything, even
-if you don’t want it.
-</p>
+              <p>
+                At this point, you may be thinking to yourself, "that's nice,
+                but where are the prototypes?"
+              </p>
 
-<p>
-At this point, you may be thinking to yourself, "that's nice, but where are the prototypes?"
-</p>
+              <p>
+                To understand that, you have to understand that there are three
+                different kinds of prototypal OO.
+              </p>
+            </div>
+          </div>
 
-<p>
-To understand that, you have to understand that there are three different kinds of prototypal OO.
-</p>
-</div>
-</div>
+          <div id="outline-container-orgf8b016d" class="outline-4">
+            <h4 id="orgf8b016d">
+              <span class="section-number-4">5.4.2.</span> Concatenative
+              inheritance
+            </h4>
+            <div class="outline-text-4" id="text-5-4-2">
+              <p>
+                The process of inheriting features directly from one object to
+                another by copying the source objects properties. In JavaScript,
+                source prototypes are commonly referred to as mixins. Since ES6,
+                this feature has a convenience utility in JavaScript called
+                `Object.assign()`. Prior to ES6, this was commonly done with
+                Underscore/Lodash's `.extend()` jQuery's `$.extend()`, and so
+                on… The composition example above uses concatenative
+                inheritance.
+              </p>
+            </div>
+          </div>
 
-<div id="outline-container-org89e3305" class="outline-4">
-<h4 id="org89e3305"><span class="section-number-4">4.4.2.</span> Concatenative inheritance</h4>
-<div class="outline-text-4" id="text-4-4-2">
-<p>
-The process of inheriting features directly from one object to another
-by copying the source objects properties. In JavaScript, source
-prototypes are commonly referred to as mixins. Since ES6, this feature
-has a convenience utility in JavaScript called
-`Object.assign()`. Prior to ES6, this was commonly done with
-Underscore/Lodash's `.extend()` jQuery's `$.extend()`, and so on… The
-composition example above uses concatenative inheritance.
-</p>
-</div>
-</div>
+          <div id="outline-container-org3fbe9dc" class="outline-4">
+            <h4 id="org3fbe9dc">
+              <span class="section-number-4">5.4.3.</span> Prototype delegation
+            </h4>
+            <div class="outline-text-4" id="text-5-4-3">
+              <p>
+                In JavaScript, an object may have a link to a prototype for
+                delegation. If a property is not found on the object, the lookup
+                is delegated to the delegate prototype, which may have a link to
+                its own delegate prototype, and so on up the chain until you
+                arrive at `Object.prototype`, which is the root delegate. This
+                is the prototype that gets hooked up when you attach to a
+                `Constructor.prototype` and instantiate with `new`. You can also
+                use `Object.create()` for this purpose, and even mix this
+                technique with concatenation in order to flatten multiple
+                prototypes to a single delegate, or extend the object instance
+                after creation.
+              </p>
 
-<div id="outline-container-orge6573d1" class="outline-4">
-<h4 id="orge6573d1"><span class="section-number-4">4.4.3.</span> Prototype delegation</h4>
-<div class="outline-text-4" id="text-4-4-3">
-<p>
-In JavaScript, an object may have a link to a prototype for
-delegation. If a property is not found on the object, the lookup is
-delegated to the delegate prototype, which may have a link to its own
-delegate prototype, and so on up the chain until you arrive at
-`Object.prototype`, which is the root delegate. This is the prototype
-that gets hooked up when you attach to a `Constructor.prototype` and
-instantiate with `new`. You can also use `Object.create()` for this
-purpose, and even mix this technique with concatenation in order to
-flatten multiple prototypes to a single delegate, or extend the object
-instance after creation.
-</p>
-
-<p>
-The JS prototype chain:
-</p>
-<div class="org-src-container">
-<pre class="src src-artist">+---------------------+       +----------------------+	       +---------------------+
+              <p>The JS prototype chain:</p>
+              <div class="org-src-container">
+                <pre class="src src-artist">
++---------------------+       +----------------------+	       +---------------------+
 |       George        |       |      Prototype       +--------+   Object.prototype  |
 | name	               +-------+  hello()             |	       | ...                 |
 | [[Prototype]]       |       |  [[Prototype]]       |	       |                     |
 |                     |       |                      |	       |                     |
 +---------------------+       +----------------------+	       +---------------------+
-</pre>
-</div>
-</div>
-</div>
+</pre
+                >
+              </div>
+            </div>
+          </div>
 
-<div id="outline-container-orga643c36" class="outline-4">
-<h4 id="orga643c36"><span class="section-number-4">4.4.4.</span> Functional inheritance</h4>
-<div class="outline-text-4" id="text-4-4-4">
-<p>
-In JavaScript, any function can create an object. When that function
-is not a constructor (or `class`), it's called a factory
-function. Functional inheritance works by producing an object from a
-factory, and extending the produced object by assigning properties to
-it directly (using concatenative inheritance). Douglas Crockford
-coined the term, but functional inheritance has been in common use in
-JavaScript for a long time.
-</p>
+          <div id="outline-container-orgf4e7844" class="outline-4">
+            <h4 id="orgf4e7844">
+              <span class="section-number-4">5.4.4.</span> Functional
+              inheritance
+            </h4>
+            <div class="outline-text-4" id="text-5-4-4">
+              <p>
+                In JavaScript, any function can create an object. When that
+                function is not a constructor (or `class`), it's called a
+                factory function. Functional inheritance works by producing an
+                object from a factory, and extending the produced object by
+                assigning properties to it directly (using concatenative
+                inheritance). Douglas Crockford coined the term, but functional
+                inheritance has been in common use in JavaScript for a long
+                time.
+              </p>
 
-<p>
-As you're probably starting to realize, concatenative inheritance is
-the secret sauce that enables object composition in JavaScript, which
-makes both prototype delegation and functional inheritance a lot more
-interesting.
-</p>
+              <p>
+                As you're probably starting to realize, concatenative
+                inheritance is the secret sauce that enables object composition
+                in JavaScript, which makes both prototype delegation and
+                functional inheritance a lot more interesting.
+              </p>
 
-<p>
-When most people think of prototypal OO in JavaScript, they think of
-prototype delegation. By now you should see that they’re missing out
-on a lot. Delegate prototypes aren't the great alternative to class
-inheritance — object composition is.
-</p>
-</div>
-</div>
-</div>
+              <p>
+                When most people think of prototypal OO in JavaScript, they
+                think of prototype delegation. By now you should see that
+                they’re missing out on a lot. Delegate prototypes aren't the
+                great alternative to class inheritance — object composition is.
+              </p>
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-org1930fe0" class="outline-3">
-<h3 id="org1930fe0"><span class="section-number-3">4.5.</span> Why Composition is Immune to the Fragile Base Class Problem</h3>
-<div class="outline-text-3" id="text-4-5">
-<p>
-To understand the fragile base class problem and why it doesn’t apply
-to composition, first you have to understand how it happens:
-</p>
+        <div id="outline-container-orgbd82260" class="outline-3">
+          <h3 id="orgbd82260">
+            <span class="section-number-3">5.5.</span> Why Composition is Immune
+            to the Fragile Base Class Problem
+          </h3>
+          <div class="outline-text-3" id="text-5-5">
+            <p>
+              To understand the fragile base class problem and why it doesn’t
+              apply to composition, first you have to understand how it happens:
+            </p>
 
-<p>
-`A` is the base class
-</p>
+            <p>`A` is the base class</p>
 
-<p>
-`B` inherits from `A`
-</p>
+            <p>`B` inherits from `A`</p>
 
-<p>
-`C` inherits from `B`
-</p>
+            <p>`C` inherits from `B`</p>
 
-<p>
-`D` inherits from `B`
-</p>
+            <p>`D` inherits from `B`</p>
 
-<p>
-`C` calls `super`, which runs code in `B`. `B` calls `super` which runs code in `A`.
-</p>
+            <p>
+              `C` calls `super`, which runs code in `B`. `B` calls `super` which
+              runs code in `A`.
+            </p>
 
-<p>
-`A` and `B` contain unrelated features needed by both `C` &amp; `D`. `D`
-is a new use case, and needs slightly different behavior in `A`'s init
-code than `C` needs. So the newbie dev goes and tweaks `A`'s init
-code. `C` breaks because it depends on the existing behavior, and `D`
-starts working.
-</p>
+            <p>
+              `A` and `B` contain unrelated features needed by both `C` &amp;
+              `D`. `D` is a new use case, and needs slightly different behavior
+              in `A`'s init code than `C` needs. So the newbie dev goes and
+              tweaks `A`'s init code. `C` breaks because it depends on the
+              existing behavior, and `D` starts working.
+            </p>
 
-<p>
-What we have here are features spread out between `A` and `B` that `C`
-and `D` need to use in various ways. `C` and `D` don't use every
-feature of `A` and `B`… they just want to inherit some stuff that's
-already defined in `A` and `B`. But by inheriting and calling `super`,
-you don't get to be selective about what you inherit. You inherit
-everything:
-</p>
+            <p>
+              What we have here are features spread out between `A` and `B` that
+              `C` and `D` need to use in various ways. `C` and `D` don't use
+              every feature of `A` and `B`… they just want to inherit some stuff
+              that's already defined in `A` and `B`. But by inheriting and
+              calling `super`, you don't get to be selective about what you
+              inherit. You inherit everything:
+            </p>
 
-<p>
- ** &#x2026;the problem with object-oriented languages is they’ve got all this
-implicit environment that they carry around with them. You wanted a
-banana but what you got was a gorilla holding the banana and the
-entire jungle.” ~ Joe Armstrong — “Coders at Work **
-</p>
+            <p>
+              ** &#x2026;the problem with object-oriented languages is they’ve
+              got all this implicit environment that they carry around with
+              them. You wanted a banana but what you got was a gorilla holding
+              the banana and the entire jungle.” ~ Joe Armstrong — “Coders at
+              Work **
+            </p>
 
-<p>
-With Composition
-</p>
+            <p>With Composition</p>
 
-<p>
-Imagine you have features instead of classes:
-</p>
+            <p>Imagine you have features instead of classes:</p>
 
-<div class="org-src-container">
-<pre class="src src-js">feat1, feat2, feat3, feat4
-</pre>
-</div>
+            <div class="org-src-container">
+              <pre class="src src-js">
+feat1, feat2, feat3, feat4
+</pre
+              >
+            </div>
 
-<p>
-`C` needs `feat1` and `feat3`, `D` needs `feat1`, `feat2`, `feat4`:
-</p>
+            <p>
+              `C` needs `feat1` and `feat3`, `D` needs `feat1`, `feat2`,
+              `feat4`:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const C = compose(feat1, feat3);
+            <div class="org-src-container">
+              <pre class="src src-js">
+const C = compose(feat1, feat3);
 const D = compose(feat1, feat2, feat4);
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Now, imagine you discover that `D` needs slightly different behavior
-from `feat1`. It doesn’t actually need to change `feat1`, instead, you
-can make a customized version of `feat1` and use that, instead. You
-can still inherit the existing behaviors from `feat2` and `feat4` with
-no changes:
-</p>
+            <p>
+              Now, imagine you discover that `D` needs slightly different
+              behavior from `feat1`. It doesn’t actually need to change `feat1`,
+              instead, you can make a customized version of `feat1` and use
+              that, instead. You can still inherit the existing behaviors from
+              `feat2` and `feat4` with no changes:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const D = compose(custom1, feat2, feat4);  
-</pre>
-</div>
+            <div class="org-src-container">
+              <pre class="src src-js">
+const D = compose(custom1, feat2, feat4);  
+</pre
+              >
+            </div>
 
-<p>
-And `C` remains unaffected.
-</p>
+            <p>And `C` remains unaffected.</p>
 
-<p>
-The reason this is not possible with class inheritance is because when
-you use class inheritance, you buy into the whole existing class
-taxonomy.
-</p>
+            <p>
+              The reason this is not possible with class inheritance is because
+              when you use class inheritance, you buy into the whole existing
+              class taxonomy.
+            </p>
 
-<p>
-If you want to adapt a little for a new use-case, you either end up
-duplicating parts of the existing taxonomy (the duplication by
-necessity problem), or you refactor everything that depends on the
-existing taxonomy to adapt the taxonomy to the new use case due to the
-fragile base class problem.
-</p>
+            <p>
+              If you want to adapt a little for a new use-case, you either end
+              up duplicating parts of the existing taxonomy (the duplication by
+              necessity problem), or you refactor everything that depends on the
+              existing taxonomy to adapt the taxonomy to the new use case due to
+              the fragile base class problem.
+            </p>
 
-<p>
-Composition is immune to both.
-</p>
-</div>
-</div>
+            <p>Composition is immune to both.</p>
+          </div>
+        </div>
 
-<div id="outline-container-orgf5926b9" class="outline-3">
-<h3 id="orgf5926b9"><span class="section-number-3">4.6.</span> You think you know Prototypes, but&#x2026;</h3>
-<div class="outline-text-3" id="text-4-6">
-<p>
-If you were taught to build classes or constructor functions and
-inherit from those, what you were taught was not prototypal
-inheritance. You were taught how to mimic class inheritance using
-prototypes. 
-</p>
+        <div id="outline-container-orgca8ee63" class="outline-3">
+          <h3 id="orgca8ee63">
+            <span class="section-number-3">5.6.</span> You think you know
+            Prototypes, but&#x2026;
+          </h3>
+          <div class="outline-text-3" id="text-5-6">
+            <p>
+              If you were taught to build classes or constructor functions and
+              inherit from those, what you were taught was not prototypal
+              inheritance. You were taught how to mimic class inheritance using
+              prototypes.
+            </p>
 
-<p>
-In JavaScript, class inheritance piggybacks on top of the very rich,
-flexible prototypal inheritance features built into the language a
-long time ago, but when you use class inheritance — even the ES6+
-`class` inheritance built on top of prototypes, you're not using the
-full power &amp; flexibility of prototypal OO. In fact, you're painting
-yourself into corners and opting into all of the class inheritance
-problems.
-</p>
+            <p>
+              In JavaScript, class inheritance piggybacks on top of the very
+              rich, flexible prototypal inheritance features built into the
+              language a long time ago, but when you use class inheritance —
+              even the ES6+ `class` inheritance built on top of prototypes,
+              you're not using the full power &amp; flexibility of prototypal
+              OO. In fact, you're painting yourself into corners and opting into
+              all of the class inheritance problems.
+            </p>
 
-<p>
-Using class inheritance in JavaScript is like driving your new Tesla
-Model S to the dealer and trading it in for a rusted out 1973 Ford
-Pinto.
-</p>
-</div>
-</div>
-<div id="outline-container-orgd54554e" class="outline-3">
-<h3 id="orgd54554e"><span class="section-number-3">4.7.</span> Source</h3>
-<div class="outline-text-3" id="text-4-7">
-<p>
-Almost all by this great article:
-<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9">https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9</a>
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org0c5b136" class="outline-2">
-<h2 id="org0c5b136"><span class="section-number-2">5.</span> Referential Transparency / Opacity in JS</h2>
-<div class="outline-text-2" id="text-5">
-<p>
-Referential transparency is used in many domains, for example:
-mathematics, logic, linguistics, philosophy and programming. It has
-quite changed meanings in each of these domains.
-</p>
+            <p>
+              Using class inheritance in JavaScript is like driving your new
+              Tesla Model S to the dealer and trading it in for a rusted out
+              1973 Ford Pinto.
+            </p>
+          </div>
+        </div>
+        <div id="outline-container-org4b7dfdb" class="outline-3">
+          <h3 id="org4b7dfdb">
+            <span class="section-number-3">5.7.</span> Source
+          </h3>
+          <div class="outline-text-3" id="text-5-7">
+            <p>
+              Almost all by this great article:
+              <a
+                href="https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9"
+                >https://medium.com/javascript-scene/master-the-javascript-interview-what-s-the-difference-between-class-prototypal-inheritance-e4cd0a7562e9</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="outline-container-org53a4ed7" class="outline-2">
+        <h2 id="org53a4ed7">
+          <span class="section-number-2">6.</span> Referential Transparency /
+          Opacity in JS
+        </h2>
+        <div class="outline-text-2" id="text-6">
+          <p>
+            Referential transparency is used in many domains, for example:
+            mathematics, logic, linguistics, philosophy and programming. It has
+            quite changed meanings in each of these domains.
+          </p>
 
-<p>
-Referential transparency in programming relates to programs. By the way of programs are
-composed of subprograms that are programs themselves. It relates to those subprograms, also.
-Subprograms can be signified by methods.
-</p>
+          <p>
+            Referential transparency in programming relates to programs. By the
+            way of programs are composed of subprograms that are programs
+            themselves. It relates to those subprograms, also. Subprograms can
+            be signified by methods.
+          </p>
 
-<p>
-Example:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">var identifty = (i) =&gt; { return i }
-</pre>
-</div>
+          <p>Example:</p>
+          <div class="org-src-container">
+            <pre class="src src-js">
+var identifty = (i) =&gt; { return i }
+</pre
+            >
+          </div>
 
-<ul class="org-ul">
-<li>We have defined a simple function named identity in the above code snippet.</li>
-<li>This function return whatsoever we're passing as its input.</li>
-<li>That is, if we passes 10, it returns back the value 10.</li>
-<li>As the function is only acts as a mirror and identity.</li>
-<li>Our function does work only on the incoming argument `i`.</li>
-<li>There is no global reference inside our function.</li>
-</ul>
+          <ul class="org-ul">
+            <li>
+              We have defined a simple function named identity in the above code
+              snippet.
+            </li>
+            <li>This function return whatsoever we're passing as its input.</li>
+            <li>That is, if we passes 10, it returns back the value 10.</li>
+            <li>As the function is only acts as a mirror and identity.</li>
+            <li>Our function does work only on the incoming argument `i`.</li>
+            <li>There is no global reference inside our function.</li>
+          </ul>
 
-<p>
-At the present conceive this function is used between other function calls like this:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">sum(4,5) + identity(1)
-</pre>
-</div>
+          <p>
+            At the present conceive this function is used between other function
+            calls like this:
+          </p>
+          <div class="org-src-container">
+            <pre class="src src-js">
+sum(4,5) + identity(1)
+</pre
+            >
+          </div>
 
-<p>
-By means of our Referential Transparency definition we may change the above statement into this:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">sum(4,5) + 1
-</pre>
-</div>
+          <p>
+            By means of our Referential Transparency definition we may change
+            the above statement into this:
+          </p>
+          <div class="org-src-container">
+            <pre class="src src-js">
+sum(4,5) + 1
+</pre
+            >
+          </div>
 
-<ul class="org-ul">
-<li>At this moment this process is called a Substitution model.</li>
-<li>By way of we can directly substitute the result of the function as
-is with its value.</li>
-<li>Generally due to the function doesn’t rely on other global variables
-for its logic.</li>
-<li>This leads to equivalent code and caching.</li>
-<li>We may easily run the above function with several threads deprived
-of even the need of synchronizing.</li>
-<li>The motive for synchronizing comes from the detail that threads
-shouldn't do global data when running equivalent.</li>
-<li>Functions that follow Referential Transparency depends only on
-inputs from its argument.</li>
-<li>Therefore, threads are allowed to run without any locking mechanism.</li>
-<li>Meanwhile the function returns the same value for the given input.</li>
-<li>We may, actually cache it. For instance, see there is a function
-called factorial.</li>
-<li>Calculates the factorial of the given number.</li>
-<li>Factorial takes the input as its argument for which the factorial
-needs to be calculated.</li>
-<li>We all recognize the factorial of 5 going to be 120.</li>
-<li>What would be if the user calls the factorial of 5 a second time?</li>
-<li>We see that the result is to be 120 if the factorial function
-follows Referential transparency as before.</li>
-<li>It only be contingent on the input argument.</li>
-<li>We may cache the values of our factorial function by keeping in mind
-these characters.</li>
-<li>Thus if a factorial is called for the second time with the input as
-`5`, we can return the cached value instead of calculating once
-again.</li>
-</ul>
+          <ul class="org-ul">
+            <li>At this moment this process is called a Substitution model.</li>
+            <li>
+              By way of we can directly substitute the result of the function as
+              is with its value.
+            </li>
+            <li>
+              Generally due to the function doesn’t rely on other global
+              variables for its logic.
+            </li>
+            <li>This leads to equivalent code and caching.</li>
+            <li>
+              We may easily run the above function with several threads deprived
+              of even the need of synchronizing.
+            </li>
+            <li>
+              The motive for synchronizing comes from the detail that threads
+              shouldn't do global data when running equivalent.
+            </li>
+            <li>
+              Functions that follow Referential Transparency depends only on
+              inputs from its argument.
+            </li>
+            <li>
+              Therefore, threads are allowed to run without any locking
+              mechanism.
+            </li>
+            <li>
+              Meanwhile the function returns the same value for the given input.
+            </li>
+            <li>
+              We may, actually cache it. For instance, see there is a function
+              called factorial.
+            </li>
+            <li>Calculates the factorial of the given number.</li>
+            <li>
+              Factorial takes the input as its argument for which the factorial
+              needs to be calculated.
+            </li>
+            <li>We all recognize the factorial of 5 going to be 120.</li>
+            <li>
+              What would be if the user calls the factorial of 5 a second time?
+            </li>
+            <li>
+              We see that the result is to be 120 if the factorial function
+              follows Referential transparency as before.
+            </li>
+            <li>It only be contingent on the input argument.</li>
+            <li>
+              We may cache the values of our factorial function by keeping in
+              mind these characters.
+            </li>
+            <li>
+              Thus if a factorial is called for the second time with the input
+              as `5`, we can return the cached value instead of calculating once
+              again.
+            </li>
+          </ul>
 
+          <p>
+            `An expression is called referentially transparent if it can be
+            replaced with its corresponding value (and vice-versa) without
+            changing the program's behavior.[1] This requires that the
+            expression be pure – its value must be the same for the same inputs
+            and its evaluation must have no side effects. An expression that is
+            not referentially transparent is called referentially opaque.`
+          </p>
 
-<p>
-`An expression is called referentially transparent if it can be
-replaced with its corresponding value (and vice-versa) without
-changing the program's behavior.[1] This requires that the expression
-be pure – its value must be the same for the same inputs and its
-evaluation must have no side effects. An expression that is not
-referentially transparent is called referentially opaque.`
-</p>
-
-<p>
-Examples of both:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">var g = 0;
+          <p>Examples of both:</p>
+          <div class="org-src-container">
+            <pre class="src src-js">
+var g = 0;
 
 function rt (x) {
   return x + 1
@@ -1133,10 +1491,11 @@ console.log(rt(1));
 console.log(ro(1));
 console.log(ro(1));
 console.log(ro(1));
-</pre>
-</div>
+</pre
+            >
+          </div>
 
-<pre class="example">
+          <pre class="example">
 2
 2
 2
@@ -1144,82 +1503,95 @@ console.log(ro(1));
 3
 4
 undefined
-</pre>
-</div>
-</div>
+</pre
+          >
+        </div>
+      </div>
 
-<div id="outline-container-orge634952" class="outline-2">
-<h2 id="orge634952"><span class="section-number-2">6.</span> What is: Closure</h2>
-<div class="outline-text-2" id="text-6">
-<p>
-Closures are important because they control what is and isn't in scope
-in a particular function, along with which variables are shared between
-sibling functions in the same containing scope. Understanding how
-variables and functions relate to each other is critical to
-understanding what's going on in your code, in both functional and
-object oriented programming styles.
-</p>
+      <div id="outline-container-org7993093" class="outline-2">
+        <h2 id="org7993093">
+          <span class="section-number-2">7.</span> What is: Closure
+        </h2>
+        <div class="outline-text-2" id="text-7">
+          <p>
+            Closures are important because they control what is and isn't in
+            scope in a particular function, along with which variables are
+            shared between sibling functions in the same containing scope.
+            Understanding how variables and functions relate to each other is
+            critical to understanding what's going on in your code, in both
+            functional and object oriented programming styles.
+          </p>
 
-<pre class="example">
+          <pre class="example">
 Coding without understanding of Closures is like trying to
 speak English without understanding the grammar rules.
 You might be able to get your ideas across, but probably a
 bit awkaardly.
-</pre>
+</pre
+          >
 
-<p>
-In JS closures are frequently used for data privacy, in event handlers
-and callback functions, and in partial applications, currying and
-other functional programming patterns.
-</p>
-</div>
+          <p>
+            In JS closures are frequently used for data privacy, in event
+            handlers and callback functions, and in partial applications,
+            currying and other functional programming patterns.
+          </p>
+        </div>
 
-<div id="outline-container-orgd2de1aa" class="outline-3">
-<h3 id="orgd2de1aa"><span class="section-number-3">6.1.</span> What is it?</h3>
-<div class="outline-text-3" id="text-6-1">
-<p>
-Is the combination of a function bundled together (enclosed) with
-references to its surrounding sate (the <b><b>lexical environment</b></b>). In
-other words, a closure gives you access to an outer function's scope
-from a inner function. In JavaScript, closures are created every time
-a function is created, at function creation time.
-</p>
+        <div id="outline-container-orgbe2bb3f" class="outline-3">
+          <h3 id="orgbe2bb3f">
+            <span class="section-number-3">7.1.</span> What is it?
+          </h3>
+          <div class="outline-text-3" id="text-7-1">
+            <p>
+              Is the combination of a function bundled together (enclosed) with
+              references to its surrounding sate (the
+              <b><b>lexical environment</b></b
+              >). In other words, a closure gives you access to an outer
+              function's scope from a inner function. In JavaScript, closures
+              are created every time a function is created, at function creation
+              time.
+            </p>
 
-<p>
-To use a Closure, define a function inside another function and expose
-it. To expose a function, return it or pass it to another function.
-</p>
+            <p>
+              To use a Closure, define a function inside another function and
+              expose it. To expose a function, return it or pass it to another
+              function.
+            </p>
 
-<p>
-The inner function will have access to the variables in the outer
-function scope, even after the outer function has returned.
-</p>
-</div>
-</div>
+            <p>
+              The inner function will have access to the variables in the outer
+              function scope, even after the outer function has returned.
+            </p>
+          </div>
+        </div>
 
-<div id="outline-container-org49f136a" class="outline-3">
-<h3 id="org49f136a"><span class="section-number-3">6.2.</span> Using Closures (Examples)</h3>
-<div class="outline-text-3" id="text-6-2">
-<p>
-Among other things, closures are commonly used to give objects data
-privacy. Data privacy is an essential property that helps us <b><b>program
-to an interface, not an implementation</b></b>. This is an important concept
-that helps us build more robust software because implementation
-details are more likely to change in breaking ways than interface
-contracts.
-</p>
+        <div id="outline-container-org834d2b2" class="outline-3">
+          <h3 id="org834d2b2">
+            <span class="section-number-3">7.2.</span> Using Closures (Examples)
+          </h3>
+          <div class="outline-text-3" id="text-7-2">
+            <p>
+              Among other things, closures are commonly used to give objects
+              data privacy. Data privacy is an essential property that helps us
+              <b><b>program to an interface, not an implementation</b></b
+              >. This is an important concept that helps us build more robust
+              software because implementation details are more likely to change
+              in breaking ways than interface contracts.
+            </p>
 
-<p>
-In JavaScript, closures are the primary mechanism used to enable data
-privacy. When you use closures for data privacy, the enclosed
-variables are only in scope within the containing (outer)
-function. You can’t get at the data from an outside scope except
-through the object’s privileged methods. In JavaScript, any exposed
-method defined within the closure scope is privileged. For example:
-</p>
+            <p>
+              In JavaScript, closures are the primary mechanism used to enable
+              data privacy. When you use closures for data privacy, the enclosed
+              variables are only in scope within the containing (outer)
+              function. You can’t get at the data from an outside scope except
+              through the object’s privileged methods. In JavaScript, any
+              exposed method defined within the closure scope is privileged. For
+              example:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const getSecret = (secret) =&gt; {
+            <div class="org-src-container">
+              <pre class="src src-js">
+const getSecret = (secret) =&gt; {
   return {
     get: () =&gt; secret
   };
@@ -1242,28 +1614,28 @@ test('Closure for object privacy.', assert =&gt; {
   assert.equal(actual, expected, msg);
   assert.end();
 });
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-In the example above, the `.get()` method is defined inside the scope
-of `getSecret()`, which gives it access to any variables from
-`getSecret()`, and makes it a privileged method. In this case, the
-parameter, `secret`.
-</p>
+            <p>
+              In the example above, the `.get()` method is defined inside the
+              scope of `getSecret()`, which gives it access to any variables
+              from `getSecret()`, and makes it a privileged method. In this
+              case, the parameter, `secret`.
+            </p>
 
-<p>
-Objects are not the only way to produce data privacy. Closures can
-also be used to create stateful functions whose return values may be
-influenced by their internal state, e.g.:
-</p>
+            <p>
+              Objects are not the only way to produce data privacy. Closures can
+              also be used to create stateful functions whose return values may
+              be influenced by their internal state, e.g.:
+            </p>
 
-<p>
-`const secret = msg =&gt; () =&gt; msg;`
-</p>
+            <p>`const secret = msg =&gt; () =&gt; msg;`</p>
 
-<div class="org-src-container">
-<pre class="src src-js">// Secret - creates closures with secret messages.
+            <div class="org-src-container">
+              <pre class="src src-js">
+// Secret - creates closures with secret messages.
 // https://gist.github.com/ericelliott/f6a87bc41de31562d0f9
 // https://jsbin.com/hitusu/edit?html,js,output
 
@@ -1282,87 +1654,100 @@ test('secret', assert =&gt; {
   assert.equal(actual, expected, msg);
   assert.end();
 });
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-In functional programming, closures are frequently used for partial
-application &amp; currying. This requires some definitions:
-</p>
-</div>
+            <p>
+              In functional programming, closures are frequently used for
+              partial application &amp; currying. This requires some
+              definitions:
+            </p>
+          </div>
 
-<div id="outline-container-orgc47abfe" class="outline-4">
-<h4 id="orgc47abfe"><span class="section-number-4">6.2.1.</span> Application:</h4>
-<div class="outline-text-4" id="text-6-2-1">
-<p>
-The process of applying a function to its arguments in order to
-produce a return value.
-</p>
-</div>
-</div>
+          <div id="outline-container-org4f57bd9" class="outline-4">
+            <h4 id="org4f57bd9">
+              <span class="section-number-4">7.2.1.</span> Application:
+            </h4>
+            <div class="outline-text-4" id="text-7-2-1">
+              <p>
+                The process of applying a function to its arguments in order to
+                produce a return value.
+              </p>
+            </div>
+          </div>
 
-<div id="outline-container-orgba46d78" class="outline-4">
-<h4 id="orgba46d78"><span class="section-number-4">6.2.2.</span> Partial Application:</h4>
-<div class="outline-text-4" id="text-6-2-2">
-<p>
-The process of applying a function to some of its arguments. The
-partially applied function gets returned for later use. Partial
-application fixes (partially applies the function to) one or more
-arguments inside the returned function, and the returned function
-takes the remaining parameters as arguments in order to complete the
-function application.
-</p>
+          <div id="outline-container-orgb81007c" class="outline-4">
+            <h4 id="orgb81007c">
+              <span class="section-number-4">7.2.2.</span> Partial Application:
+            </h4>
+            <div class="outline-text-4" id="text-7-2-2">
+              <p>
+                The process of applying a function to some of its arguments. The
+                partially applied function gets returned for later use. Partial
+                application fixes (partially applies the function to) one or
+                more arguments inside the returned function, and the returned
+                function takes the remaining parameters as arguments in order to
+                complete the function application.
+              </p>
 
-<p>
-Partial application takes advantage of closure scope in order to fix
-parameters. You can write a generic function that will partially apply
-arguments to the target function. It will have the following
-signature:
-</p>
+              <p>
+                Partial application takes advantage of closure scope in order to
+                fix parameters. You can write a generic function that will
+                partially apply arguments to the target function. It will have
+                the following signature:
+              </p>
 
-<div class="org-src-container">
-<pre class="src src-js">partialApply(targetFunction: Function, ...fixedArgs: Any[]) =&gt;
+              <div class="org-src-container">
+                <pre class="src src-js">
+partialApply(targetFunction: Function, ...fixedArgs: Any[]) =&gt;
 functionWithFewerParams(...remainingArgs: Any[])
-</pre>
-</div>
+</pre
+                >
+              </div>
 
-<p>
-It will take a function that takes any number of arguments, followed
-by arguments we want to partially apply to the function, and returns a
-function that will take the remaining arguments
-</p>
+              <p>
+                It will take a function that takes any number of arguments,
+                followed by arguments we want to partially apply to the
+                function, and returns a function that will take the remaining
+                arguments
+              </p>
 
-<p>
-An example will help. Say you have a function that adds two numbers:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">const add = (a, b) =&gt; a + b;
-</pre>
-</div>
+              <p>
+                An example will help. Say you have a function that adds two
+                numbers:
+              </p>
+              <div class="org-src-container">
+                <pre class="src src-js">
+const add = (a, b) =&gt; a + b;
+</pre
+                >
+              </div>
 
-<p>
-Now you want a function that adds 10 to any number. We'll call it
-`add10()`. The result of `add10(5)` should be `15`. Our
-`partialApply()` function can make that happen:
-</p>
+              <p>
+                Now you want a function that adds 10 to any number. We'll call
+                it `add10()`. The result of `add10(5)` should be `15`. Our
+                `partialApply()` function can make that happen:
+              </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const add10 = partialApply(add, 10);
+              <div class="org-src-container">
+                <pre class="src src-js">
+const add10 = partialApply(add, 10);
 add10(5);
-</pre>
-</div>
+</pre
+                >
+              </div>
 
-<p>
-In this example, the argument, `10` becomes a fixed parameter
-remembered inside the `add10()` closure scope.
-</p>
+              <p>
+                In this example, the argument, `10` becomes a fixed parameter
+                remembered inside the `add10()` closure scope.
+              </p>
 
-<p>
-Let's look at a possible `partialApply()` implementation:
-</p>
+              <p>Let's look at a possible `partialApply()` implementation:</p>
 
-<div class="org-src-container">
-<pre class="src src-js">// Generic Partial Application Function
+              <div class="org-src-container">
+                <pre class="src src-js">
+// Generic Partial Application Function
 // https://jsbin.com/biyupu/edit?html,js,output
 // https://gist.github.com/ericelliott/f0a8fd662111ea2f569e
 
@@ -1388,188 +1773,214 @@ test('add10', assert =&gt; {
 
   assert.equal(actual, expected, msg);
 });
-</pre>
-</div>
+</pre
+                >
+              </div>
 
-<p>
-As you can see, it simply returns a function which retains access to
-the `fixedArgs` arguments that were passed into the `partialApply()`
-function.
-</p>
-</div>
-</div>
-</div>
+              <p>
+                As you can see, it simply returns a function which retains
+                access to the `fixedArgs` arguments that were passed into the
+                `partialApply()` function.
+              </p>
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-orgdbf0e41" class="outline-3">
-<h3 id="orgdbf0e41"><span class="section-number-3">6.3.</span> Source:</h3>
-<div class="outline-text-3" id="text-6-3">
-<p>
-Heavily based on:
-<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36</a>
-</p>
-</div>
-</div>
-</div>
+        <div id="outline-container-org29803b0" class="outline-3">
+          <h3 id="org29803b0">
+            <span class="section-number-3">7.3.</span> Source:
+          </h3>
+          <div class="outline-text-3" id="text-7-3">
+            <p>
+              Heavily based on:
+              <a
+                href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36"
+                >https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
 
-<div id="outline-container-org1cc2660" class="outline-2">
-<h2 id="org1cc2660"><span class="section-number-2">7.</span> What is: Pure Functions</h2>
-<div class="outline-text-2" id="text-7">
-</div>
-<div id="outline-container-org741945d" class="outline-3">
-<h3 id="org741945d"><span class="section-number-3">7.1.</span> General Definition</h3>
-<div class="outline-text-3" id="text-7-1">
-<p>
-Is a function where:
-</p>
-<ul class="org-ul">
-<li>Given the same input, always returns the same output</li>
-<li>Produces no side effects</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org6524c0b" class="outline-3">
-<h3 id="org6524c0b"><span class="section-number-3">7.2.</span> Functions as a whole</h3>
-<div class="outline-text-3" id="text-7-2">
-<p>
-Is a process of taking some input, called arguments, and producing
-some output to the called return value.
-</p>
+      <div id="outline-container-org1adb7de" class="outline-2">
+        <h2 id="org1adb7de">
+          <span class="section-number-2">8.</span> What is: Pure Functions
+        </h2>
+        <div class="outline-text-2" id="text-8"></div>
+        <div id="outline-container-orgbfe6f0d" class="outline-3">
+          <h3 id="orgbfe6f0d">
+            <span class="section-number-3">8.1.</span> General Definition
+          </h3>
+          <div class="outline-text-3" id="text-8-1">
+            <p>Is a function where:</p>
+            <ul class="org-ul">
+              <li>Given the same input, always returns the same output</li>
+              <li>Produces no side effects</li>
+            </ul>
+          </div>
+        </div>
+        <div id="outline-container-org889ecb5" class="outline-3">
+          <h3 id="org889ecb5">
+            <span class="section-number-3">8.2.</span> Functions as a whole
+          </h3>
+          <div class="outline-text-3" id="text-8-2">
+            <p>
+              Is a process of taking some input, called arguments, and producing
+              some output to the called return value.
+            </p>
 
-<p>
-Main purposes:
-</p>
-<ul class="org-ul">
-<li>Mapping: Process output based on given inputs. Maps input values to output values</li>
-<li>Procedures: A function to perform a sequence of steps. This is style is procedural programming.</li>
-<li>I/O: In order to communicate with the system: screen, storage, logs, network.</li>
-</ul>
-</div>
-</div>
+            <p>Main purposes:</p>
+            <ul class="org-ul">
+              <li>
+                Mapping: Process output based on given inputs. Maps input values
+                to output values
+              </li>
+              <li>
+                Procedures: A function to perform a sequence of steps. This is
+                style is procedural programming.
+              </li>
+              <li>
+                I/O: In order to communicate with the system: screen, storage,
+                logs, network.
+              </li>
+            </ul>
+          </div>
+        </div>
 
-<div id="outline-container-orgfc2bbc6" class="outline-3">
-<h3 id="orgfc2bbc6"><span class="section-number-3">7.3.</span> Back to definition</h3>
-<div class="outline-text-3" id="text-7-3">
-<p>
-If a function where:
-</p>
-<ul class="org-ul">
-<li>Given the same input, always returns the same output</li>
-<li>Produces no side effects</li>
-</ul>
+        <div id="outline-container-org89b0ac3" class="outline-3">
+          <h3 id="org89b0ac3">
+            <span class="section-number-3">8.3.</span> Back to definition
+          </h3>
+          <div class="outline-text-3" id="text-8-3">
+            <p>If a function where:</p>
+            <ul class="org-ul">
+              <li>Given the same input, always returns the same output</li>
+              <li>Produces no side effects</li>
+            </ul>
 
-<p>
-If I have a function like:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">function double(number) {
+            <p>If I have a function like:</p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+function double(number) {
     return 2 * number;
 }
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-I can say that these are both "the same"
-</p>
-<div class="org-src-container">
-<pre class="src src-js">console.log(double(5));
+            <p>I can say that these are both "the same"</p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+console.log(double(5));
 console.log(10);        // They produces the same result
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-If you want <b><b>Referential Transparency</b></b> you need to use pure functions.
-</p>
+            <p>
+              If you want <b><b>Referential Transparency</b></b> you need to use
+              pure functions.
+            </p>
 
-<p>
-A dead giveaway that a function is impure is if it makes sense to call
-it without using its return value. For pure functions, that's a nope.
-</p>
-</div>
-</div>
+            <p>
+              A dead giveaway that a function is impure is if it makes sense to
+              call it without using its return value. For pure functions, that's
+              a nope.
+            </p>
+          </div>
+        </div>
 
-<div id="outline-container-org4ee03f5" class="outline-3">
-<h3 id="org4ee03f5"><span class="section-number-3">7.4.</span> Recommendation</h3>
-<div class="outline-text-3" id="text-7-4">
-<p>
-Favor pure functions: If it is practical to implement a program
-requirement using pure functions, you should use them over other
-options. They are the simplest reusable build blocks of code in a program.
-</p>
-</div>
-</div>
+        <div id="outline-container-orgabb4ee7" class="outline-3">
+          <h3 id="orgabb4ee7">
+            <span class="section-number-3">8.4.</span> Recommendation
+          </h3>
+          <div class="outline-text-3" id="text-8-4">
+            <p>
+              Favor pure functions: If it is practical to implement a program
+              requirement using pure functions, you should use them over other
+              options. They are the simplest reusable build blocks of code in a
+              program.
+            </p>
+          </div>
+        </div>
 
-<div id="outline-container-org1fa313b" class="outline-3">
-<h3 id="org1fa313b"><span class="section-number-3">7.5.</span> The most important design principle (KISS)</h3>
-<div class="outline-text-3" id="text-7-5">
-<p>
-Keep it Simple Stupid or,
-Keep it Stupid Simple
-</p>
+        <div id="outline-container-org1f70027" class="outline-3">
+          <h3 id="org1f70027">
+            <span class="section-number-3">8.5.</span> The most important design
+            principle (KISS)
+          </h3>
+          <div class="outline-text-3" id="text-8-5">
+            <p>Keep it Simple Stupid or, Keep it Stupid Simple</p>
 
-<p>
-Pure functions are completely independent of outside state, and as
-such, they are immune to entire classes of bugs that happen with a
-shared mutable state.
-</p>
+            <p>
+              Pure functions are completely independent of outside state, and as
+              such, they are immune to entire classes of bugs that happen with a
+              shared mutable state.
+            </p>
 
-<p>
-This independent nature makes them great candidates for parallel
-processing across many CPUs and distribute clusters.
-</p>
+            <p>
+              This independent nature makes them great candidates for parallel
+              processing across many CPUs and distribute clusters.
+            </p>
 
-<p>
-They are also easier to move around, refactor, and reorganize in the
-code, making programs more flexible and adaptable to future changes.
-</p>
-</div>
-</div>
+            <p>
+              They are also easier to move around, refactor, and reorganize in
+              the code, making programs more flexible and adaptable to future
+              changes.
+            </p>
+          </div>
+        </div>
 
-<div id="outline-container-org081fad6" class="outline-3">
-<h3 id="org081fad6"><span class="section-number-3">7.6.</span> Problem with Shared State</h3>
-<div class="outline-text-3" id="text-7-6">
-<p>
-In an example: if you make requests from a query text field as the user types.
-You may have times where the last request "Java" for example comes and occupies
-the UI response element, before the request for "JavaScript" was even sent.
-</p>
+        <div id="outline-container-orge169a50" class="outline-3">
+          <h3 id="orge169a50">
+            <span class="section-number-3">8.6.</span> Problem with Shared State
+          </h3>
+          <div class="outline-text-3" id="text-8-6">
+            <p>
+              In an example: if you make requests from a query text field as the
+              user types. You may have times where the last request "Java" for
+              example comes and occupies the UI response element, before the
+              request for "JavaScript" was even sent.
+            </p>
 
-<p>
-To fix this, you should build a manager that cancels the previous AJAX request.
-</p>
+            <p>
+              To fix this, you should build a manager that cancels the previous
+              AJAX request.
+            </p>
 
-<p>
-Martin Odersky (Creator of Scala) puts it:
-`non-determinism = parallel processing + mutable state`
-</p>
+            <p>
+              Martin Odersky (Creator of Scala) puts it: `non-determinism =
+              parallel processing + mutable state`
+            </p>
 
-<p>
-You should avoid it.
-</p>
+            <p>You should avoid it.</p>
 
-<p>
-Program determinism is a LOT desirable in computing. If you think JS
-is immune because it only use single thread. Remember that AJAX, API
-I/O event listeners, web workers, iframes and timeouts can introduce
-indeterminism into your program. Combine that with shared state, you
-have a recipe for bugs.
-</p>
-</div>
-</div>
+            <p>
+              Program determinism is a LOT desirable in computing. If you think
+              JS is immune because it only use single thread. Remember that
+              AJAX, API I/O event listeners, web workers, iframes and timeouts
+              can introduce indeterminism into your program. Combine that with
+              shared state, you have a recipe for bugs.
+            </p>
+          </div>
+        </div>
 
-<div id="outline-container-orgf282928" class="outline-3">
-<h3 id="orgf282928"><span class="section-number-3">7.7.</span> Given the same Input, Always Returns the Same Output</h3>
-<div class="outline-text-3" id="text-7-7">
-<p>
-Our `double` function will always return 10 for 5 as parameter, it
-doesn't matter how many times we call it
-</p>
+        <div id="outline-container-org88ac51d" class="outline-3">
+          <h3 id="org88ac51d">
+            <span class="section-number-3">8.7.</span> Given the same Input,
+            Always Returns the Same Output
+          </h3>
+          <div class="outline-text-3" id="text-8-7">
+            <p>
+              Our `double` function will always return 10 for 5 as parameter, it
+              doesn't matter how many times we call it
+            </p>
 
-<p>
-But we can't say the same for `Math.random()` for example.
-</p>
+            <p>But we can't say the same for `Math.random()` for example.</p>
 
-<div class="org-src-container">
-<pre class="src src-js">Math.random();
+            <div class="org-src-container">
+              <pre class="src src-js">
+Math.random();
 // 0.8335683328172347
 
 Math.random();
@@ -1577,30 +1988,33 @@ Math.random();
 
 Math.random();
 //0.3099123827043109
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Even tough we didn't pass any arguments into any of the function
-calls, they produced different output. This function is not pure.
-</p>
+            <p>
+              Even tough we didn't pass any arguments into any of the function
+              calls, they produced different output. This function is not pure.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const time = () =&gt; new Date().toLocaleTimeString();
+            <div class="org-src-container">
+              <pre class="src src-js">
+const time = () =&gt; new Date().toLocaleTimeString();
 
 time(); // '8:45:51 AM'
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-This is also not pure, even thought it repeats its output one time each day.
-</p>
+            <p>
+              This is also not pure, even thought it repeats its output one time
+              each day.
+            </p>
 
-<p>
-Now an example of pure function:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">const highpass = (cutoff, value) =&gt; value &gt;= cutoff;
+            <p>Now an example of pure function:</p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+const highpass = (cutoff, value) =&gt; value &gt;= cutoff;
 
 highpass(5, 5); // =&gt; true  Always the same result given the same inputs
 highpass(5, 5); // =&gt; true
@@ -1612,41 +2026,47 @@ highpass(5, 18);  // true
 highpass(5, 1);   // false
 highpass(5, 3);   // false
 highpass(5, 4);   // false
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-A pure function must not rely on any external mutable state, because
-it would no longer be deterministic or referentially transparent.
-</p>
-</div>
-</div>
+            <p>
+              A pure function must not rely on any external mutable state,
+              because it would no longer be deterministic or referentially
+              transparent.
+            </p>
+          </div>
+        </div>
 
-<div id="outline-container-orgf241ddf" class="outline-3">
-<h3 id="orgf241ddf"><span class="section-number-3">7.8.</span> Pure functions Produce No SIDE EFFECTS</h3>
-<div class="outline-text-3" id="text-7-8">
-<p>
-A pure function produces no side effects, which means that it can't
-alter any external state.
-</p>
-</div>
+        <div id="outline-container-org50fa64e" class="outline-3">
+          <h3 id="org50fa64e">
+            <span class="section-number-3">8.8.</span> Pure functions Produce No
+            SIDE EFFECTS
+          </h3>
+          <div class="outline-text-3" id="text-8-8">
+            <p>
+              A pure function produces no side effects, which means that it
+              can't alter any external state.
+            </p>
+          </div>
 
-<div id="outline-container-orgae19158" class="outline-4">
-<h4 id="orgae19158"><span class="section-number-4">7.8.1.</span> Immutability</h4>
-<div class="outline-text-4" id="text-7-8-1">
-<p>
-JavaScript's object arguments are references, which means that if a
-function were to mutate a property on an object or array parameter,
-that would mutate state that is accessible outside the function. Pure
-functions must not mutate external state.
-</p>
+          <div id="outline-container-org685b326" class="outline-4">
+            <h4 id="org685b326">
+              <span class="section-number-4">8.8.1.</span> Immutability
+            </h4>
+            <div class="outline-text-4" id="text-8-8-1">
+              <p>
+                JavaScript's object arguments are references, which means that
+                if a function were to mutate a property on an object or array
+                parameter, that would mutate state that is accessible outside
+                the function. Pure functions must not mutate external state.
+              </p>
 
-<p>
-Consider this mutating, impure `addToCart()` function:
-</p>
+              <p>Consider this mutating, impure `addToCart()` function:</p>
 
-<div class="org-src-container">
-<pre class="src src-js">// impure addToCart mutates existing cart
+              <div class="org-src-container">
+                <pre class="src src-js">
+// impure addToCart mutates existing cart
 const addToCart = (cart, item, quantity) =&gt; {
   cart.items.push({
     item,
@@ -1678,28 +2098,28 @@ test('addToCart()', assert =&gt; {
   assert.deepEqual(originalCart, cart, 'mutates original cart.');
   assert.end();
 });
-</pre>
-</div>
+</pre
+                >
+              </div>
 
-<p>
-It works by passing a cart and item to add to the cart. The function
-then returns the same cart, with the item added to it.
-</p>
+              <p>
+                It works by passing a cart and item to add to the cart. The
+                function then returns the same cart, with the item added to it.
+              </p>
 
-<p>
-The problem is that we've just mutated some shared state. Other
-functions may be relying on that cart object state to be what it was
-before the function was called and now we have to worry about what
-impact it will have on the program logic if we change the
-order. Refactoring the code could result in bugs popping up and
-unhappy customers.
-</p>
+              <p>
+                The problem is that we've just mutated some shared state. Other
+                functions may be relying on that cart object state to be what it
+                was before the function was called and now we have to worry
+                about what impact it will have on the program logic if we change
+                the order. Refactoring the code could result in bugs popping up
+                and unhappy customers.
+              </p>
 
-<p>
-Consider this version:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">// Pure addToCart() returns a new cart
+              <p>Consider this version:</p>
+              <div class="org-src-container">
+                <pre class="src src-js">
+// Pure addToCart() returns a new cart
 // It does not mutate the original.
 const addToCart = (cart, item, quantity) =&gt; {
   const newCart = lodash.cloneDeep(cart);
@@ -1742,51 +2162,62 @@ test('addToCart()', assert =&gt; {
     'should not mutate original cart.');
   assert.end();
 });
-</pre>
-</div>
+</pre
+                >
+              </div>
 
-<p>
-In this example, we have an array nested in an object, which is why I
-reached for a deep clone. This is more complex state than you’ll
-typically be dealing with. For most things, you can break it down into
-smaller chunks.
-</p>
+              <p>
+                In this example, we have an array nested in an object, which is
+                why I reached for a deep clone. This is more complex state than
+                you’ll typically be dealing with. For most things, you can break
+                it down into smaller chunks.
+              </p>
 
-<p>
-For example, Redux lets you compose reducers rather
-than deal with the entire app state inside each reducer. The result is
-that you don't have to create a deep clone of the entire app state
-every time you want to update just a small part of it. Instead, you
-can use non-destructive array methods, or `Object.assign()` to update
-a small part of the app state.
-</p>
-</div>
-</div>
-</div>
+              <p>
+                For example, Redux lets you compose reducers rather than deal
+                with the entire app state inside each reducer. The result is
+                that you don't have to create a deep clone of the entire app
+                state every time you want to update just a small part of it.
+                Instead, you can use non-destructive array methods, or
+                `Object.assign()` to update a small part of the app state.
+              </p>
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-org2f4c3c2" class="outline-3">
-<h3 id="org2f4c3c2"><span class="section-number-3">7.9.</span> Source</h3>
-<div class="outline-text-3" id="text-7-9">
-<p>
-This topic is based on:
-<a href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976">https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976</a>
-</p>
-</div>
-</div>
-</div>
+        <div id="outline-container-orgfb0b66e" class="outline-3">
+          <h3 id="orgfb0b66e">
+            <span class="section-number-3">8.9.</span> Source
+          </h3>
+          <div class="outline-text-3" id="text-8-9">
+            <p>
+              This topic is based on:
+              <a
+                href="https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976"
+                >https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
 
-<div id="outline-container-orgc7dc699" class="outline-2">
-<h2 id="orgc7dc699"><span class="section-number-2">8.</span> New features of ES13</h2>
-<div class="outline-text-2" id="text-8">
-</div>
-<div id="outline-container-org2d779d0" class="outline-3">
-<h3 id="org2d779d0"><span class="section-number-3">8.1.</span> Class Field Declarations</h3>
-<div class="outline-text-3" id="text-8-1">
-<p>
-Before ES13 we could not declare class fields outside the constructor:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">class Car {
+      <div id="outline-container-org8633269" class="outline-2">
+        <h2 id="org8633269">
+          <span class="section-number-2">9.</span> New features of ES13
+        </h2>
+        <div class="outline-text-2" id="text-9"></div>
+        <div id="outline-container-orgb11321c" class="outline-3">
+          <h3 id="orgb11321c">
+            <span class="section-number-3">9.1.</span> Class Field Declarations
+          </h3>
+          <div class="outline-text-3" id="text-9-1">
+            <p>
+              Before ES13 we could not declare class fields outside the
+              constructor:
+            </p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Car {
   constructor() {
     this.color = 'blue';
     this.age = 2;
@@ -1795,34 +2226,39 @@ Before ES13 we could not declare class fields outside the constructor:
 const car = new Car();
 console.log(car.color); // blue
 console.log(car.age); // 2
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-ES13 removes this limitation:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">class Car {
+            <p>ES13 removes this limitation:</p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Car {
   color = 'blue';
   age = 2;
 }
 const car = new Car();
 console.log(car.color); // blue
 console.log(car.age); // 2
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-orge0e54d5" class="outline-3">
-<h3 id="orge0e54d5"><span class="section-number-3">8.2.</span> Private Methods and Fields</h3>
-<div class="outline-text-3" id="text-8-2">
-<p>
-Members were usually prefixed with an _ to indicate it should be private.
-But could still be accessed from outside.
-</p>
-<div class="org-src-container">
-<pre class="src src-js">class Person {
+        <div id="outline-container-org1e2a07a" class="outline-3">
+          <h3 id="org1e2a07a">
+            <span class="section-number-3">9.2.</span> Private Methods and
+            Fields
+          </h3>
+          <div class="outline-text-3" id="text-9-2">
+            <p>
+              Members were usually prefixed with an _ to indicate it should be
+              private. But could still be accessed from outside.
+            </p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Person {
   _firstName = 'Joseph';
   _lastName = 'Stevens';
   get name() {
@@ -1842,14 +2278,14 @@ console.log(person._lastName); // Stevens
 person._firstName = 'Robert';
 person._lastName = 'Becker';
 console.log(person.name); // Robert Becker
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Now we use # to add private fields to our classes
-</p>
-<div class="org-src-container">
-<pre class="src src-js">class Person {
+            <p>Now we use # to add private fields to our classes</p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Person {
   #firstName = 'Joseph';
   #lastName = 'Stevens';
   get name() {
@@ -1865,20 +2301,25 @@ console.log(person.name);
 // declared in an enclosing class
 console.log(person.#firstName);
 console.log(person.#lastName);
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-orgb530d90" class="outline-3">
-<h3 id="orgb530d90"><span class="section-number-3">8.3.</span> await Operator at Top level</h3>
-<div class="outline-text-3" id="text-8-3">
-<p>
-Previously we could only use await with async function.
-We could not use this in the global scope.
-</p>
-<div class="org-src-container">
-<pre class="src src-js">  function setTimeoutAsync(timeout) {
+        <div id="outline-container-org2bdbe6d" class="outline-3">
+          <h3 id="org2bdbe6d">
+            <span class="section-number-3">9.3.</span> await Operator at Top
+            level
+          </h3>
+          <div class="outline-text-3" id="text-9-3">
+            <p>
+              Previously we could only use await with async function. We could
+              not use this in the global scope.
+            </p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+  function setTimeoutAsync(timeout) {
   return new Promise((resolve) =&gt; {
     setTimeout(() =&gt; {
       resolve();
@@ -1888,14 +2329,14 @@ We could not use this in the global scope.
 
 // SyntaxError: await is only valid in async functions
 await setTimeoutAsync(3000);
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Now it is possible:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">function setTimeoutAsync(timeout) {
+            <p>Now it is possible:</p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+function setTimeoutAsync(timeout) {
   return new Promise((resolve) =&gt; {
     setTimeout(() =&gt; {
       resolve();
@@ -1905,23 +2346,28 @@ Now it is possible:
 
 // Waits for timeout - no error thrown
 await setTimeoutAsync(3000);
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-org83ef901" class="outline-3">
-<h3 id="org83ef901"><span class="section-number-3">8.4.</span> Static Class Fields and Static Private Methods</h3>
-<div class="outline-text-3" id="text-8-4">
-<p>
-We can now declare static fields and static private methods for a
-class in ES13. Static methods can access other private/public static
-members in the class using the this keyword, and instance methods can
-access them using this.constructor.
-</p>
+        <div id="outline-container-org34a8f52" class="outline-3">
+          <h3 id="org34a8f52">
+            <span class="section-number-3">9.4.</span> Static Class Fields and
+            Static Private Methods
+          </h3>
+          <div class="outline-text-3" id="text-9-4">
+            <p>
+              We can now declare static fields and static private methods for a
+              class in ES13. Static methods can access other private/public
+              static members in the class using the this keyword, and instance
+              methods can access them using this.constructor.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">class Person {
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Person {
   static #count = 0;
   static getCount() {
     return this.#count;
@@ -1937,31 +2383,35 @@ access them using this.constructor.
 const person1 = new Person();
 const person2 = new Person();
 console.log(Person.getCount()); // 2
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-org92b041e" class="outline-3">
-<h3 id="org92b041e"><span class="section-number-3">8.5.</span> Class static Block</h3>
-<div class="outline-text-3" id="text-8-5">
-<p>
-ES13 allows the definition of static blocks that will be executed only
-once, at the creation of the class. This is similar to static
-constructors in other languages with support for object-oriented
-programming, like C# and Java.
-</p>
+        <div id="outline-container-org739d02e" class="outline-3">
+          <h3 id="org739d02e">
+            <span class="section-number-3">9.5.</span> Class static Block
+          </h3>
+          <div class="outline-text-3" id="text-9-5">
+            <p>
+              ES13 allows the definition of static blocks that will be executed
+              only once, at the creation of the class. This is similar to static
+              constructors in other languages with support for object-oriented
+              programming, like C# and Java.
+            </p>
 
-<p>
-A class can have any number of static {} initialization blocks in its
-class body. They will be executed, along with any interleaved static
-field initializers, in the order they are declared. We can use the
-super property in a static block to access properties of the super
-class.
-</p>
+            <p>
+              A class can have any number of static {} initialization blocks in
+              its class body. They will be executed, along with any interleaved
+              static field initializers, in the order they are declared. We can
+              use the super property in a static block to access properties of
+              the super class.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">class Vehicle {
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Vehicle {
   static defaultColor = 'blue';
 }
 
@@ -1976,19 +2426,25 @@ class Car extends Vehicle {
 }
 
 console.log(Car.colors); // [ 'blue', 'red', 'green' ]
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-orga2ff9f7" class="outline-3">
-<h3 id="orga2ff9f7"><span class="section-number-3">8.6.</span> Ergonomic Brand Checks for Private Fields</h3>
-<div class="outline-text-3" id="text-8-6">
-<p>
-We can use this new feature to check if an object has a particular private field in it, using the in operator.
-</p>
-<div class="org-src-container">
-<pre class="src src-js">class Car {
+        <div id="outline-container-org8081ef4" class="outline-3">
+          <h3 id="org8081ef4">
+            <span class="section-number-3">9.6.</span> Ergonomic Brand Checks
+            for Private Fields
+          </h3>
+          <div class="outline-text-3" id="text-9-6">
+            <p>
+              We can use this new feature to check if an object has a particular
+              private field in it, using the in operator.
+            </p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Car {
   #color;
   hasColor() {
     return #color in this;
@@ -1997,14 +2453,17 @@ We can use this new feature to check if an object has a particular private field
 
 const car = new Car();
 console.log(car.hasColor()); // true;
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-The in operator can correctly distinguish private fields with the same names from different classes:
-</p>
-<div class="org-src-container">
-<pre class="src src-js">class Car {
+            <p>
+              The in operator can correctly distinguish private fields with the
+              same names from different classes:
+            </p>
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Car {
   #color;
   hasColor() {
     return #color in this;
@@ -2024,65 +2483,77 @@ console.log(car.hasColor()); // true;
 console.log(car.hasColor.call(house)); // false
 console.log(house.hasColor()); // true
 console.log(house.hasColor.call(car)); // false
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-org502b638" class="outline-3">
-<h3 id="org502b638"><span class="section-number-3">8.7.</span> at() Method for Indexing</h3>
-<div class="outline-text-3" id="text-8-7">
-<p>
-We typically use square brackets ([]) in JavaScript to access the Nth
-element of an array, which is usually a simple process. We just access
-the N - 1 property of the array.
-</p>
+        <div id="outline-container-org73a1d97" class="outline-3">
+          <h3 id="org73a1d97">
+            <span class="section-number-3">9.7.</span> at() Method for Indexing
+          </h3>
+          <div class="outline-text-3" id="text-9-7">
+            <p>
+              We typically use square brackets ([]) in JavaScript to access the
+              Nth element of an array, which is usually a simple process. We
+              just access the N - 1 property of the array.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const arr = ['a', 'b', 'c', 'd'];
+            <div class="org-src-container">
+              <pre class="src src-js">
+const arr = ['a', 'b', 'c', 'd'];
 console.log(arr[1]); // b
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-However, we have to use an index of arr.length - N if we want to
-access the Nth item from the end of the array with square brackets.
-</p>
+            <p>
+              However, we have to use an index of arr.length - N if we want to
+              access the Nth item from the end of the array with square
+              brackets.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const arr = ['a', 'b', 'c', 'd'];
+            <div class="org-src-container">
+              <pre class="src src-js">
+const arr = ['a', 'b', 'c', 'd'];
 
 // 1st element from the end
 console.log(arr[arr.length - 1]); // d
 
 // 2nd element from the end
 console.log(arr[arr.length - 2]); // c
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-The new at() method lets us do this more concisely and
-expressively. To access the Nth element from the end of the array, we
-simply pass a negative value of -N to at().
-</p>
+            <p>
+              The new at() method lets us do this more concisely and
+              expressively. To access the Nth element from the end of the array,
+              we simply pass a negative value of -N to at().
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const arr = ['a', 'b', 'c', 'd'];
+            <div class="org-src-container">
+              <pre class="src src-js">
+const arr = ['a', 'b', 'c', 'd'];
 
 // 1st element from the end
 console.log(arr.at(-1)); // d
 
 // 2nd element from the end
 console.log(arr.at(-2)); // c
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Apart from arrays, strings and TypedArray objects also now have at() methods.
-</p>
+            <p>
+              Apart from arrays, strings and TypedArray objects also now have
+              at() methods.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const str = 'Coding Beauty';
+            <div class="org-src-container">
+              <pre class="src src-js">
+const str = 'Coding Beauty';
 
 console.log(str.at(-1)); // y
 console.log(str.at(-2)); // t
@@ -2091,45 +2562,51 @@ const typedArray = new Uint8Array([16, 32, 48, 64]);
 
 console.log(typedArray.at(-1)); // 64
 console.log(typedArray.at(-2)); // 48
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-orgaf4982e" class="outline-3">
-<h3 id="orgaf4982e"><span class="section-number-3">8.8.</span> RegExp Match Indices</h3>
-<div class="outline-text-3" id="text-8-8">
-<p>
-This new feature allows us to specify that we want the get both the
-starting and ending indices of the matches of a RegExp object in a
-given string.  Previously, we could only get the starting index of a
-regex match in a string.
-</p>
+        <div id="outline-container-orgf31b09b" class="outline-3">
+          <h3 id="orgf31b09b">
+            <span class="section-number-3">9.8.</span> RegExp Match Indices
+          </h3>
+          <div class="outline-text-3" id="text-9-8">
+            <p>
+              This new feature allows us to specify that we want the get both
+              the starting and ending indices of the matches of a RegExp object
+              in a given string. Previously, we could only get the starting
+              index of a regex match in a string.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const str = 'sun and moon';
+            <div class="org-src-container">
+              <pre class="src src-js">
+const str = 'sun and moon';
 const regex = /and/;
 const matchObj = regex.exec(str);
 
 // [ 'and', index: 4, input: 'sun and moon', groups: undefined ]
 console.log(matchObj);
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<pre class="example">
+            <pre class="example">
 ['and '(\, index:) 4 (\, input:) 'sun and moon '(\, groups:) undefined]
-</pre>
+</pre
+            >
 
+            <p>
+              We can now specify a d regex flag to get the two indices where the
+              match starts and ends. With the d flag set, the object returned
+              will have an indices property that contains the starting and
+              ending indices.
+            </p>
 
-<p>
-We can now specify a d regex flag to get the two indices where the
-match starts and ends.  With the d flag set, the object returned will
-have an indices property that contains the starting and ending
-indices.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-js">const str = 'sun and moon';
+            <div class="org-src-container">
+              <pre class="src src-js">
+const str = 'sun and moon';
 const regex = /and/d;
 const matchObj = regex.exec(str);
 /*
@@ -2142,25 +2619,30 @@ const matchObj = regex.exec(str);
 ]
  */
 console.log(matchObj);
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<pre class="example">
+            <pre class="example">
 ['and '(\, index:) 4 (\, input:) 'sun and moon '(\, groups:) undefined (\, indices:) [[4 (\, 7)] (\, groups:) undefined]]
-</pre>
-</div>
-</div>
+</pre
+            >
+          </div>
+        </div>
 
-<div id="outline-container-orgb5e7b5a" class="outline-3">
-<h3 id="orgb5e7b5a"><span class="section-number-3">8.9.</span> Object.hasOwn() Method</h3>
-<div class="outline-text-3" id="text-8-9">
-<p>
-In JavaScript, we can use the Object.prototype.hasOwnProperty() method
-to check if an object has a given property.
-</p>
+        <div id="outline-container-org5260a81" class="outline-3">
+          <h3 id="org5260a81">
+            <span class="section-number-3">9.9.</span> Object.hasOwn() Method
+          </h3>
+          <div class="outline-text-3" id="text-9-9">
+            <p>
+              In JavaScript, we can use the Object.prototype.hasOwnProperty()
+              method to check if an object has a given property.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">class Car {
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Car {
   color = 'green';
   age = 2;
 }
@@ -2168,22 +2650,22 @@ const car = new Car();
 
 console.log(car.hasOwnProperty('age')); // true
 console.log(car.hasOwnProperty('name')); // false
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-But there are certain problems with this approach. For one, the
-Object.prototype.hasOwnProperty() method is not protected - it can be
-overridden by defining a custom hasOwnProperty() method for a class,
-which could have completely different behavior from
-</p>
+            <p>
+              But there are certain problems with this approach. For one, the
+              Object.prototype.hasOwnProperty() method is not protected - it can
+              be overridden by defining a custom hasOwnProperty() method for a
+              class, which could have completely different behavior from
+            </p>
 
-<p>
-Object.prototype.hasOwnProperty().
-</p>
+            <p>Object.prototype.hasOwnProperty().</p>
 
-<div class="org-src-container">
-<pre class="src src-js">class Car {
+            <div class="org-src-container">
+              <pre class="src src-js">
+class Car {
   color = 'green';
   age = 2;
   // This method does not tell us whether an object of
@@ -2197,48 +2679,55 @@ const car = new Car();
 
 console.log(car.hasOwnProperty('age')); // false
 console.log(car.hasOwnProperty('name')); // false
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Another issue is that for objects created with a null prototype (using
-Object.create(null)), trying to call this method on them will cause an
-error.
-</p>
+            <p>
+              Another issue is that for objects created with a null prototype
+              (using Object.create(null)), trying to call this method on them
+              will cause an error.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const obj = Object.create(null);
+            <div class="org-src-container">
+              <pre class="src src-js">
+const obj = Object.create(null);
 obj.color = 'green';
 obj.age = 2;
 
 // TypeError: obj.hasOwnProperty is not a function
 console.log(obj.hasOwnProperty('color'));
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-One way to solve these issues is to use to call the call() method on
-the Object.prototype.hasOwnProperty Function property, like this:
-</p>
+            <p>
+              One way to solve these issues is to use to call the call() method
+              on the Object.prototype.hasOwnProperty Function property, like
+              this:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const obj = Object.create(null);
+            <div class="org-src-container">
+              <pre class="src src-js">
+const obj = Object.create(null);
 obj.color = 'green';
 obj.age = 2;
 obj.hasOwnProperty = () =&gt; false;
 
 console.log(Object.prototype.hasOwnProperty.call(obj, 'color')); // true
 console.log(Object.prototype.hasOwnProperty.call(obj, 'name')); // false
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-This isn’t very convenient. We can write a reusable function to avoid
-repeating ourselves:
-</p>
+            <p>
+              This isn’t very convenient. We can write a reusable function to
+              avoid repeating ourselves:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">function objHasOwnProp(obj, propertyKey) {
+            <div class="org-src-container">
+              <pre class="src src-js">
+function objHasOwnProp(obj, propertyKey) {
   return Object.prototype.hasOwnProperty.call(obj, propertyKey);
 }
 
@@ -2249,43 +2738,50 @@ obj.hasOwnProperty = () =&gt; false;
 
 console.log(objHasOwnProp(obj, 'color')); // true
 console.log(objHasOwnProp(obj, 'name')); // false
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-No need for that though, as we can use the new built-in
-Object.hasOwn() method. Like our reusable function, it takes an object
-and property as arguments and returns true if the specified property
-is a direct property of the object. Otherwise, it returns false.
-</p>
+            <p>
+              No need for that though, as we can use the new built-in
+              Object.hasOwn() method. Like our reusable function, it takes an
+              object and property as arguments and returns true if the specified
+              property is a direct property of the object. Otherwise, it returns
+              false.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const obj = Object.create(null);
+            <div class="org-src-container">
+              <pre class="src src-js">
+const obj = Object.create(null);
 obj.color = 'green';
 obj.age = 2;
 obj.hasOwnProperty = () =&gt; false;
 
 console.log(Object.hasOwn(obj, 'color')); // true
 console.log(Object.hasOwn(obj, 'name')); // false
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-orgc518c91" class="outline-3">
-<h3 id="orgc518c91"><span class="section-number-3">8.10.</span> Error Cause</h3>
-<div class="outline-text-3" id="text-8-10">
-<p>
-Error objects now have a cause property for specifying the original
-error that caused the error about to be thrown. This helps to add
-additional contextual information to the error and assist the
-diagnosis of unexpected behavior. We can specify the cause of an error
-by setting a cause property on an object passed as the second argument
-to the Error() constructor.
-</p>
+        <div id="outline-container-org198c831" class="outline-3">
+          <h3 id="org198c831">
+            <span class="section-number-3">9.10.</span> Error Cause
+          </h3>
+          <div class="outline-text-3" id="text-9-10">
+            <p>
+              Error objects now have a cause property for specifying the
+              original error that caused the error about to be thrown. This
+              helps to add additional contextual information to the error and
+              assist the diagnosis of unexpected behavior. We can specify the
+              cause of an error by setting a cause property on an object passed
+              as the second argument to the Error() constructor.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">function userAction() {
+            <div class="org-src-container">
+              <pre class="src src-js">
+function userAction() {
   try {
     apiCallThatCanThrow();
   } catch (err) {
@@ -2298,32 +2794,36 @@ try {
   console.log(err);
   console.log(`Cause by: ${err.cause}`);
 }
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-org1605464" class="outline-3">
-<h3 id="org1605464"><span class="section-number-3">8.11.</span> Array Find from Last</h3>
-<div class="outline-text-3" id="text-8-11">
-<p>
-In JavaScript, we can already use the Array find() method to find an
-element in an array that passes a specified test condition. Similarly,
-we can use findIndex() to find the index of such an element. While
-find() and findIndex() both start searching from the first element of
-the array, there are instances where it would be preferable to start
-the search from the last element instead.
-</p>
+        <div id="outline-container-org8143fe9" class="outline-3">
+          <h3 id="org8143fe9">
+            <span class="section-number-3">9.11.</span> Array Find from Last
+          </h3>
+          <div class="outline-text-3" id="text-9-11">
+            <p>
+              In JavaScript, we can already use the Array find() method to find
+              an element in an array that passes a specified test condition.
+              Similarly, we can use findIndex() to find the index of such an
+              element. While find() and findIndex() both start searching from
+              the first element of the array, there are instances where it would
+              be preferable to start the search from the last element instead.
+            </p>
 
-<p>
-There are scenarios where we know that finding from the last element
-might achieve better performance. For example, here we’re trying to
-get the item in the array with the value prop equal to y. With find()
-and findIndex():
-</p>
+            <p>
+              There are scenarios where we know that finding from the last
+              element might achieve better performance. For example, here we’re
+              trying to get the item in the array with the value prop equal to
+              y. With find() and findIndex():
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const letters = [
+            <div class="org-src-container">
+              <pre class="src src-js">
+const letters = [
   { value: 'v' },
   { value: 'w' },
   { value: 'x' },
@@ -2336,18 +2836,20 @@ const foundIndex = letters.findIndex((item) =&gt; item.value === 'y');
 
 console.log(found); // { value: 'y' }
 console.log(foundIndex); // 3
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-This works, but as the target object is closer to the tail of the
-array, we might be able to make this program run faster if we use the
-findLast() and findLastIndex() methods to search the array from the
-end.
-</p>
+            <p>
+              This works, but as the target object is closer to the tail of the
+              array, we might be able to make this program run faster if we use
+              the findLast() and findLastIndex() methods to search the array
+              from the end.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const letters = [
+            <div class="org-src-container">
+              <pre class="src src-js">
+const letters = [
   { value: 'v' },
   { value: 'w' },
   { value: 'x' },
@@ -2360,18 +2862,20 @@ const foundIndex = letters.findLastIndex((item) =&gt; item.value === 'y');
 
 console.log(found); // { value: 'y' }
 console.log(foundIndex); // 3
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-Another use case might require that we specifically search the array
-from the end to get the correct item. For example, if we want to find
-the last even number in a list of numbers, find() and findIndex()
-would produce a wrong result:
-</p>
+            <p>
+              Another use case might require that we specifically search the
+              array from the end to get the correct item. For example, if we
+              want to find the last even number in a list of numbers, find() and
+              findIndex() would produce a wrong result:
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const nums = [7, 14, 3, 8, 10, 9];
+            <div class="org-src-container">
+              <pre class="src src-js">
+const nums = [7, 14, 3, 8, 10, 9];
 // gives 14, instead of 10
 
 const lastEven = nums.find((value) =&gt; value % 2 === 0);
@@ -2380,27 +2884,30 @@ const lastEven = nums.find((value) =&gt; value % 2 === 0);
 const lastEvenIndex = nums.findIndex((value) =&gt; value % 2 === 0);
 console.log(lastEven); // 14
 console.log(lastEvenIndex); // 1
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-We could call the reverse() method on the array to reverse the order
-of the elements before calling find() and findIndex(). But this
-approach would cause unnecessary mutation of the array, as reverse()
-reverses the elements of an array in place. The only way to avoid this
-mutation would be to make a new copy of the entire array, which could
-cause performance problems for large arrays.
-</p>
+            <p>
+              We could call the reverse() method on the array to reverse the
+              order of the elements before calling find() and findIndex(). But
+              this approach would cause unnecessary mutation of the array, as
+              reverse() reverses the elements of an array in place. The only way
+              to avoid this mutation would be to make a new copy of the entire
+              array, which could cause performance problems for large arrays.
+            </p>
 
-<p>
-Also, findIndex() would still not work on the reversed array, as
-reversing the elements would also mean changing the indexes they had
-in the original array. To get the original index, we would need to
-perform an additional calculation, which means writing more code.
-</p>
+            <p>
+              Also, findIndex() would still not work on the reversed array, as
+              reversing the elements would also mean changing the indexes they
+              had in the original array. To get the original index, we would
+              need to perform an additional calculation, which means writing
+              more code.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const nums = [7, 14, 3, 8, 10, 9];
+            <div class="org-src-container">
+              <pre class="src src-js">
+const nums = [7, 14, 3, 8, 10, 9];
 
 // Copying the entire array with the spread syntax before
 // calling reverse()
@@ -2419,16 +2926,18 @@ const lastEvenIndex = reversed.length - 1 - reversedIndex;
 console.log(lastEven); // 10
 console.log(reversedIndex); // 1
 console.log(lastEvenIndex); // 4
-</pre>
-</div>
+</pre
+              >
+            </div>
 
-<p>
-It’s in cases like where the findLast() and findLastIndex() methods
-come in handy.
-</p>
+            <p>
+              It’s in cases like where the findLast() and findLastIndex()
+              methods come in handy.
+            </p>
 
-<div class="org-src-container">
-<pre class="src src-js">const nums = [7, 14, 3, 8, 10, 9];
+            <div class="org-src-container">
+              <pre class="src src-js">
+const nums = [7, 14, 3, 8, 10, 9];
 
 const lastEven = nums.findLast((num) =&gt; num % 2 === 0);
 
@@ -2436,26 +2945,34 @@ const lastEvenIndex = nums.findLastIndex((num) =&gt; num % 2 === 0);
 
 console.log(lastEven); // 10
 console.log(lastEvenIndex); // 4
-</pre>
-</div>
-</div>
-</div>
+</pre
+              >
+            </div>
+          </div>
+        </div>
 
-<div id="outline-container-orgfa3b0fd" class="outline-3">
-<h3 id="orgfa3b0fd"><span class="section-number-3">8.12.</span> Source</h3>
-<div class="outline-text-3" id="text-8-12">
-<p>
-This topic came from:
-<a href="https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497">https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497</a>
-</p>
-</div>
-</div>
-</div>
-</div>
-<div id="postamble" class="status">
-<p class="author">Author: Rahul M. Juliato</p>
-<p class="date">Created: 2022-08-31 Wed 00:06</p>
-<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
-</body>
+        <div id="outline-container-orgdbb32eb" class="outline-3">
+          <h3 id="orgdbb32eb">
+            <span class="section-number-3">9.12.</span> Source
+          </h3>
+          <div class="outline-text-3" id="text-9-12">
+            <p>
+              This topic came from:
+              <a
+                href="https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497"
+                >https://medium.com/javascript-in-plain-english/es13-javascript-features-eed7ed2f1497</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="postamble" class="status">
+      <p class="author">Author: Rahul M. Juliato</p>
+      <p class="date">Created: 2022-10-01 Sáb 18:08</p>
+      <p class="validation">
+        <a href="https://validator.w3.org/check?uri=referer">Validate</a>
+      </p>
+    </div>
+  </body>
 </html>
