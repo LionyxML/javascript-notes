@@ -4,9 +4,6 @@
 
 
 * Advanced JS Design Patterns
-
-Source: [[https://medium.com/dhiwise/advanced-javascript-design-patterns-6812f3286585]]
-
 ** Creational
 Are patterns that will creat objects for you instead of instantiating
 and object directly.
@@ -1441,7 +1438,8 @@ Player 1 wins.
 undefined
 #+end_example
 
-
+** Source
+[[https://medium.com/dhiwise/advanced-javascript-design-patterns-6812f3286585]]
 * Await inside loops
 What will be the output of this snippet?
 
